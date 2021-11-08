@@ -25,7 +25,6 @@ function hideToggle(element) {
 function displayPlayer() {
   hideToggle(".startPage");
   hideToggle(".playerPage");
-  hideToggle(".playerfooter");
 }
 
 async function loadImage(n) {
@@ -137,14 +136,14 @@ function nextImg() {
 function hideFooterFunc(){
   controlsFooter.classList.add("is-hidden");
   img.style.height = "99vh";
-  document.querySelector(".playerPage").style.bottom = "0.9rem";
+  // document.querySelector(".playerPage").style.bottom = "0.9rem";
   hideFooterToggle = !hideFooterToggle;
 }
 
 function showFooterFunc(){
   controlsFooter.classList.remove("is-hidden");
-  img.style.height = "94vh";
-  document.querySelector(".playerPage").style.bottom = "3rem";
+  img.style.height = "calc(100vh - 4.2rem)";
+  // document.querySelector(".playerPage").style.bottom = "3rem";
   hideFooterToggle = !hideFooterToggle;
 }
 

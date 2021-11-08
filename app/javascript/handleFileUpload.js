@@ -5,12 +5,16 @@ let folders = [];
 let continueToggle = false;
 
 continueButton.addEventListener("click",()=>{
+
   if(continueToggle) return;
 
-  api.send("toMain","gimme");
+  api.send("toMain","temp");
+
   api.receive("fromMain", (files) => {
+
     for (const file of files) {
       folders.push(file);
+
       renderFiles(folders);
     }
       
@@ -20,11 +24,13 @@ continueButton.addEventListener("click",()=>{
 })
 
 function handleUploadFiles() {
-  const fileList = this.files; /* now you can work with the file list */
-  console.log(fileList);
+
+  const fileList = this.files; 
   const fileListLength = this.files.length
+
   if(fileListLength===0) return;
-  document.getElementById("continue").disabled = false;
+
+
   const folderName = fileList[0].webkitRelativePath.split("/")[0];
   
   let files = []

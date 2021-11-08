@@ -1,178 +1,101 @@
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="script-src 'self' 'unsafe-inline'"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="../node_modules/bulma/css/bulma.min.css"
-    />
-    <!-- <link rel="stylesheet" type="text/css" href="./tekst.css"/> -->
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css"
-    />
-    <style>
-      .container {
-        margin-bottom: 2rem;
-        /* margin-top: 0.5rem; */
-      }
-      img {
-        max-width: 100%;
-        height: 94vh;
-        object-fit: contain;
-      }
 
-      body::-webkit-scrollbar {
-  width: 0.5rem;
-  }
- 
-body::-webkit-scrollbar-track {
-  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
-}
- 
-body::-webkit-scrollbar-thumb {
-  background-color: darkgrey;
-}
-      body {
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
-      h1 {
-        margin-bottom: 0;
-      }
-      .player{
-        flex:1;
-        display:flex;
-        flex-direction: column;
-      }
-      .table {
-        background: none;
-      }
-      .tableText{
-        color:#ffdc7d;
-      }
-      #setTimer{
-        width:6rem;
-        font-size: 1.2rem;
-      }
-      #setTimerButton{
-        padding:0.5rem;
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'" />
+  <link rel="stylesheet" type="text/css" href="../node_modules/bulma/css/bulma.min.css" />
+  <link rel="stylesheet" type="text/css" href="./styles/style.css" />
+  <link rel="stylesheet" type="text/css" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
 
-      }
-      .playerPage{
-        position:fixed;
-        bottom:0;
-        right: 0;
-        left:0;
-      }
-      .drag{
-        -webkit-app-region:drag;
-      }
-      .no-drag{
-        -webkit-app-region:no-drag;
-      }
-      
-    </style>
+  <title>Image Timer</title>
+</head>
 
-    <title>Image Timer</title>
-  </head>
-  <body class="has-background-black-ter">
-  <div class="tabs is-right is-boxed is-small drag" style="height: 1.5rem;background-color: #222121;">
-  <ul style="border-bottom: none;">
+<body class="has-background-black-ter" id="holder">
 
-    <li id="minimize">
-      <a class="no-drag">
-        <span class="icon is-small">
-          <i class="fas fa-window-minimize"></i>
-        </span>
-      </a>
-    </li>
+  <div class="startPage">
 
-    <li id="maximize">
-      <a class="no-drag">
-        <span class="icon is-small">
-          <i class="fas fa-window-maximize"></i>
-        </span>
-      </a>
-    </li>
+    <div class="tabs is-right is-boxed is-small drag" style="height: 1.5rem;background-color: #222121;">
 
-    <li id="close">
-      <a class="no-drag">
-        <span class="icon is-small">
-          <i class="fas fa-window-close"></i>
-        </span>
-      </a>
-    </li>
-  </ul>
-</div>
+      <ul style="border-bottom: none;">
 
+        <li class="minimize">
+          <a class="no-drag">
+            <span class="icon is-small mb-2">
+              <i class="fas fa-window-minimize"></i>
+            </span>
+          </a>
+        </li>
 
+        <li class="maximize">
+          <a class="no-drag">
+            <span class="icon is-small">
+              <i class="fas fa-window-maximize"></i>
+            </span>
+          </a>
+        </li>
 
-    <div class="startPage">
-      <section class="section files-section is-centered mb-0 pb-0">
-        <!-- <div id="holder">Drag your file here</div> -->
-        <div class="container file-upload mb-4">
-          <div class="file is-centered is-large is-warning">
-            <label class="file-label">
-              <input
-                id="upload"
-                webkitdirectory
-                class="file-input"
-                type="file"
-                name="resume"
-              />
-              <span class="file-cta">
-                <span class="file-icon">
-                  <i class="fas fa-upload"></i>
-                </span>
-                <span class="file-label is-size-3 has-text-weight-semibold">
-                  Choose a Folder
-                </span>
+        <li class="close">
+          <a class="no-drag">
+            <span class="icon">
+              <i class="fas fa-window-close"></i>
+              <!-- <i class="fas fa-times"></i> -->
+            </span>
+          </a>
+        </li>
+
+      </ul>
+
+    </div>
+    <section class="section files-section is-centered mb-0 pb-0 mt-6 pt-0">
+      <!-- <div id="holder">Drag your file here</div> -->
+      <div class="container file-upload mb-4">
+        <div class="file is-centered is-large is-warning">
+          <label class="file-label">
+            <input id="upload" webkitdirectory class="file-input" type="file" name="resume" />
+            <span class="file-cta">
+              <span class="file-icon">
+                <i class="fas fa-upload"></i>
               </span>
-            </label>
-          </div>
+              <span class="file-label is-size-3 has-text-weight-semibold">
+                Choose a Folder
+              </span>
+            </span>
+          </label>
         </div>
-        <div class="container file-table mb-0">
-          <table
-            class="table has-text-centered is-hoverable is-size-5 is-narrow"
-            style="margin-left: auto; margin-right: auto"
-          >
-            <thead>
-              <tr>
-                <th scope="col"><span class="tableText">File Name</span></th>
-                <th scope="col">
-                  <span class="tableText"> No of picutres </span>
-                </th>
-              </tr>
-            </thead>
-            <tbody id="table-files"></tbody>
-            <tfoot>
-              <tr>
-                <td>
-                  <span class="tableText">Total</span>
-                </td>
-                <td ><span class="tableText" id="total_images">0</span></td>
-              </tr>
-            </tfoot>
-          </table>
-        </div>
-      </section>
+      </div>
 
-      <section class="section is-centered options-section pt-1 mb-0 pb-0">
-        <div class="columns is-centered is-size-3">
-          <div class="column is-center has-text-centered">
-            <div class="container mb-0">
-              <h1 class="is-size-4-mobile has-text-centered">FIXED</h1>
-              <div
-                class="
+      <div class="container file-table mb-0">
+        <table class="table has-text-centered is-hoverable is-size-5 is-narrow"
+          style="margin-left: auto; margin-right: auto">
+          <thead>
+            <tr>
+              <th scope="col"><span class="tableText">File Name</span></th>
+              <th scope="col">
+                <span class="tableText"> No of picutres </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="table-files"></tbody>
+          <tfoot>
+            <tr>
+              <td>
+                <span class="tableText">Total</span>
+              </td>
+              <td><span class="tableText" id="total_images">0</span></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+    </section>
+
+    <section class="section is-centered options-section pt-1 mb-0 pb-0">
+      <div class="columns is-centered is-size-3">
+        <div class="column is-center has-text-centered">
+          <div class="container mb-0">
+            <h1 class="is-size-4-mobile has-text-centered">FIXED</h1>
+            <div class="
                   buttons
                   is-centered
                   are-large
@@ -180,155 +103,148 @@ body::-webkit-scrollbar-thumb {
                   is-shadowless
                   m-0
                   p-0
-                "
-              >
-                <button class="button is-size-4-mobile buttonTime" value="45">
-                  45S
-                </button>
-                <button class="button is-size-4-mobile buttonTime" value="120">
-                  2M
-                </button>
-                <button class="button buttonTime is-hidden-mobile" value="300">
-                  5M
-                </button>
-                <button class="button is-size-4-mobile" id="setTimerButton">
+                ">
+              <button class="button is-size-4-mobile buttonTime" value="45">
+                45S
+              </button>
+              <button class="button is-size-4-mobile buttonTime" value="120">
+                2M
+              </button>
+              <button class="button buttonTime is-hidden-mobile" value="300">
+                5M
+              </button>
+              <button class="button is-size-4-mobile" id="setTimerButton">
                 <input class="input has-text-centered" id="setTimer" type="text" placeholder="45s/2m">
-                  <!-- Custom -->
-                </button>
-                <!-- <input type="text"> -->
+              </button>
 
-              </div>
             </div>
           </div>
         </div>
+      </div>
 
       <section class="section mt-0 pt-0">
         <div class="columns start is-centered">
           <div class="column is-half is-center has-text-centered">
-            <div class="container">
-              <button
-                id="start"
-                class="
+            <div class="container" style="max-width: 20rem;">
+              <button id="start" class="
                   button
                   is-large is-size-3
                   has-text-weight-semibold
                   is-warning
-                "
-                style="width: 20rem"
-              >
+                  is-fullwidth
+                ">
                 START
               </button>
             </div>
-            <div class="container">
-              <button
-                id="continue"
-                class="
+            <div class="container" style="max-width: 20rem;">
+              <button id="continue" class="
                   button
                   is-large is-size-3
                   has-text-weight-semibold
                   is-warning is-disabled
-                "
-                style="width: 20rem"
-              >
+                  is-fullwidth
+                ">
                 Continue
               </button>
             </div>
           </div>
         </div>
       </section>
+  </div>
+  <!-- END OF START PAGE -->
+
+  <!-- START OF PLAYER PAGE-->
+  <div class="playerPage is-hidden is-center is-centered has-text-centered">
+    <div class="tabs is-right is-boxed is-small drag mb-0" style="height: 1.5rem;background-color: #222121;">
+
+      <ul style="border-bottom: none;">
+
+        <li class="minimize">
+          <a class="no-drag">
+            <span class="icon is-small mb-2">
+              <i class="fas fa-window-minimize"></i>
+            </span>
+          </a>
+        </li>
+
+        <li class="maximize">
+          <a class="no-drag">
+            <span class="icon is-small">
+              <i class="fas fa-window-maximize"></i>
+            </span>
+          </a>
+        </li>
+
+        <li class="close">
+          <a class="no-drag">
+            <span class="icon is-small">
+              <i class="fas fa-window-close"></i>
+            </span>
+          </a>
+        </li>
+
+      </ul>
+
     </div>
-    <!-- END OF START PAGE -->
 
-    <!-- START OF PLAYER PAGE-->
-    <div class="playerPage is-hidden">
-      <div class="columns is-centered mb-0 mt-3">
-        <div class="column is-centered mb-0 p-0">
-          <div
-            class="is-center is-centered has-text-centered has-ratio mb-0"
-            id="imageContainer"
-            
+    <div class="imageContainer is-centered has-text-centered is-centered mb-0 pb-0 mt-0 pt-0">
+      <img id="mainImg" src="" alt="" />
+    </div>
 
-
-          >
-            <img id="mainImg" src="" alt="" class="mb-0"/>
-          </div>
-        </div>
-      </div>
-
-
-    <footer class="playerFooter is-hidden mt-0">
-      <progress
-        class="progress is-small is-link mt-0 mb-0"
-        id="progressBar"
-        value="0"
-        max="0"
-      ></progress>
+    <footer class="playerFooter mt-0">
+      <progress class="progress is-small is-link mt-0 mb-0" id="progressBar" value="0" max="0"></progress>
 
       <div class="tabs is-fullwidth " id="controlsFooter">
         <ul>
           <li id="previous">
             <a class="has-text-info">
-              <span class="icon"
-                ><i class="fas fa-backward" aria-hidden="true"></i
-              ></span>
+              <span class="icon"><i class="fas fa-backward" aria-hidden="true"></i></span>
               <span class="is-hidden-mobile">PREVIOUS</span>
             </a>
           </li>
           <li id="pause">
             <a class="has-text-info">
-              <span class="icon"
-                ><i class="fas fa-pause " aria-hidden="true" id="pauseIcon"></i
-              ></span>
+              <span class="icon"><i class="fas fa-pause " aria-hidden="true" id="pauseIcon"></i></span>
               <span class="is-hidden-mobile" id="pauseText">PAUSE</span>
             </a>
           </li>
           <li id="next">
             <a class="has-text-info">
               <span class="is-hidden-mobile">NEXT</span>
-              <span class="icon"
-                ><i class="fas fa-forward" aria-hidden="true"></i
-              ></span>
+              <span class="icon"><i class="fas fa-forward" aria-hidden="true"></i></span>
             </a>
           </li>
 
           <li id="end">
             <a class="has-text-info">
               <span class="is-hidden-mobile">END</span>
-              <span class="icon"
-                ><i class="fa fa-clover" aria-hidden="true"></i
-              ></span>
+              <span class="icon"><i class="fa fa-clover" aria-hidden="true"></i></span>
             </a>
           </li>
 
           <li id="hide">
             <a class="has-text-info">
               <span class="is-hidden-mobile">HIDE</span>
-              <span class="icon"
-                ><i class="fa fa-minus" aria-hidden="true"></i
-              ></span>
+              <span class="icon"><i class="fa fa-minus" aria-hidden="true"></i></span>
             </a>
           </li>
         </ul>
       </div>
     </footer>
-    </div>
+  </div>
 
-    <div class="modal" id="endModal">
-      <div class="modal-background"></div>
-      <div class="modal-card">
-        <header class="modal-card-head">
-          <p class="modal-card-title">Save Session & End</p>
-          <button class="delete" aria-label="close"></button>
-        </header>
-        <!-- <section class="modal-card-body"> -->
-          <!-- Content ... -->
-        <!-- </section> -->
-        <footer class="modal-card-foot">
-          <button class="button is-success" id="modalYes">Yes</button>
-          <button class="button is-danger" id="modalNo">No</button>
-          <!-- <button class="button">Cancel</button> -->
-        </footer>
-      </div>
+  <div class="modal" id="endModal">
+    <div class="modal-background"></div>
+    <div class="modal-card">
+      <header class="modal-card-head">
+        <p class="modal-card-title">Save Session & End</p>
+        <button class="delete" aria-label="close"></button>
+      </header>
+      <footer class="modal-card-foot">
+        <button class="button is-success" id="modalYes">Yes</button>
+        <button class="button is-danger" id="modalNo">No</button>
+      </footer>
+    </div>
 
     <script src="javascript/handleFileUpload.js" type="module"></script>
     <script src="javascript/renderFiles.js" type="module"></script>
@@ -340,17 +256,24 @@ body::-webkit-scrollbar-thumb {
         if (e.button === 3 || e.button === 4) e.preventDefault();
       });
 
-  document.getElementById('minimize').addEventListener('click', () => {
-  api.minimize()
-})
-
-document.getElementById('maximize').addEventListener('click', () => {
-  api.maximize()
-})
-
-document.getElementById('close').addEventListener('click', () => {
-  api.close()
-})
+      document.querySelectorAll('.minimize').forEach(element => {
+        element.addEventListener('click',()=>{
+          api.minimize()
+        })
+      });
+      document.querySelectorAll('.maximize').forEach(element => {
+        element.addEventListener('click',()=>{
+          api.maximize()
+        })
+      });
+      document.querySelectorAll('.close').forEach(element => {
+        element.addEventListener('click',()=>{
+          console.log("hello");
+  
+          api.close()
+        })
+      });
     </script>
-  </body>
+</body>
+
 </html>
