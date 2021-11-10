@@ -6,21 +6,25 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'" />
   <link rel="stylesheet" type="text/css" href="../node_modules/bulma/css/bulma.min.css" />
-  <link rel="stylesheet" type="text/css" href="./styles/style.css" />
+  <link rel="stylesheet" type="text/css" href="./styles/main.css" />
   <link rel="stylesheet" type="text/css" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
 
   <title>Image Timer</title>
 </head>
 
-<body class="has-background-black-ter" id="holder">
+<body class="has-background-black-ter">
 
   <div class="startPage">
 
-    <div class="tabs is-right is-boxed is-small drag" style="height: 1.5rem;background-color: #222121;">
+    <div class="tabs is-right is-boxed is-small drag mb-0 titleBar" style="height: 1.5rem;background-color:#1b1a1a">
+      <div class="brand">
+      <span class="is-size-6 is-centered is-align-self-center">ImageTimer</span>
+
+      </div>
 
       <ul style="border-bottom: none;">
 
-        <li class="minimize">
+        <li class="minimize titleBarItem">
           <a class="no-drag">
             <span class="icon is-small mb-2">
               <i class="fas fa-window-minimize"></i>
@@ -28,7 +32,7 @@
           </a>
         </li>
 
-        <li class="maximize">
+        <li class="maximize titleBarItem">
           <a class="no-drag">
             <span class="icon is-small">
               <i class="fas fa-window-maximize"></i>
@@ -36,11 +40,10 @@
           </a>
         </li>
 
-        <li class="close">
+        <li class="close titleBarItem">
           <a class="no-drag">
-            <span class="icon">
-              <i class="fas fa-window-close"></i>
-              <!-- <i class="fas fa-times"></i> -->
+            <span class="icon is-small">
+              <i class="fas fa-times"></i>
             </span>
           </a>
         </li>
@@ -48,8 +51,9 @@
       </ul>
 
     </div>
+
     <section class="section files-section is-centered mb-0 pb-0 mt-6 pt-0">
-      <!-- <div id="holder">Drag your file here</div> -->
+
       <div class="container file-upload mb-4">
         <div class="file is-centered is-large is-warning">
           <label class="file-label">
@@ -90,7 +94,7 @@
       </div>
     </section>
 
-    <section class="section is-centered options-section pt-1 mb-0 pb-0">
+    <section class="section is-centered optionsSection pt-1 mb-0 pb-0">
       <div class="columns is-centered is-size-3">
         <div class="column is-center has-text-centered">
           <div class="container mb-0">
@@ -155,11 +159,16 @@
 
   <!-- START OF PLAYER PAGE-->
   <div class="playerPage is-hidden is-center is-centered has-text-centered">
-    <div class="tabs is-right is-boxed is-small drag mb-0" style="height: 1.5rem;background-color: #222121;">
+    
+    <div class="tabs is-right is-boxed is-small drag mb-0 titleBar" style="height: 1.5rem;background-color:#1b1a1a">
+      <div class="brand">
+      <span class="is-size-6 is-centered is-align-self-center">ImageTimer</span>
+
+      </div>
 
       <ul style="border-bottom: none;">
 
-        <li class="minimize">
+        <li class="minimize titleBarItem">
           <a class="no-drag">
             <span class="icon is-small mb-2">
               <i class="fas fa-window-minimize"></i>
@@ -167,7 +176,7 @@
           </a>
         </li>
 
-        <li class="maximize">
+        <li class="maximize titleBarItem">
           <a class="no-drag">
             <span class="icon is-small">
               <i class="fas fa-window-maximize"></i>
@@ -175,10 +184,10 @@
           </a>
         </li>
 
-        <li class="close">
+        <li class="close titleBarItem">
           <a class="no-drag">
             <span class="icon is-small">
-              <i class="fas fa-window-close"></i>
+              <i class="fas fa-times"></i>
             </span>
           </a>
         </li>
@@ -268,11 +277,12 @@
       });
       document.querySelectorAll('.close').forEach(element => {
         element.addEventListener('click',()=>{
-          console.log("hello");
   
           api.close()
         })
       });
+
+
     </script>
 </body>
 

@@ -43,8 +43,9 @@ function handleUploadFiles() {
   renderFiles(folders);
 
 }
+uploadInput.addEventListener("change", handleUploadFiles, false);
+
 export {folders,continueToggle}
 
-uploadInput.addEventListener("change", handleUploadFiles, false);
 
 
