@@ -13,6 +13,7 @@ let hideFooterToggle = false;
 let timer;
 let index;
 let images = [];
+let imagesLength;
 
 function getImages() {
   // push all image paths to an array
@@ -27,10 +28,16 @@ function displayPlayer() {
   hideToggle(".playerPage");
 }
 
-async function loadImage(n) {
-  // img.classList.remove("fadeIn")
+let finished = false;
+function loadImage(n) {
+  console.log(index);
 
   index += n;
+  if(index == imagesLength){
+    pauseTimer();
+    setIndex();
+    finished = true;
+  }
   img.src = images[index];
   img.onload = () => {
     progressBar.classList.remove("is-danger");
@@ -45,26 +52,32 @@ function setCustomInterval() {
     progressBar.max *= 60;
 }
 
-function startPlayer() {
-    // if interval hasn't been set & check input
-  if (progressBar.max == 1) setCustomInterval();
-    
-
-  timer = new Timer(progressBar.max);
-
-  index = -1;
+function setIndex(){
+  index = 0;
   if (continueToggle) {
     index = parseInt(localStorage.getItem("indexStopped"));
     let indexStopped = localStorage.getItem("indexStopped");
     index = indexStopped === null ? 0 : parseInt(indexStopped);
   }
+}
+
+function startPlayer() {
+    // if interval hasn't been set & check input
+  if (progressBar.max == 1) setCustomInterval();
+
+    
+  setIndex();
+
+  timer = new Timer(progressBar.max);
+
 
   document.documentElement.style.overflow = "hidden";
 
   getImages();
+  imagesLength = images.length;
   displayPlayer();
   timer.start();
-  loadImage(1);
+  loadImage(0);
 }
 
 
@@ -84,7 +97,9 @@ end.addEventListener("click", modal);
 
 // click yes to save current session
 modalYes.addEventListener("click", () => {
-//   let folderPaths = [];
+
+  // let user start from the last image if last session was finished(for now)
+  if(finished) index = imagesLength-1;
 
   const folderPaths = folders.map((folder)=>{
     let path = "";
@@ -120,30 +135,28 @@ pause.addEventListener("click", pauseTimer);
 function previousImg() {
     if(index === 0) return;
   timer.counter = 0;
-  timer.stop();
+  pauseTimer();
   loadImage(-1);
-  timer.start();
+  pauseTimer();
 }
 
 function nextImg() {
-    if(index === images.length-1) return;
+    if(index >= images.length-1) return;
   timer.counter = 0;
-  timer.stop();
+  pauseTimer();
   loadImage(1);
-  timer.start();
+  pauseTimer();
 }
 
 function hideFooterFunc(){
   controlsFooter.classList.add("is-hidden");
   img.style.height = "99vh";
-  // document.querySelector(".playerPage").style.bottom = "0.9rem";
   hideFooterToggle = !hideFooterToggle;
 }
 
 function showFooterFunc(){
   controlsFooter.classList.remove("is-hidden");
   img.style.height = "calc(100vh - 4.2rem)";
-  // document.querySelector(".playerPage").style.bottom = "3rem";
   hideFooterToggle = !hideFooterToggle;
 }
 

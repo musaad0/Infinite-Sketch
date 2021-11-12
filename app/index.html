@@ -13,44 +13,45 @@
 </head>
 
 <body class="has-background-black-ter">
-
-  <div class="startPage">
-
-    <div class="tabs is-right is-boxed is-small drag mb-0 titleBar" style="height: 1.5rem;background-color:#1b1a1a">
-      <div class="brand">
+  <div class="tabs is-right is-boxed is-small drag mb-0 navbar is-fixed-top titleBar"
+    style="height:1.5rem;background-color:#1b1a1a">
+    <div class="brand">
       <span class="is-size-6 is-centered is-align-self-center">ImageTimer</span>
 
-      </div>
-
-      <ul style="border-bottom: none;">
-
-        <li class="minimize titleBarItem">
-          <a class="no-drag">
-            <span class="icon is-small mb-2">
-              <i class="fas fa-window-minimize"></i>
-            </span>
-          </a>
-        </li>
-
-        <li class="maximize titleBarItem">
-          <a class="no-drag">
-            <span class="icon is-small">
-              <i class="fas fa-window-maximize"></i>
-            </span>
-          </a>
-        </li>
-
-        <li class="close titleBarItem">
-          <a class="no-drag">
-            <span class="icon is-small">
-              <i class="fas fa-times"></i>
-            </span>
-          </a>
-        </li>
-
-      </ul>
-
     </div>
+
+    <ul style="border-bottom: none;">
+
+      <li class="minimize titleBarItem">
+        <a class="no-drag">
+          <span class="icon is-small mb-2">
+            <i class="fas fa-window-minimize"></i>
+          </span>
+        </a>
+      </li>
+
+      <li class="maximize titleBarItem">
+        <a class="no-drag">
+          <span class="icon is-small">
+            <i class="fas fa-window-maximize"></i>
+          </span>
+        </a>
+      </li>
+
+      <li class="close titleBarItem">
+        <a class="no-drag">
+          <span class="icon is-small">
+            <i class="fas fa-times"></i>
+          </span>
+        </a>
+      </li>
+
+    </ul>
+
+  </div>
+
+
+  <div class="startPage">
 
     <section class="section files-section is-centered mb-0 pb-0 mt-6 pt-0">
 
@@ -81,13 +82,13 @@
               </th>
             </tr>
           </thead>
-          <tbody id="table-files"></tbody>
+          <tbody id="tableFiles"></tbody>
           <tfoot>
             <tr>
               <td>
                 <span class="tableText">Total</span>
               </td>
-              <td><span class="tableText" id="total_images">0</span></td>
+              <td><span class="tableText" id="totalImages">0</span></td>
             </tr>
           </tfoot>
         </table>
@@ -159,10 +160,10 @@
 
   <!-- START OF PLAYER PAGE-->
   <div class="playerPage is-hidden is-center is-centered has-text-centered">
-    
-    <div class="tabs is-right is-boxed is-small drag mb-0 titleBar" style="height: 1.5rem;background-color:#1b1a1a">
+
+    <div class="tabs is-right is-boxed is-small drag mb-0 titleBar " style="height: 1.5rem;background-color:#1b1a1a">
       <div class="brand">
-      <span class="is-size-6 is-centered is-align-self-center">ImageTimer</span>
+        <span class="is-size-6 is-centered is-align-self-center">ImageTimer</span>
 
       </div>
 
@@ -266,18 +267,18 @@
       });
 
       document.querySelectorAll('.minimize').forEach(element => {
-        element.addEventListener('click',()=>{
+        element.addEventListener('click', () => {
           api.minimize()
         })
       });
       document.querySelectorAll('.maximize').forEach(element => {
-        element.addEventListener('click',()=>{
+        element.addEventListener('click', () => {
           api.maximize()
         })
       });
       document.querySelectorAll('.close').forEach(element => {
-        element.addEventListener('click',()=>{
-  
+        element.addEventListener('click', () => {
+
           api.close()
         })
       });

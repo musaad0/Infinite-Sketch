@@ -1,8 +1,8 @@
 import { folders } from "./handleFileUpload.js";
 
 export default function renderFiles(files) {
-  const tableFiles = document.getElementById("table-files");
-  const totNImages = document.getElementById("total_images");
+  const tableFiles = document.getElementById("tableFiles");
+  const totNImages = document.getElementById("totalImages");
   const tr = document.createElement("tr");
 
   tr.classList.add("is-clickable");
