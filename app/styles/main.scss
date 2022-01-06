@@ -95,6 +95,7 @@ body{
     min-height: 0;
 }
 .titleBar{
+    color:$grey-light;
 
     &.drag{
         -webkit-app-region:drag;
@@ -103,9 +104,12 @@ body{
         -webkit-app-region:no-drag;
     }
     .titleBarItem{
+
         a:hover{
             background-color:#46454596;
-            color:$white-ter !important;
+            span{
+                color:$white-bis !important;
+            }
         }
         &.close a:hover{
             background-color: $danger !important;

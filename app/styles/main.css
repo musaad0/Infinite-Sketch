@@ -76,6 +76,10 @@ body::-webkit-scrollbar-thumb {
   min-height: 0;
 }
 
+.titleBar {
+  color: #b5b5b5;
+}
+
 .titleBar.drag {
   -webkit-app-region: drag;
 }
@@ -86,7 +90,10 @@ body::-webkit-scrollbar-thumb {
 
 .titleBar .titleBarItem a:hover {
   background-color: #46454596;
-  color: #bbbbbb !important;
+}
+
+.titleBar .titleBarItem a:hover span {
+  color: #fafafa !important;
 }
 
 .titleBar .titleBarItem.close a:hover {

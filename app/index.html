@@ -9,14 +9,14 @@
   <link rel="stylesheet" type="text/css" href="./styles/main.css" />
   <link rel="stylesheet" type="text/css" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
 
-  <title>Image Timer</title>
+  <title>SketchRef</title>
 </head>
 
 <body class="has-background-black-ter">
   <div class="tabs is-right is-boxed is-small drag mb-0 navbar is-fixed-top titleBar"
     style="height:1.5rem;background-color:#1b1a1a">
     <div class="brand">
-      <span class="is-size-6 is-centered is-align-self-center">ImageTimer</span>
+      <span class="is-size-6 is-centered is-align-self-center ml-1 has-text-weight-bold is-family-monospace">SketchRef</span>
 
     </div>
 
@@ -24,23 +24,23 @@
 
       <li class="minimize titleBarItem">
         <a class="no-drag">
-          <span class="icon is-small mb-2">
-            <i class="fas fa-window-minimize"></i>
+          <span class="icon is-small has-text-grey-light">
+            <i class="fas fa-minus"></i>
           </span>
         </a>
       </li>
 
       <li class="maximize titleBarItem">
         <a class="no-drag">
-          <span class="icon is-small">
-            <i class="fas fa-window-maximize"></i>
+          <span class="icon is-small has-text-grey-light">
+            <i class="far fa-square"></i>
           </span>
         </a>
       </li>
 
       <li class="close titleBarItem">
         <a class="no-drag">
-          <span class="icon is-small">
+          <span class="icon is-small has-text-grey-light">
             <i class="fas fa-times"></i>
           </span>
         </a>
@@ -50,10 +50,9 @@
 
   </div>
 
+  <div class="startPage mt-6">
 
-  <div class="startPage">
-
-    <section class="section files-section is-centered mb-0 pb-0 mt-6 pt-0">
+    <section class="section files-section is-centered mb-0 pb-0 mt-6 pt-0 ">
 
       <div class="container file-upload mb-4">
         <div class="file is-centered is-large is-warning">
@@ -246,15 +245,43 @@
   <div class="modal" id="endModal">
     <div class="modal-background"></div>
     <div class="modal-card">
-      <header class="modal-card-head">
-        <p class="modal-card-title">Save Session & End</p>
+      <header class="modal-card-head has-text-centered">
+        <p class="modal-card-title has-text-centered">Save Session & End</p>
         <button class="delete" aria-label="close"></button>
       </header>
+
       <footer class="modal-card-foot">
-        <button class="button is-success" id="modalYes">Yes</button>
-        <button class="button is-danger" id="modalNo">No</button>
+
+            <div class="container m-0 ml-auto " style="max-width: 8rem;">
+              <button id="modalYes" class="
+                  button
+                  is-medium 
+                  has-text-weight-semibold
+                  is-success is-disabled
+                  is-fullwidth
+                  mr-1
+                ">
+                Yes
+              </button>
+            </div>
+            <div class="container m-0 mr-auto" style="max-width: 8rem;">
+              <button id="modalNo" class="
+                  button
+                  is-medium 
+                  has-text-weight-semibold
+                  is-danger is-disabled
+                  is-fullwidth
+                  ml-1
+                ">
+                No
+              </button>
+            </div>
+
+        <!-- <button class="button is-medium is-success ml-auto" id="modalYes">Yes</button>
+        <button class="button is-medium is-danger mr-auto" id="modalNo">No</button> -->
       </footer>
     </div>
+  </div>
 
     <script src="javascript/handleFileUpload.js" type="module"></script>
     <script src="javascript/renderFiles.js" type="module"></script>
@@ -265,6 +292,11 @@
       window.addEventListener("mouseup", (e) => {
         if (e.button === 3 || e.button === 4) e.preventDefault();
       });
+
+        window.addEventListener('contextmenu', (e) => {
+          e.preventDefault();
+          api.menu();
+        })
 
       document.querySelectorAll('.minimize').forEach(element => {
         element.addEventListener('click', () => {

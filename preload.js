@@ -24,6 +24,7 @@ contextBridge.exposeInMainWorld(
         },
         close: () => ipcRenderer.send('windowControls:close'),
         maximize: () => ipcRenderer.send('windowControls:maximize'),
-        minimize: () => ipcRenderer.send('windowControls:minimize')
+        minimize: () => ipcRenderer.send('windowControls:minimize'),
+        menu: ()=> ipcRenderer.send('show-context-menu')
     },
 );
