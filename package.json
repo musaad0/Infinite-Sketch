@@ -6,17 +6,17 @@
   "scripts": {
     "start": "electron .",
     "dist": "electron-builder",
-    "publish":"electron-builder -p always"
+    "publish": "electron-builder -p always"
   },
   "author": "Musaad",
   "license": "MIT",
   "devDependencies": {
-    "bulma": "^0.9.3",
     "electron": "^14.0.0",
     "electron-builder": "^22.14.5"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.0.0-beta2",
+    "bulma": "^0.9.3",
     "electron-store": "^8.0.1",
     "electron-updater": "^4.6.1"
   },
@@ -24,7 +24,7 @@
     "type": "git",
     "url": "https://github.com/musaad0/Infinite-Sketch"
   },
-   "publish": {
+  "publish": {
     "provider": "github",
     "releaseType": "release"
   },
@@ -36,7 +36,9 @@
         "nsis"
       ],
       "icon": "assets/icon.ico",
-      "publish":["github"]
+      "publish": [
+        "github"
+      ]
     },
     "nsis": {
       "allowToChangeInstallationDirectory": true,

@@ -4,6 +4,8 @@ const continueButton = document.getElementById("continue")
 let folders = [];
 let continueToggle = false;
 
+if(!(localStorage.getItem("folderPaths"))) continueButton.disabled = true;
+
 continueButton.addEventListener("click",()=>{
 
   if(continueToggle) return;

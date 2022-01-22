@@ -43,6 +43,7 @@ function loadImage(n) {
   };
 
 }
+
 function setCustomInterval() {
   if (!interval.value) interval.value = "5s";
   const intervalVal = interval.value;

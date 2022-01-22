@@ -39,6 +39,7 @@ function createWindow(){
             nodeIntegration:false,
             contextIsolation:true,
             enableRemoteModule:false,
+            nativeWindowOpen:true,
             preload: path.join(__dirname, "preload.js"),
 
         },
@@ -98,13 +99,16 @@ function ThroughDirectory(Directory) {
     });
 }
 
+// change to STORE package implementation later
 ipcMain.on("toMain",(evt,path)=>{
   mainWindow.webContents
   .executeJavaScript('localStorage.getItem("folderPaths");', true)
   .then(item => {
     const folders = handleFiles(item);
     mainWindow.webContents.send('fromMain',folders);
-  });
+  })
+  .catch(err => console.log(err))
+  
 })
 
 function handleFiles(paths){
