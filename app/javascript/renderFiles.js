@@ -12,6 +12,9 @@ export default function renderFiles(files) {
     const numOfImages = this.cells[1].innerText;
     handleFolderDelete(folderName);
     totNImages.innerText -= numOfImages;
+    // reset input
+    document.getElementById("upload").value = ""
+    
     this.remove();
   };
 

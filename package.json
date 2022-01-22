@@ -1,31 +1,48 @@
 {
-  "name": "sketchref",
+  "name": "infinite-sketch",
+  "description": "A media player-timer app for viewing images to help artists practice their drawing skills",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "dist": "electron-builder"
+    "dist": "electron-builder",
+    "publish":"electron-builder -p always"
   },
   "author": "Musaad",
   "license": "MIT",
   "devDependencies": {
+    "bulma": "^0.9.3",
     "electron": "^14.0.0",
     "electron-builder": "^22.14.5"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.0.0-beta2",
-    "bulma": "^0.9.3",
     "electron-store": "^8.0.1",
-    "update-electron-app": "^2.0.1"
+    "electron-updater": "^4.6.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/musaad0/Infinite-Sketch"
+  },
+   "publish": {
+    "provider": "github",
+    "releaseType": "release"
   },
   "build": {
-    "appId": "com.sketchref.app",
-    "productName": "SketchRef",
-    "target": "NSIS",
+    "appId": "com.infinitesketch.app",
+    "productName": "Infinite Sketch",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "assets/icon.ico",
+      "publish":["github"]
+    },
     "nsis": {
       "allowToChangeInstallationDirectory": true,
-      "oneClick": false
+      "oneClick": false,
+      "installerIcon": "assets/icon.ico",
+      "uninstallerIcon": "assets/icon.ico"
     }
   }
 }

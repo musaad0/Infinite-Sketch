@@ -1,12 +1,10 @@
 const {app, BrowserWindow,ipcMain,Menu} = require('electron');
-// require('update-electron-app')({
-//   repo:"https://github.com/musaad0/sketchref",
-//   updateInterval:"1 hour",
-// });
+const {autoUpdater} = require("electron-updater");
 const path = require('path');
 const fs = require('fs');
 const Store = require("electron-store");
 const store = new Store();
+
 let mainWindow;
 let alwaysOnTopToggle = store.get("alwaysOnTopToggle");
 
@@ -34,18 +32,23 @@ function createWindow(){
         y,
         minWidth:400,
         minHeight:300,
+        icon:path.join(__dirname,"assets/icon.ico"),
+        autoHideMenuBar:true,
         webPreferences:{
+            // devTools:false,
             nodeIntegration:false,
             contextIsolation:true,
             enableRemoteModule:false,
             preload: path.join(__dirname, "preload.js"),
 
         },
-          titleBarStyle:"customButtonsOnHover",
-          frame:false
+          frame:false,
+          show:false
+
     })
 
 
+    mainWindow.on("ready-to-show",mainWindow.show);
     mainWindow.setMenuBarVisibility(false) 
     mainWindow.setAlwaysOnTop(alwaysOnTopToggle);
     mainWindow.loadFile('./app/index.html')
@@ -120,7 +123,7 @@ function handleFiles(paths){
 
 app.whenReady().then(() => {
   createWindow()
-
+  autoUpdater.checkForUpdatesAndNotify();
   app.on('activate', () => {
     if (BrowserWindow.getAllWindows().length === 0) {
       createWindow()
@@ -131,6 +134,7 @@ app.whenReady().then(() => {
 
 
 })
+
 let saveBoundsCookie;
 function saveBoundsSoon() {
   if (saveBoundsCookie) clearTimeout(saveBoundsCookie);

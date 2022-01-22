@@ -30,7 +30,6 @@ function displayPlayer() {
 
 let finished = false;
 function loadImage(n) {
-  console.log(index);
 
   index += n;
   if(index == imagesLength){
@@ -63,6 +62,7 @@ function setIndex(){
 
 function startPlayer() {
     // if interval hasn't been set & check input
+  if(folders.length===0) return;
   if (progressBar.max == 1) setCustomInterval();
 
     
