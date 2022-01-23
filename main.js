@@ -1,4 +1,4 @@
-const {app, BrowserWindow,ipcMain,Menu} = require('electron');
+const {app, BrowserWindow,ipcMain,Menu,MenuItem} = require('electron');
 const {autoUpdater} = require("electron-updater");
 const path = require('path');
 const fs = require('fs');
@@ -9,6 +9,19 @@ let mainWindow;
 let alwaysOnTopToggle = store.get("alwaysOnTopToggle");
 
 if(alwaysOnTopToggle === undefined) alwaysOnTopToggle = true;
+
+// Disable Refresh 
+const menu = new Menu()
+menu.append(new MenuItem({
+  label: 'Electron',
+  submenu: [{
+    role: 'Disable refresh',
+    accelerator: process.platform === 'darwin' ? 'Cmd+R' : 'Ctrl+R',
+    click: () => {return}
+  }]
+}))
+
+Menu.setApplicationMenu(menu)
 
 function createWindow(){
   
@@ -152,6 +165,7 @@ function saveBoundsSoon() {
   }, 1000);
 
 }
+
 
 app.on('window-all-closed', () => {
   if (process.platform !== 'darwin') {

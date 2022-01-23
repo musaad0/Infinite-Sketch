@@ -30,6 +30,7 @@ function displayPlayer() {
 
 let finished = false;
 function loadImage(n) {
+  console.log("ss")
 
   index += n;
   if(index == imagesLength){
@@ -45,7 +46,7 @@ function loadImage(n) {
 }
 
 function setCustomInterval() {
-  if (!interval.value) interval.value = "5s";
+  if (!interval.value) interval.value = "30s";
   const intervalVal = interval.value;
   progressBar.max = parseInt(intervalVal);
   if (intervalVal[intervalVal.length - 1].toLowerCase() === "m")
@@ -66,7 +67,6 @@ function startPlayer() {
   if(folders.length===0) return;
   if (progressBar.max == 1) setCustomInterval();
 
-    
   setIndex();
 
   timer = new Timer(progressBar.max);
@@ -81,44 +81,6 @@ function startPlayer() {
   loadImage(0);
 }
 
-
-// MODAL END BUTTON
-const modalBackground = document.querySelector(".modal-background");
-const modalYes = document.getElementById("modalYes");
-const modalNo = document.getElementById("modalNo");
-const closeButton = document.querySelector(".delete");
-const endModal = document.getElementById("endModal");
-
-function modal() {
-  endModal.classList.add("is-active");
-}
-
-
-end.addEventListener("click", modal);
-
-// click yes to save current session
-modalYes.addEventListener("click", () => {
-
-  // let user start from the last image if last session was finished(for now)
-  if(finished) index = imagesLength-1;
-
-  const folderPaths = folders.map((folder)=>{
-    let path = "";
-    const folderName = folder.folderName;
-    const fullPath = folder.filesArr[0].split("\\");
-    for (const fName of fullPath) {
-      path += fName;
-      if (fName === folderName) break;
-      path += "/";
-    }
-    return path;
-  })
-  // save folder paths to local storage
-  localStorage.setItem("folderPaths", JSON.stringify(folderPaths));
-  localStorage.setItem("indexStopped", index);
-
-  location.href = "index.html";
-});
 
 // FOOTER CONTROLS AND EVENT LISTENERS
 let pauseToggle = false;
@@ -170,6 +132,17 @@ document.addEventListener("keyup", (e) => {
   if (key === "ArrowRight") nextImg();
   if (key === "ArrowLeft") previousImg();
   if (key === " ") pauseTimer();
+
+   if(e.key === "Escape" &&
+      document.querySelector(".startpage").classList.contains("is-hidden"))
+    {
+      if(endModal.classList.contains("is-active")){
+        endModal.classList.remove("is-active");
+        return;
+      }
+      modal();
+    }
+
 });
 
 img.addEventListener("click",()=>{
@@ -178,10 +151,6 @@ img.addEventListener("click",()=>{
   else
     hideFooterFunc();
 
-});
-
-modalNo.addEventListener("click", () => {
-  endModal.classList.remove("is-active");
 });
 
 next.addEventListener("click", nextImg);
@@ -194,13 +163,58 @@ document.querySelectorAll(".buttonTime").forEach((button) => {
   });
 });
 
-// MODAL EVENT LISTENERS
+// Modal functionality
+const modalBackground = document.querySelector(".modal-background");
+const modalYes = document.getElementById("modalYes");
+const modalNo = document.getElementById("modalNo");
+const modalHome = document.getElementById("modalHome");
+const closeButton = document.querySelector(".delete");
+const endModal = document.getElementById("endModal");
+
+function modal() {
+  endModal.classList.add("is-active");
+}
+
+end.addEventListener("click", modal);
+
+// click yes to save current session
+modalYes.addEventListener("click", () => {
+
+  // let user start from the last image if last session was finished(for now)
+  if(finished) index = imagesLength-1;
+
+  const folderPaths = folders.map((folder)=>{
+    let path = "";
+    const folderName = folder.folderName;
+    const fullPath = folder.filesArr[0].split("\\");
+    for (const fName of fullPath) {
+      path += fName;
+      if (fName === folderName) break;
+      path += "/";
+    }
+    return path;
+  })
+  // save folder paths to local storage
+  localStorage.setItem("folderPaths", JSON.stringify(folderPaths));
+  localStorage.setItem("indexStopped", index);
+
+  location.href = "index.html";
+});
+
 modalBackground.addEventListener("click", () => {
   endModal.classList.remove("is-active");
 });
 
 closeButton.addEventListener("click", () => {
   endModal.classList.remove("is-active");
+});
+
+modalNo.addEventListener("click", () => {
+  endModal.classList.remove("is-active");
+});
+
+modalHome.addEventListener("click", () => {
+  location.href = "index.html";
 });
 
 

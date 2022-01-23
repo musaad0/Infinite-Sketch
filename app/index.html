@@ -266,7 +266,7 @@
                 Yes
               </button>
             </div>
-            <div class="container m-0 mr-auto" style="max-width: 8rem;">
+            <div class="container m-0 mr-2" style="max-width: 8rem;">
               <button id="modalNo" class="
                   button
                   is-medium 
@@ -274,8 +274,22 @@
                   is-danger is-disabled
                   is-fullwidth
                   ml-1
+                  mr-0
                 ">
                 No
+              </button>
+            </div>
+
+            <div class="container m-0 ml-0 mr-auto" style="max-width: 5rem;">
+              <button id="modalHome" class="
+                  button
+                  is-medium 
+                  has-text-weight-semibold
+                  is-warning is-disabled
+                  is-fullwidth
+                  ml-0
+                ">
+                <i class="fa-solid fa-house"></i>
               </button>
             </div>
 
@@ -291,6 +305,11 @@
       // disable forward and backward buttons
       window.addEventListener("mouseup", (e) => {
         if (e.button === 3 || e.button === 4) e.preventDefault();
+      });
+      window.addEventListener("mouseup", (e) => {
+         if(e.key === "Escape") {
+
+      }
       });
 
         window.addEventListener('contextmenu', (e) => {
