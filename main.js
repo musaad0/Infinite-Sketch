@@ -35,7 +35,7 @@ function createWindow(){
         icon:path.join(__dirname,"assets/icon.ico"),
         autoHideMenuBar:true,
         webPreferences:{
-            // devTools:false,
+            devTools:false,
             nodeIntegration:false,
             contextIsolation:true,
             enableRemoteModule:false,
