@@ -17,4 +17,7 @@ npm install
 npm run dist
 
 ```
+## Screenshots
+![app screenshot-1](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_1.png "screenshot-1")
+![app screenshot-2](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_2.jpg "screenshot-2")
 
