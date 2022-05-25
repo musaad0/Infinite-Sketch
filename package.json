@@ -1,7 +1,7 @@
 {
   "name": "infinite-sketch",
   "description": "A media player-timer app for viewing images to help artists practice their drawing skills",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "main": "main.js",
   "scripts": {
     "start": "electron .",
@@ -11,7 +11,7 @@
   "author": "Musaad",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^14.0.0",
+    "electron": "^19.0.0",
     "electron-builder": "^22.14.5"
   },
   "dependencies": {
