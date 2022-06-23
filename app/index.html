@@ -5,14 +5,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline'" />
-  <link rel="stylesheet" type="text/css" href="../node_modules/bulma/css/bulma.min.css" />
-  <link rel="stylesheet" type="text/css" href="./styles/main.css" />
+  <link rel="stylesheet" href="./styles/mystyles.css">
   <link rel="stylesheet" type="text/css" href="../node_modules/@fortawesome/fontawesome-free/css/all.min.css" />
 
   <title>Infinite Sketch</title>
 </head>
 
 <body class="has-background-black-ter">
+  <!-- App Bar -->
   <div class="tabs is-right is-boxed is-small drag mb-0 navbar is-fixed-top titleBar"
     style="height:1.5rem;background-color:#1b1a1a">
     <div class="brand">
@@ -49,29 +49,34 @@
     </ul>
 
   </div>
+  <!-- End of app bar -->
+
 
   <div class="startPage mt-6">
 
     <section class="section files-section is-centered mb-0 pb-0 mt-6 pt-0 ">
+      <!-- FILE UPLOAD  -->
+      <div class="container file-upload mb-4 " >
+        <div class="file is-large is-centered mx-auto is-warning  uploadContainer " style="border-radius: 3px;">
 
-      <div class="container file-upload mb-4">
-        <div class="file is-centered is-large is-warning">
-          <label class="file-label">
+          <label class="file-label" >
             <input id="upload" webkitdirectory class="file-input" type="file" />
-            <span class="file-cta">
-              <span class="file-icon">
+            <span class="file-cta is-flex uploadButton" >
+              <span class="file-icon pb-2">
                 <i class="fas fa-upload"></i>
               </span>
-              <span class="file-label is-size-3 has-text-weight-semibold">
-                Choose a Folder
+              <span class="file-label ">
+                Add a folder
               </span>
             </span>
           </label>
         </div>
       </div>
+      <!-- END OF FILE UPLOAD  -->
 
-      <div class="container file-table mb-0">
-        <table class="table has-text-centered is-hoverable is-size-5 is-narrow"
+      <!-- FOLDERS TABLE  -->
+      <div class="container file-table mb-0 has-text-grey-light">
+        <table class="table has-text-centered is-hoverable is-size-5 is-narrow has-text-grey-light"
           style="margin-left: auto; margin-right: auto">
           <thead>
             <tr>
@@ -92,59 +97,62 @@
           </tfoot>
         </table>
       </div>
+      <!-- END OF FOLDERS TABLE -->
     </section>
 
+    <!-- INTERVALS INPUT -->
     <section class="section is-centered optionsSection pt-1 mb-0 pb-0">
-      <div class="columns is-centered is-size-3">
+      <div class="columns is-centered ">
         <div class="column is-center has-text-centered">
           <div class="container mb-0">
-            <h1 class="is-size-4-mobile has-text-centered">FIXED</h1>
+            <h1 class="is-size-4 has-text-centered has-text-grey-light my-2" >Interval</h1>
             <div class="
                   buttons
                   is-centered
-                  are-large
                   has-addons
                   is-shadowless
+                  intervals
                   m-0
                   p-0
                 ">
-              <button class="button is-size-4-mobile buttonTime" value="45">
+              <button class="button is-size-5 is-size-4-desktop buttonTime is-warning has-text-white-bis" value="45">
                 45S
               </button>
-              <button class="button is-size-4-mobile buttonTime" value="120">
+              <button class="button is-size-5 is-size-4-desktop buttonTime is-warning has-text-white-bis" value="120">
                 2M
               </button>
-              <button class="button buttonTime is-hidden-mobile" value="300">
+              <button class="button is-size-4-desktop is-size-5 buttonTime is-h is-warning has-text-white-bis" value="300">
                 5M
               </button>
-              <button class="button is-size-4-mobile" id="setTimerButton">
-                <input class="input has-text-centered" id="setTimer" type="text" placeholder="45s/2m">
+              <button class="button is-size-5 is-size-4-desktop has-background-white-bis has-text-black-bis" id="setTimerButton">
+                <input class="input has-text-centered is-size-5 has-background-white-bis has-text-black-bis is-size-4-desktop p-0 " id="setTimer" type="text" placeholder="45s/2m" style="border:none">
               </button>
 
             </div>
           </div>
         </div>
       </div>
+    <!-- END OF INTERVALS INPUT -->
 
       <section class="section mt-0 pt-0">
         <div class="columns start is-centered">
-          <div class="column is-half is-center has-text-centered">
-            <div class="container" style="max-width: 20rem;">
+          <div class="column is-half is-center has-text-centered px-3">
+            <div class="container" style="max-width: 22rem;">
               <button id="start" class="
                   button
-                  is-large is-size-3
-                  has-text-weight-semibold
+                  is-large is-size-4
+                  is-size-3-desktop
                   is-warning
                   is-fullwidth
                 ">
-                START
+                Start
               </button>
             </div>
-            <div class="container" style="max-width: 20rem;">
+            <div class="container" style="max-width: 22rem;">
               <button id="continue" class="
                   button
-                  is-large is-size-3
-                  has-text-weight-semibold
+                  is-large
+                  is-size-3-desktop is-size-4
                   is-warning is-disabled
                   is-fullwidth
                 ">
@@ -244,9 +252,9 @@
     </footer>
   </div>
 
-  <div class="modal" id="endModal">
+  <div class="modal" id="endModal" >
     <div class="modal-background"></div>
-    <div class="modal-card">
+    <div class="modal-card" style="width:80%!important;max-width: 30rem;">
       <header class="modal-card-head has-text-centered">
         <p class="modal-card-title has-text-centered">Save Session & End</p>
         <button class="delete" aria-label="close"></button>
@@ -254,7 +262,7 @@
 
       <footer class="modal-card-foot">
 
-            <div class="container m-0 ml-auto " style="max-width: 8rem;">
+            <div class="container m-0 ml-auto" style="max-width: 8rem;">
               <button id="modalYes" class="
                   button
                   is-medium 
@@ -276,7 +284,7 @@
                   ml-1
                   mr-0
                 ">
-                No
+                Cancel
               </button>
             </div>
 
