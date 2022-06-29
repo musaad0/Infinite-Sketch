@@ -10403,12 +10403,21 @@ body::-webkit-scrollbar-thumb {
   height: calc(100vh - 4.2rem);
   -o-object-fit: contain;
      object-fit: contain;
+  opacity: 1;
+  transition: opacity 800ms ease-in-out;
+}
+.playerPage .imageOut {
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
 }
 .playerPage .playerFooter {
   position: fixed;
   bottom: 0;
   right: 0;
   left: 0;
+}
+.playerPage #progressBar {
+  border-radius: 0;
 }
 
 .navbar {

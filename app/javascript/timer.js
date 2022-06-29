@@ -1,4 +1,4 @@
-import { loadImage } from "./imagePlayer.js";
+import { loadImage,toggleImageTransition } from "./imagePlayer.js";
 
 const progressBar = document.getElementById("progressBar");
 class Timer{
@@ -11,9 +11,9 @@ class Timer{
   start(){
     this.timerId = setInterval(()=>{
 
-      if (this.counter+1>= this.interval){
+      if (this.counter+2>= this.interval){
         progressBar.classList.add("is-danger");
-
+        toggleImageTransition(true);
       }
 
       if (this.counter>=this.interval){

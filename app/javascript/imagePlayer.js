@@ -29,9 +29,13 @@ function displayPlayer() {
 }
 
 let finished = false;
-function loadImage(n) {
-  console.log("ss")
 
+function toggleImageTransition(bool){
+  if(bool) img.classList.add('imageOut');
+  else img.classList.remove('imageOut');
+}
+
+function loadImage(n) {
   index += n;
   if(index == imagesLength){
     pauseTimer();
@@ -40,6 +44,7 @@ function loadImage(n) {
   }
   img.src = images[index];
   img.onload = () => {
+    toggleImageTransition(false);
     progressBar.classList.remove("is-danger");
   };
 
@@ -66,6 +71,9 @@ function startPlayer() {
     // if interval hasn't been set & check input
   if(folders.length===0) return;
   if (progressBar.max == 1) setCustomInterval();
+
+  // prevent breaking transition
+  if(progressBar.max === 1 || progressBar.max === 2) progressBar.max = 3
 
   setIndex();
 
@@ -96,7 +104,7 @@ const pauseText = document.getElementById("pauseText");
 pause.addEventListener("click", pauseTimer);
 
 function previousImg() {
-    if(index === 0) return;
+  if(index === 0) return;
   timer.counter = 0;
   pauseTimer();
   loadImage(-1);
@@ -104,7 +112,7 @@ function previousImg() {
 }
 
 function nextImg() {
-    if(index >= images.length-1) return;
+  if(index >= images.length-1) return;
   timer.counter = 0;
   pauseTimer();
   loadImage(1);
@@ -218,4 +226,4 @@ modalHome.addEventListener("click", () => {
 });
 
 
-export { loadImage };
+export { loadImage,toggleImageTransition };
