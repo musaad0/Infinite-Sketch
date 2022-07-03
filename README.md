@@ -6,7 +6,7 @@ Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infin
 
 Infinite Sketch will automatically update when a new release is available.
 
-Note: you will get warnings when you download the app, that's because I did not pay for a code signing certificate so you can ignore them.
+Note: The Windows executable is currently not signed, which will show a warning when you run the .exe. Press 'more info' -> 'run anyway' to skip the warning.
 
 ## Development
 ```
