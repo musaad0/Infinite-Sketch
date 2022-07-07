@@ -5,18 +5,26 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
+    "buildcss": "cross-env NODE_ENV=production postcss ./app/styles/main.css -o ./app/styles/tailwind/tailwind.min.css",
+    "watch": "postcss ./app/styles/main.css -o ./app/styles/tailwind/tailwind.css --watch",
     "dist": "electron-builder",
     "publish": "electron-builder -p always"
   },
-  "author": "Musaad",
+  "author": "Musaad Alqubayl",
   "license": "MIT",
   "devDependencies": {
+    "autoprefixer": "^10.4.7",
+    "cross-env": "^7.0.3",
+    "cssnano": "^5.1.12",
     "electron": "^19.0.6",
-    "electron-builder": "^22.14.5"
+    "electron-builder": "^22.14.5",
+    "postcss": "^8.4.14",
+    "postcss-cli": "^10.0.0",
+    "prettier": "2.7.1",
+    "prettier-plugin-tailwindcss": "^0.1.11",
+    "tailwindcss": "^3.1.4"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-free": "^6.0.0-beta2",
-    "bulma": "^0.9.3",
     "electron-store": "^8.0.1",
     "electron-updater": "^4.6.1"
   },
@@ -30,6 +38,11 @@
   },
   "build": {
     "appId": "com.infinitesketch.app",
+    "files": [
+      "**/*",
+      "!screenshots",
+      "!app/styles/tailwind/tailwind.css"
+    ],
     "productName": "Infinite Sketch",
     "win": {
       "target": [

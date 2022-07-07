@@ -1,0 +1,42 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base{
+  @font-face {
+    font-family: "Source Sans Pro";
+    font-weight: 400;
+    src: url("../../../assets/fonts/SourceSansPro-Regular.ttf") format("truetype");
+  }
+  
+  @font-face {
+    font-family: "Source Sans Pro";
+    font-weight: 700;
+    src: url("../../../assets/fonts/SourceSansPro-Bold.ttf") format("truetype");
+  }
+}
+
+.drag {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+progress::-webkit-progress-value {
+  background-color: theme("colors.primary.DEFAULT");
+}
+
+progress::-webkit-progress-bar {
+  background: theme("colors.neutral.400");
+}
+
+.imageOut {
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
