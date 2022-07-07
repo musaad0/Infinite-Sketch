@@ -5,7 +5,7 @@ export default function renderFiles(files) {
   const totNImages = document.getElementById("totalImages");
   const tr = document.createElement("tr");
 
-  tr.classList.add("is-clickable");
+  tr.classList.add("hover:cursor-pointer");
 
   tr.onclick = function () {
     const folderName = this.cells[0].innerText;
@@ -13,22 +13,24 @@ export default function renderFiles(files) {
     handleFolderDelete(folderName);
     totNImages.innerText -= numOfImages;
     // reset input
-    document.getElementById("upload").value = ""
-    
+    document.getElementById("upload").value = "";
+
     this.remove();
   };
 
   tr.innerHTML = `
-  <td>
-  <span class="tableText">
-  ${ files[files.length - 1].folderName }
-  </span>
-  </td>
-  <td>
-  <span class="tableText">
-  ${ files[files.length - 1].filesArr.length }
-  </span>
-  </td>`;
+                <th scope="row" class="px-6 py-2.5 font-medium">
+  ${files[files.length - 1].folderName}
+                </th>
+                <td class="px-6 py-2.5 text-center">
+  ${files[files.length - 1].filesArr.length}
+                </td>
+  `;
+  tr.classList.add(
+    "hover:bg-neutral-600",
+    "last:border-b",
+    "border-neutral-600"
+  );
 
   tableFiles.appendChild(tr);
   const tmpTotal =
