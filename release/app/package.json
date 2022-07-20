@@ -1,0 +1,18 @@
+{
+  "name": "infinite-sketch",
+  "version": "2.0.0",
+  "description": "practice your drawing skills",
+  "license": "MIT",
+  "author": {
+    "name": "Musaad Alqubayl",
+    "email": "musaadalqubayl@gmail.com",
+    "url": "https://github.com/musaad0/Infinite-Sketch"
+  },
+  "main": "./dist/main/main.js",
+  "scripts": {
+    "electron-rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
+    "postinstall": "npm run electron-rebuild && npm run link-modules",
+    "link-modules": "node -r ts-node/register ../../.erb/scripts/link-modules.ts"
+  },
+  "dependencies": {}
+}

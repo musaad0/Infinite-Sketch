@@ -1,10 +1,10 @@
-/** @type {import('tailwindcss').Config} */
+// /** @type {import('tailwindcss').Config} */
 const { neutral } = require('tailwindcss/colors')
 
+
 module.exports = {
-  content: ["./app/**/*.{html,js}"],
+  content: ["./src/**/*.{html,js,jsx}"],
   theme: {
-    extend: {},
     colors: {
       'primary': {
         DEFAULT: '#1e40af',
