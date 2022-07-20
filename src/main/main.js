@@ -6,6 +6,8 @@ import fs from 'fs';
 import Store from 'electron-store';
 import resolveHtmlPath from './util';
 
+app.disableHardwareAcceleration();
+
 const store = new Store();
 let mainWindow;
 let alwaysOnTopToggle = store.get('alwaysOnTopToggle');
@@ -73,7 +75,7 @@ function createWindow() {
     icon: getAssetPath('icon.png'),
     autoHideMenuBar: true,
     webPreferences: {
-      // devTools: false,
+      devTools: false,
       nodeIntegration: false,
       contextIsolation: true,
       enableRemoteModule: false,
