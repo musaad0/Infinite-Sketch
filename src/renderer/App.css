@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "~react-lazy-load-image-component/src/effects/blur.css";
 
 @layer components {
   .btn {
@@ -45,11 +46,6 @@ progress::-webkit-progress-value {
 
 progress::-webkit-progress-bar {
   background: theme('colors.neutral.400');
-}
-
-.imageIn {
-  opacity: 1;
-  transition: opacity 2s ease-in-out;
 }
 
 .fade-appear {

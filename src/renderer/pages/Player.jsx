@@ -4,6 +4,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import PlayerContext from 'renderer/context/PlayerContext';
 import Controls from '../components/Controls';
 import FooterControls from '../components/FooterControls';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const STATUS = {
   STARTED: 'Started',
@@ -83,19 +84,19 @@ export default function Player() {
       <TransitionGroup>
         <CSSTransition
           key={index.fileIndex}
-          in={(index.fileIndex + index.folderIndex) % 2 === 0}
+          in={(index.fileIndex) % 2 === 0}
           appear={true}
           timeout={800}
           classNames="fade"
         >
-          <img
-            src={stateFoldersList[index.folderIndex].files[index.fileIndex]}
-            id="mainImage"
-            className={`mx-auto h-[calc(100vh_-_3.6rem)] max-w-full cursor-pointer object-contain 
-         ${showFooter ? '' : 'h-[calc(100vh_-_2rem)]'}`}
-            alt="name"
-            onClick={handleShowFooter}
-          />
+          <div className='flex justify-center'>
+          <LazyLoadImage
+      src={stateFoldersList[index.folderIndex].files[index.fileIndex]} 
+      className= {`mx-auto h-[calc(100vh_-_3.6rem)] max-w-full cursor-pointer object-contain ${showFooter ? '' : 'h-[calc(100vh_-_2rem)]'}`}
+      effect="blur"
+      onClick={handleShowFooter}
+      />
+          </div>
         </CSSTransition>
       </TransitionGroup>
       <div className="fixed bottom-0 flex w-full flex-col bg-neutral-900 text-sm ">
