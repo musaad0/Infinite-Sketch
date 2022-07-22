@@ -52,7 +52,7 @@ export default function Player() {
     tempFileIndex -= 1;
     if (tempFolderIndex !== 0 && index.fileIndex === 0) {
       tempFolderIndex -= 1;
-      tempFileIndex = stateFoldersList[tempFolderIndex].files.length;
+      tempFileIndex = stateFoldersList[tempFolderIndex].files.length - 1;
     }
 
     setIndex({ folderIndex: tempFolderIndex, fileIndex: tempFileIndex });
