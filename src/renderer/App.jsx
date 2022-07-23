@@ -1,13 +1,12 @@
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { RecoilRoot } from 'recoil';
 import Home from './pages/Home';
 import Player from './pages/Player';
 import SharedLayout from './pages/SharedLayout';
-import { PlayerProvider } from './context/PlayerContext';
 import './App.css';
 
 export default function App() {
-  const [interval, setInterval] = useState(30);
 
   useEffect(() => {
     window.addEventListener('contextmenu', (e) => {
@@ -18,7 +17,7 @@ export default function App() {
 
   return (
     <>
-      <PlayerProvider>
+      <RecoilRoot>
         <Router>
           <Routes>
             <Route path="/" element={<SharedLayout />}>
@@ -27,7 +26,7 @@ export default function App() {
             </Route>
           </Routes>
         </Router>
-      </PlayerProvider>
+      </RecoilRoot>
     </>
   );
 }

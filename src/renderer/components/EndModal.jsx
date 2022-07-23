@@ -1,15 +1,15 @@
-import { AppImageUpdater } from 'electron-updater';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import PlayerContext from 'renderer/context/PlayerContext';
+import { useRecoilValue } from 'recoil';
+import { folders } from 'renderer/recoil/files/atoms';
+import { interval } from 'renderer/recoil/interval/atoms';
 
 export default function EndModal({ showModal, handleShowModal, index }) {
-  const { interval, foldersList } = useContext(PlayerContext);
-  const [stateFoldersList] = foldersList;
-  const [stateInterval] = interval;
+  const foldersList = useRecoilValue(folders);
+  const stateInterval = useRecoilValue(interval);
 
   const handleSave = () => {
-    const foldersPaths = stateFoldersList.map((folder) => {
+    const foldersPaths = foldersList.map((folder) => {
       let path = '';
       const folderName = folder.name;
       const fullPath = folder.files[0].split('\\');

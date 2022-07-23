@@ -1,5 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import useInterval from 'renderer/hooks/useInterval';
+import { useRecoilValue } from 'recoil';
+import { intervalValue } from 'renderer/recoil/interval/selectors';
 import PlayerContext from 'renderer/context/PlayerContext';
 import FooterControls from './FooterControls';
 
@@ -9,8 +11,7 @@ const STATUS = {
 };
 
 export default function Controls({ nextImage, status, setStatus, index }) {
-  const { interval } = useContext(PlayerContext);
-  const [stateInterval, setStateInterval] = interval;
+  const stateInterval = useRecoilValue(intervalValue);
   const [secondsRemaining, setSecondsRemaining] = useState(stateInterval);
 
   const handleStart = () => {

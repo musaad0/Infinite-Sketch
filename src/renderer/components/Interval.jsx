@@ -1,37 +1,19 @@
 import { useState, useContext, useEffect } from 'react';
-import PlayerContext from 'renderer/context/PlayerContext';
+import { useRecoilState } from 'recoil';
+import {interval} from '../recoil/interval/atoms'
 
 const values = ['45S', '2M', '5M'];
 
 export default function Interval() {
-  // Later -> make one interval state
-  const [intervalInput, setIntervalInput] = useState('');
-  const { interval } = useContext(PlayerContext);
-  const [stateInterval, setStateInterval] = interval;
-
-  // convert interval to seconds
-  const setInterval = () => {
-    if (!intervalInput) return;
-    if (intervalInput[intervalInput.length - 1].toLowerCase() === 'm') {
-      // convert minutes to seconds
-      setStateInterval(parseInt(intervalInput) * 60);
-      return;
-    }
-    // seconds is default
-    setStateInterval(parseInt(intervalInput));
-  };
-  useEffect(() => {
-    setInterval();
-  }, [intervalInput]);
+  const [intervalState,setIntervalState] = useRecoilState(interval)
 
   const setInputInterval = (e) => {
-    setIntervalInput(e.target.value);
+    setIntervalState(e.target.value);
   };
 
   return (
     <div className="interval">
       <span className="mb-2 block text-center text-secondary">Interval</span>
-      {/* <span className="text-center text-secondary">Interval</span> */}
       <div className="flex w-full text-xl">
         {values.map((value, index) => (
           <button
@@ -50,7 +32,7 @@ export default function Interval() {
           type="text"
           placeholder="45s/2m"
           onChange={setInputInterval}
-          value={intervalInput}
+          value={intervalState}
         />
       </div>
     </div>

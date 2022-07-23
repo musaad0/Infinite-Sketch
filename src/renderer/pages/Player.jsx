@@ -1,7 +1,8 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import PlayerContext from 'renderer/context/PlayerContext';
+import { useRecoilValue } from 'recoil';
+import { files } from 'renderer/recoil/files/selectors';
 import Controls from '../components/Controls';
 import FooterControls from '../components/FooterControls';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
@@ -13,49 +14,20 @@ const STATUS = {
 
 export default function Player() {
   const location = useLocation();
-  const { foldersList } = useContext(PlayerContext);
-  const [stateFoldersList, stateSetFoldersList] = foldersList;
-  const [index, setIndex] = useState({
-    fileIndex: location.state.index.fileIndex,
-    folderIndex: location.state.index.folderIndex,
-  });
+  const filesList = useRecoilValue(files);
+  const [index, setIndex] = useState(location.state.index);
   const [status, setStatus] = useState(STATUS.STARTED);
   const [showFooter, setShowFooter] = useState(true);
 
   const nextImage = () => {
-    let tempIndex = index.folderIndex;
-    const foldersLength = stateFoldersList.length;
-    const filesLength = stateFoldersList[tempIndex].files.length;
-    if (
-      index.folderIndex + 1 >= foldersLength &&
-      index.fileIndex + 1 >= filesLength
-    ) {
-      return false;
-    }
-    if (index.fileIndex + 1 >= filesLength) {
-      tempIndex += 1;
-    }
-
-    setIndex({
-      folderIndex: tempIndex,
-      fileIndex: (index.fileIndex + 1) % filesLength,
-    });
+    if(index + 1 >= filesList.length ) return false;
+    setIndex(index+1)
     return true;
   };
 
   const previousImage = () => {
-    let tempFolderIndex = index.folderIndex;
-    let tempFileIndex = index.fileIndex;
-
-    if (tempFileIndex === 0 && tempFolderIndex === 0) return false;
-
-    tempFileIndex -= 1;
-    if (tempFolderIndex !== 0 && index.fileIndex === 0) {
-      tempFolderIndex -= 1;
-      tempFileIndex = stateFoldersList[tempFolderIndex].files.length - 1;
-    }
-
-    setIndex({ folderIndex: tempFolderIndex, fileIndex: tempFileIndex });
+    if(index - 1 < 0) return false;
+    setIndex(index-1);
     return true;
   };
 
@@ -83,15 +55,15 @@ export default function Player() {
     <>
       <TransitionGroup>
         <CSSTransition
-          key={index.fileIndex}
-          in={(index.fileIndex) % 2 === 0}
+          key={index}
+          in={index % 2 === 0}
           appear={true}
           timeout={800}
           classNames="fade"
         >
           <div className='flex justify-center'>
           <LazyLoadImage
-      src={stateFoldersList[index.folderIndex].files[index.fileIndex]} 
+      src={filesList[index]} 
       className= {`mx-auto h-[calc(100vh_-_3.6rem)] max-w-full cursor-pointer object-contain ${showFooter ? '' : 'h-[calc(100vh_-_2rem)]'}`}
       effect="blur"
       onClick={handleShowFooter}

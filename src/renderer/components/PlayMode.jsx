@@ -1,22 +1,22 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { interval } from 'renderer/recoil/interval/atoms';
 import Interval from './Interval';
-import PlayerContext from 'renderer/context/PlayerContext';
 
 export default function PlayMode({
   filesTotal,
   addFolder,
   setStateFoldersList,
 }) {
-  const [index, setIndex] = useState({ folderIndex: 0, fileIndex: 0 });
-  const { interval } = useContext(PlayerContext);
-  const [stateInterval, setStateInterval] = interval;
+  const [index, setIndex] = useState(0);
+  const [stateInterval, setStateInterval] = useRecoilState(interval);
 
   const loadSession = () => {
     // Later --> COMBINE ALL SAVED VARIABLES INTO ONE OBJECT
 
-    const savedFolders = window.api.recieveFrom.get(); // second argument has no value
+    const savedFolders = window.api.recieveFrom.get(); 
 
     if (typeof savedFolders !== 'undefined') {
       for (const file of savedFolders) {
@@ -38,8 +38,8 @@ export default function PlayMode({
   };
   const handleReset = () => {
     setStateFoldersList([]);
-    setStateInterval(30);
-    setIndex({ folderIndex: 0, fileIndex: 0 });
+    setStateInterval('');
+    setIndex(0);
   };
 
   return (
