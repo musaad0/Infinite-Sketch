@@ -75,7 +75,6 @@ function createWindow() {
     icon: getAssetPath('icon.png'),
     autoHideMenuBar: true,
     webPreferences: {
-      devTools: false,
       nodeIntegration: false,
       contextIsolation: true,
       enableRemoteModule: false,
