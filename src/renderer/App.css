@@ -5,7 +5,7 @@
 
 @layer components {
   .btn {
-    @apply w-full rounded bg-primary py-2.5 text-center text-secondary outline-none transition-colors hover:cursor-pointer hover:bg-primary-dark focus:bg-primary-dark;
+    @apply w-full rounded bg-primary py-2.5 text-center text-secondary outline-none transition-colors hover:cursor-pointer hover:bg-primary-dark focus-visible:bg-primary-dark;
   }
 }
 @layer base {
