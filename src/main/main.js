@@ -129,11 +129,19 @@ function createWindow() {
 }
 
 let files = [];
+const imagesTypes = ['jpg','jpeg','png','gif','avif','apng','webp'];
+
 function ThroughDirectory(Directory) {
   fs.readdirSync(Directory).forEach((File) => {
     const Absolute = path.join(Directory, File);
     if (fs.statSync(Absolute).isDirectory()) return ThroughDirectory(Absolute);
-    else return files.push(Absolute);
+    else {
+      // only add images
+      if(imagesTypes.includes(path.extname(File).substring(1))){
+        return files.push(Absolute);
+      }
+       return;
+    }
   });
 }
 
