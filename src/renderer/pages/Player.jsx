@@ -18,16 +18,18 @@ export default function Player() {
   const [index, setIndex] = useState(location.state.index);
   const [status, setStatus] = useState(STATUS.STARTED);
   const [showFooter, setShowFooter] = useState(true);
+  const [imageFlipH, setImageFlipH] = useState(false);
+  const [imageFlipV, setImageFlipV] = useState(false);
 
   const nextImage = () => {
-    if(index + 1 >= filesList.length ) return false;
-    setIndex(index+1)
+    if (index + 1 >= filesList.length) return false;
+    setIndex(index + 1);
     return true;
   };
 
   const previousImage = () => {
-    if(index - 1 < 0) return false;
-    setIndex(index-1);
+    if (index - 1 < 0) return false;
+    setIndex(index - 1);
     return true;
   };
 
@@ -36,6 +38,14 @@ export default function Player() {
   };
   const handleShowFooter = () => {
     setShowFooter(!showFooter);
+  };
+
+  const handleImageFlipH = () => {
+    setImageFlipH(!imageFlipH);
+  };
+
+  const handleImageFlipV = () => {
+    setImageFlipV(!imageFlipV);
   };
 
   useEffect(() => {
@@ -61,13 +71,17 @@ export default function Player() {
           timeout={800}
           classNames="fade"
         >
-          <div className='flex justify-center'>
-          <LazyLoadImage
-      src={filesList[index]} 
-      className= {`mx-auto h-[calc(100vh_-_3.6rem)] max-w-full cursor-pointer object-contain ${showFooter ? '' : 'h-[calc(100vh_-_2rem)]'}`}
-      effect="blur"
-      onClick={handleShowFooter}
-      />
+          <div className="flex justify-center">
+            <LazyLoadImage
+              src={filesList[index]}
+              className={`mx-auto h-[calc(100vh_-_3.6rem)] max-w-full cursor-pointer object-contain ${
+                showFooter ? '' : 'h-[calc(100vh_-_2rem)]'
+              } ${imageFlipH ? '-scale-y-100' : ''} ${
+                imageFlipV ? '-scale-x-100' : ''
+              }`}
+              effect="blur"
+              onClick={handleShowFooter}
+            />
           </div>
         </CSSTransition>
       </TransitionGroup>
@@ -88,6 +102,8 @@ export default function Player() {
           showFooter={showFooter}
           handleShowFooter={handleShowFooter}
           index={index}
+          handleImageFlipH={handleImageFlipH}
+          handleImageFlipV={handleImageFlipV}
         />
       </div>
     </>

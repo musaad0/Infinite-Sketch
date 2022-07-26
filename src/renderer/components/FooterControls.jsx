@@ -18,6 +18,8 @@ export default function FooterControls({
   showFooter,
   handleShowFooter,
   index,
+  handleImageFlipH,
+  handleImageFlipV,
 }) {
   const [showModal, setShowModal] = useState(false);
 
@@ -113,6 +115,54 @@ export default function FooterControls({
           <svg className={svgClass} viewBox="0 0 448 512">
             {/* <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --> */}
             <path d="M400 288h-352c-17.69 0-32-14.32-32-32.01s14.31-31.99 32-31.99h352c17.69 0 32 14.3 32 31.99S417.7 288 400 288z" />
+          </svg>
+        </FooterControlsButton>
+
+        <FooterControlsButton handleClick={handleImageFlipV}>
+          <svg
+            className="stroke-neutral-500"
+            width="18"
+            height="18"
+            viewBox="0 0 355 260"
+            fill="none"
+          >
+            <path
+              d="M16 244L16 16L150 130L16 244Z"
+              stroke-width="32"
+              stroke-linejoin="round"
+            />
+            <path
+              className="fill-neutral-500 stroke-neutral-500"
+              d="M339 244L339 16L205 130L339 244Z"
+              fill="black"
+              stroke="black"
+              stroke-width="32"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </FooterControlsButton>
+
+        <FooterControlsButton handleClick={handleImageFlipH}>
+          <svg
+            className="rotate-90 stroke-neutral-500"
+            width="18"
+            height="18"
+            viewBox="0 0 355 260"
+            fill="none"
+          >
+            <path
+              d="M16 244L16 16L150 130L16 244Z"
+              stroke-width="32"
+              stroke-linejoin="round"
+            />
+            <path
+              className="fill-neutral-500 stroke-neutral-500"
+              d="M339 244L339 16L205 130L339 244Z"
+              fill="black"
+              stroke="black"
+              stroke-width="32"
+              stroke-linejoin="round"
+            />
           </svg>
         </FooterControlsButton>
       </div>
