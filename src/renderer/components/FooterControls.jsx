@@ -16,7 +16,6 @@ export default function FooterControls({
   nextImage,
   previousImage,
   showFooter,
-  handleShowFooter,
   index,
   handleImageFlipH,
   handleImageFlipV,
@@ -103,21 +102,6 @@ export default function FooterControls({
             <path d="M52.51 440.6l171.5-142.9V214.3L52.51 71.41C31.88 54.28 0 68.66 0 96.03v319.9C0 443.3 31.88 457.7 52.51 440.6zM308.5 440.6l192-159.1c15.25-12.87 15.25-36.37 0-49.24l-192-159.1c-20.63-17.12-52.51-2.749-52.51 24.62v319.9C256 443.3 287.9 457.7 308.5 440.6z" />
           </svg>
         </FooterControlsButton>
-
-        <FooterControlsButton handleClick={() => setShowModal(true)}>
-          <svg className={svgClass} viewBox="0 0 384 512">
-            {/* <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --> */}
-            <path d="M384 128v255.1c0 35.35-28.65 64-64 64H64c-35.35 0-64-28.65-64-64V128c0-35.35 28.65-64 64-64H320C355.3 64 384 92.65 384 128z" />
-          </svg>
-        </FooterControlsButton>
-
-        <FooterControlsButton handleClick={handleShowFooter}>
-          <svg className={svgClass} viewBox="0 0 448 512">
-            {/* <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --> */}
-            <path d="M400 288h-352c-17.69 0-32-14.32-32-32.01s14.31-31.99 32-31.99h352c17.69 0 32 14.3 32 31.99S417.7 288 400 288z" />
-          </svg>
-        </FooterControlsButton>
-
         <FooterControlsButton handleClick={handleImageFlipV}>
           <svg
             className="stroke-neutral-500"
@@ -128,16 +112,16 @@ export default function FooterControls({
           >
             <path
               d="M16 244L16 16L150 130L16 244Z"
-              stroke-width="32"
-              stroke-linejoin="round"
+              strokeWidth="32"
+              strokeLinejoin="round"
             />
             <path
               className="fill-neutral-500 stroke-neutral-500"
               d="M339 244L339 16L205 130L339 244Z"
               fill="black"
               stroke="black"
-              stroke-width="32"
-              stroke-linejoin="round"
+              strokeWidth="32"
+              strokeLinejoin="round"
             />
           </svg>
         </FooterControlsButton>
@@ -152,17 +136,24 @@ export default function FooterControls({
           >
             <path
               d="M16 244L16 16L150 130L16 244Z"
-              stroke-width="32"
-              stroke-linejoin="round"
+              strokeWidth="32"
+              strokeLinejoin="round"
             />
             <path
               className="fill-neutral-500 stroke-neutral-500"
               d="M339 244L339 16L205 130L339 244Z"
               fill="black"
               stroke="black"
-              stroke-width="32"
-              stroke-linejoin="round"
+              strokeWidth="32"
+              strokeLinejoin="round"
             />
+          </svg>
+        </FooterControlsButton>
+
+        <FooterControlsButton handleClick={() => setShowModal(true)}>
+          <svg className={svgClass} viewBox="0 0 384 512">
+            {/* <!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --> */}
+            <path d="M384 128v255.1c0 35.35-28.65 64-64 64H64c-35.35 0-64-28.65-64-64V128c0-35.35 28.65-64 64-64H320C355.3 64 384 92.65 384 128z" />
           </svg>
         </FooterControlsButton>
       </div>

@@ -100,7 +100,6 @@ export default function Player() {
           handleStatus={handleStatus}
           handleReset={handleStatus}
           showFooter={showFooter}
-          handleShowFooter={handleShowFooter}
           index={index}
           handleImageFlipH={handleImageFlipH}
           handleImageFlipV={handleImageFlipV}
