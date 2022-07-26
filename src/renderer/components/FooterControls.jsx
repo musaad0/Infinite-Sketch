@@ -65,7 +65,7 @@ export default function FooterControls({
   return (
     <>
       <div
-        className={`flex select-none fill-neutral-500 text-sm text-neutral-500 ${
+        className={`flex select-none fill-neutral-500 stroke-neutral-500 text-sm text-neutral-500 ${
           showFooter ? '' : 'hidden'
         }`}
       >
@@ -103,23 +103,15 @@ export default function FooterControls({
           </svg>
         </FooterControlsButton>
         <FooterControlsButton handleClick={handleImageFlipV}>
-          <svg
-            className="stroke-neutral-500"
-            width="18"
-            height="18"
-            viewBox="0 0 355 260"
-            fill="none"
-          >
+          <svg className="h-[17px] w-[17px]" viewBox="0 0 355 260">
             <path
               d="M16 244L16 16L150 130L16 244Z"
               strokeWidth="32"
               strokeLinejoin="round"
+              fill="none"
             />
             <path
-              className="fill-neutral-500 stroke-neutral-500"
               d="M339 244L339 16L205 130L339 244Z"
-              fill="black"
-              stroke="black"
               strokeWidth="32"
               strokeLinejoin="round"
             />
@@ -127,23 +119,15 @@ export default function FooterControls({
         </FooterControlsButton>
 
         <FooterControlsButton handleClick={handleImageFlipH}>
-          <svg
-            className="rotate-90 stroke-neutral-500"
-            width="18"
-            height="18"
-            viewBox="0 0 355 260"
-            fill="none"
-          >
+          <svg className="h-[17px] w-[17px] rotate-90" viewBox="0 0 355 260">
             <path
               d="M16 244L16 16L150 130L16 244Z"
               strokeWidth="32"
               strokeLinejoin="round"
+              fill="none"
             />
             <path
-              className="fill-neutral-500 stroke-neutral-500"
               d="M339 244L339 16L205 130L339 244Z"
-              fill="black"
-              stroke="black"
               strokeWidth="32"
               strokeLinejoin="round"
             />
