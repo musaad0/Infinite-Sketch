@@ -10,9 +10,14 @@ Note: The Windows executable is currently not signed, which will show a warning 
 
 ## Development
 ```
+# Clone repository
+git clone https://github.com/musaad0/Infinite-Sketch.git
+
 # Install dependencies
 npm install
 
+# Package application
+npm run package
 ```
 ## Screenshots
 ![app screenshot-1](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_1.png "screenshot-1")
