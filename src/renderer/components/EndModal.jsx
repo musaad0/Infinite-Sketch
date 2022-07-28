@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
-import { folders } from 'renderer/recoil/files/atoms';
+import { folders, shuffleState } from 'renderer/recoil/files/atoms';
 import { interval } from 'renderer/recoil/interval/atoms';
 
 export default function EndModal({ showModal, handleShowModal, index }) {
   const foldersList = useRecoilValue(folders);
   const stateInterval = useRecoilValue(interval);
+  const shuffle = useRecoilValue(shuffleState);
 
   const handleSave = () => {
     const foldersPaths = foldersList.map((folder) => {
@@ -23,6 +24,7 @@ export default function EndModal({ showModal, handleShowModal, index }) {
     api.store.set('foldersPaths', foldersPaths);
     api.store.set('interval', stateInterval);
     api.store.set('index', index);
+    api.store.set('shuffle', shuffle);
   };
   return (
     <div className={`${showModal ? '' : 'hidden'} text-xl`}>
