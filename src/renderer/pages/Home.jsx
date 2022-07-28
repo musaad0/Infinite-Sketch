@@ -7,7 +7,7 @@ import FolderUpload from 'renderer/components/FolderUploads';
 import FoldersTable from 'renderer/components/FoldersTable';
 
 export default function Home() {
-  const [stateFoldersList,setStateFoldersList] = useRecoilState(folders);
+  const [stateFoldersList, setStateFoldersList] = useRecoilState(folders);
   const filesTotal = useRecoilValue(foldersTotal);
 
   const addFolder = (folder) => {

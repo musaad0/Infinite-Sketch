@@ -1,4 +1,3 @@
-// const { app, BrowserWindow, ipcMain, Menu, MenuItem } = require('electron');
 import { app, BrowserWindow, ipcMain, Menu, MenuItem } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
@@ -128,7 +127,7 @@ function createWindow() {
 }
 
 let files = [];
-const imagesTypes = ['jpg','jpeg','png','gif','avif','apng','webp'];
+const imagesTypes = ['jpg', 'jpeg', 'png', 'gif', 'avif', 'apng', 'webp'];
 
 function ThroughDirectory(Directory) {
   fs.readdirSync(Directory).forEach((File) => {
@@ -136,10 +135,10 @@ function ThroughDirectory(Directory) {
     if (fs.statSync(Absolute).isDirectory()) return ThroughDirectory(Absolute);
     else {
       // only add images
-      if(imagesTypes.includes(path.extname(File).substring(1))){
+      if (imagesTypes.includes(path.extname(File).substring(1))) {
         return files.push(Absolute);
       }
-       return;
+      return;
     }
   });
 }

@@ -1,11 +1,11 @@
 import { useState, useContext, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import {interval} from '../recoil/interval/atoms'
+import { interval } from '../recoil/interval/atoms';
 
 const values = ['45S', '2M', '5M'];
 
 export default function Interval() {
-  const [intervalState,setIntervalState] = useRecoilState(interval)
+  const [intervalState, setIntervalState] = useRecoilState(interval);
 
   const setInputInterval = (e) => {
     setIntervalState(e.target.value);

@@ -16,7 +16,6 @@ export const files = selector({
     const shuffle = get(shuffleState);
     let filesList = foldersList.map((o) => o.files).flat();
     if (shuffle.isShuffle) {
-      console.log(shuffle.seed);
       filesList = shuffleList(filesList, shuffle.seed);
     }
     return filesList;

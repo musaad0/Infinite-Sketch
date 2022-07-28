@@ -7,5 +7,5 @@ export const folders = atom({
 
 export const shuffleState = atom({
   key: 'shuffleState',
-  default: { isShuffle: false, seed: Math.random() },
+  default: { isShuffle: false, seed: 1 },
 });
