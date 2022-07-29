@@ -18,7 +18,7 @@ export default function PlayMode({
   const loadSession = () => {
     // Later --> COMBINE ALL SAVED VARIABLES INTO ONE OBJECT
 
-    const savedFolders = window.api.recieveFrom.get();
+    const savedFolders = api.recieveFrom.get();
 
     if (typeof savedFolders !== 'undefined') {
       for (const file of savedFolders) {

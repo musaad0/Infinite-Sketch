@@ -17,7 +17,7 @@ export default function EndModal({ showModal, handleShowModal, index }) {
       for (const fName of fullPath) {
         path += fName;
         if (fName === folderName) break;
-        path += '/';
+        path += '\\';
       }
       return path;
     });

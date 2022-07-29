@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain, Menu, MenuItem } from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, MenuItem, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 import fs from 'fs';
@@ -150,6 +150,20 @@ ipcMain.on('getFolders', async (event) => {
   event.returnValue = folders;
 });
 
+ipcMain.handle('show-open-dialog', async () => {
+  return dialog
+    .showOpenDialog(mainWindow, {
+      properties: ['openDirectory', 'multiSelections'],
+      title: 'Add Folders',
+    })
+    .then((result) => {
+      if (result.canceled) return;
+      const folders = handleFiles(result.filePaths);
+      return folders;
+    })
+    .catch((err) => log.error(err));
+});
+
 ipcMain.on('electron-store-get', async (event, val) => {
   event.returnValue = store.get(val);
 });
@@ -160,7 +174,7 @@ ipcMain.on('electron-store-set', async (event, key, val) => {
 function handleFiles(paths) {
   const folders = [];
   for (const folder of paths) {
-    const pathSplit = folder.split('/');
+    const pathSplit = folder.split('\\');
     const folderName = pathSplit[pathSplit.length - 1];
     ThroughDirectory(path.resolve(folder));
     folders.push({ name: folderName, files: files });

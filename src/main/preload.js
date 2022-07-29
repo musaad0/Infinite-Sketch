@@ -34,4 +34,5 @@ contextBridge.exposeInMainWorld('api', {
       ipcRenderer.send('electron-store-set', property, val);
     },
   },
+  openDialog: async () => ipcRenderer.invoke('show-open-dialog'),
 });
