@@ -1,4 +1,12 @@
-import { app, BrowserWindow, ipcMain, Menu, MenuItem, dialog } from 'electron';
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  Menu,
+  MenuItem,
+  dialog,
+  shell,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 import fs from 'fs';
@@ -191,6 +199,11 @@ app.whenReady().then(() => {
       createWindow();
     }
   });
+
+  mainWindow.webContents.setWindowOpenHandler(() => {
+    return { action: 'deny' };
+  });
+
   mainWindow.on('resize', saveBoundsSoon);
   mainWindow.on('move', saveBoundsSoon);
 });
