@@ -9,3 +9,8 @@ export const shuffleState = atom({
   key: 'shuffleState',
   default: { isShuffle: false, seed: 1 },
 });
+
+export const indexState = atom({
+  key: 'indexState',
+  default: 0,
+});

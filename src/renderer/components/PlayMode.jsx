@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
-import { useRecoilState } from 'recoil';
+import { useRecoilState, useSetRecoilState } from 'recoil';
 import { interval } from 'renderer/recoil/interval/atoms';
-import { shuffleState } from 'renderer/recoil/files/atoms';
+import { shuffleState, indexState } from 'renderer/recoil/files/atoms';
 import Interval from './Interval';
 
 export default function PlayMode({
@@ -11,8 +11,8 @@ export default function PlayMode({
   addFolder,
   setStateFoldersList,
 }) {
-  const [index, setIndex] = useState(0);
   const [stateInterval, setStateInterval] = useRecoilState(interval);
+  const setIndex = useSetRecoilState(indexState);
   const [shuffle, setShuffle] = useRecoilState(shuffleState);
 
   const loadSession = () => {
@@ -57,13 +57,7 @@ export default function PlayMode({
     <div className="flex select-none flex-col gap-4">
       <Interval />
       <div className="flex gap-2">
-        <Link
-          to="/player"
-          tabIndex={-1}
-          draggable={false}
-          state={{ index }}
-          className="w-full"
-        >
+        <Link to="/player" tabIndex={-1} draggable={false} className="w-full">
           <button
             type="button"
             disabled={filesTotal > 0 ? false : true}

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useRecoilState } from 'recoil';
+import { indexState } from 'renderer/recoil/files/atoms';
 import { files } from 'renderer/recoil/files/selectors';
 import Controls from '../components/Controls';
 import FooterControls from '../components/FooterControls';
@@ -13,9 +13,8 @@ const STATUS = {
 };
 
 export default function Player() {
-  const location = useLocation();
   const filesList = useRecoilValue(files);
-  const [index, setIndex] = useState(location.state.index);
+  const [index, setIndex] = useRecoilState(indexState);
   const [status, setStatus] = useState(STATUS.STARTED);
   const [showFooter, setShowFooter] = useState(true);
   const [imageFlipH, setImageFlipH] = useState(false);
@@ -100,7 +99,6 @@ export default function Player() {
           handleStatus={handleStatus}
           handleReset={handleStatus}
           showFooter={showFooter}
-          index={index}
           handleImageFlipH={handleImageFlipH}
           handleImageFlipV={handleImageFlipV}
         />

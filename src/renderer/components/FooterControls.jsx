@@ -16,7 +16,6 @@ export default function FooterControls({
   nextImage,
   previousImage,
   showFooter,
-  index,
   handleImageFlipH,
   handleImageFlipV,
 }) {
@@ -142,11 +141,7 @@ export default function FooterControls({
         </FooterControlsButton>
       </div>
 
-      <EndModal
-        showModal={showModal}
-        handleShowModal={handleShowModal}
-        index={index}
-      />
+      <EndModal showModal={showModal} handleShowModal={handleShowModal} />
     </>
   );
 }

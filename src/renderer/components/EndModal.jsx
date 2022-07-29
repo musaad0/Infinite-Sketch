@@ -1,13 +1,15 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { folders, shuffleState } from 'renderer/recoil/files/atoms';
 import { interval } from 'renderer/recoil/interval/atoms';
+import { indexState } from 'renderer/recoil/files/atoms';
 
-export default function EndModal({ showModal, handleShowModal, index }) {
+export default function EndModal({ showModal, handleShowModal }) {
   const foldersList = useRecoilValue(folders);
   const stateInterval = useRecoilValue(interval);
   const shuffle = useRecoilValue(shuffleState);
+  const [index, setIndex] = useRecoilState(indexState);
 
   const handleSave = () => {
     const foldersPaths = foldersList.map((folder) => {
@@ -26,6 +28,12 @@ export default function EndModal({ showModal, handleShowModal, index }) {
     api.store.set('index', index);
     api.store.set('shuffle', shuffle);
   };
+
+  const handleSavedIndex = () => {
+    const savedIndex = api.store.get('index');
+    setIndex(savedIndex);
+  };
+
   return (
     <div className={`${showModal ? '' : 'hidden'} text-xl`}>
       <div
@@ -54,6 +62,7 @@ export default function EndModal({ showModal, handleShowModal, index }) {
             to={'/'}
             tabIndex={-1}
             draggable={false}
+            onClick={handleSavedIndex}
             className="flex rounded-lg bg-primary !px-6 !py-2 transition-colors hover:bg-primary-dark "
           >
             <svg className="mx-auto w-[23px]" viewBox="0 0 576 512">
