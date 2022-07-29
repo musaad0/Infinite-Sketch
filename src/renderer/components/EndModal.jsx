@@ -3,15 +3,17 @@ import { Link } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { folders, shuffleState } from 'renderer/recoil/files/atoms';
 import { interval } from 'renderer/recoil/interval/atoms';
-import { indexState } from 'renderer/recoil/files/atoms';
+import { indexState, initialIndexState } from 'renderer/recoil/files/atoms';
 
 export default function EndModal({ showModal, handleShowModal }) {
   const foldersList = useRecoilValue(folders);
   const stateInterval = useRecoilValue(interval);
   const shuffle = useRecoilValue(shuffleState);
+  const [initialIndex, setInitialIndex] = useRecoilState(initialIndexState);
   const [index, setIndex] = useRecoilState(indexState);
 
   const handleSave = () => {
+    setInitialIndex(index);
     const foldersPaths = foldersList.map((folder) => {
       let path = '';
       const folderName = folder.name;
@@ -30,8 +32,7 @@ export default function EndModal({ showModal, handleShowModal }) {
   };
 
   const handleSavedIndex = () => {
-    const savedIndex = api.store.get('index');
-    setIndex(savedIndex);
+    setIndex(initialIndex);
   };
 
   return (

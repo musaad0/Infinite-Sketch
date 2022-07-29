@@ -14,3 +14,8 @@ export const indexState = atom({
   key: 'indexState',
   default: 0,
 });
+
+export const initialIndexState = atom({
+  key: 'initialIndexState',
+  default: 0,
+});

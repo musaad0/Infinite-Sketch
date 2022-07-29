@@ -3,7 +3,11 @@ import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { interval } from 'renderer/recoil/interval/atoms';
-import { shuffleState, indexState } from 'renderer/recoil/files/atoms';
+import {
+  shuffleState,
+  indexState,
+  initialIndexState,
+} from 'renderer/recoil/files/atoms';
 import Interval from './Interval';
 
 export default function PlayMode({
@@ -13,6 +17,7 @@ export default function PlayMode({
 }) {
   const [stateInterval, setStateInterval] = useRecoilState(interval);
   const setIndex = useSetRecoilState(indexState);
+  const setInitialIndex = useSetRecoilState(initialIndexState);
   const [shuffle, setShuffle] = useRecoilState(shuffleState);
 
   const loadSession = () => {
@@ -30,6 +35,7 @@ export default function PlayMode({
 
     if (typeof savedIndex !== 'undefined') {
       setIndex(savedIndex);
+      setInitialIndex(savedIndex);
     }
 
     const savedInterval = api.store.get('interval');
@@ -48,6 +54,7 @@ export default function PlayMode({
     setStateFoldersList([]);
     setStateInterval('');
     setIndex(0);
+    setInitialIndex(0);
   };
   const handleShuffle = () => {
     setShuffle((obj) => ({ isShuffle: !shuffle.isShuffle, seed: getRandom() }));
