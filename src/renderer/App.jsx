@@ -15,7 +15,7 @@ export default function App() {
   }, []);
 
   return (
-    <>
+    <div className="select-none">
       <RecoilRoot>
         <Router>
           <Routes>
@@ -26,6 +26,6 @@ export default function App() {
           </Routes>
         </Router>
       </RecoilRoot>
-    </>
+    </div>
   );
 }
