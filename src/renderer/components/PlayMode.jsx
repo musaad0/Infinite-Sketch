@@ -17,8 +17,9 @@ export default function PlayMode({
 }) {
   const [stateInterval, setStateInterval] = useRecoilState(interval);
   const setIndex = useSetRecoilState(indexState);
-  const setInitialIndex = useSetRecoilState(initialIndexState);
+  const [initialIndex, setInitialIndex] = useRecoilState(initialIndexState);
   const [shuffle, setShuffle] = useRecoilState(shuffleState);
+  const [progress, setProgress] = useState(0);
 
   const loadSession = () => {
     // Later --> COMBINE ALL SAVED VARIABLES INTO ONE OBJECT
@@ -59,6 +60,15 @@ export default function PlayMode({
   const handleShuffle = () => {
     setShuffle((obj) => ({ isShuffle: !shuffle.isShuffle, seed: getRandom() }));
   };
+
+  useEffect(() => {
+    if (filesTotal === 0 || initialIndex === 0) setProgress(0);
+    else {
+      setProgress(() => {
+        return Math.floor(((initialIndex + 1) / filesTotal) * 100);
+      });
+    }
+  }, [initialIndex]);
 
   return (
     <div className="flex select-none flex-col gap-4">
@@ -108,6 +118,15 @@ export default function PlayMode({
         >
           Reset
         </button>
+      </div>
+      <div className="flex flex-col items-center text-lg text-secondary/80">
+        <div className="mb-1 h-1.5 w-full rounded-full bg-neutral-700">
+          <div
+            className="h-1.5 rounded-full bg-primary"
+            style={{ width: progress + '%' }}
+          ></div>
+        </div>
+        <span>{progress} %</span>
       </div>
     </div>
   );
