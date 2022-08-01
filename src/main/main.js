@@ -17,8 +17,6 @@ app.disableHardwareAcceleration();
 
 const store = new Store();
 let mainWindow;
-let alwaysOnTopToggle = store.get('alwaysOnTopToggle');
-if (alwaysOnTopToggle === undefined) alwaysOnTopToggle = true;
 
 if (process.env.NODE_ENV === 'production') {
   const sourceMapSupport = require('source-map-support');
@@ -97,7 +95,7 @@ function createWindow() {
 
   mainWindow.on('ready-to-show', mainWindow.show);
   mainWindow.setMenuBarVisibility(false);
-  mainWindow.setAlwaysOnTop(alwaysOnTopToggle);
+  mainWindow.setAlwaysOnTop(true);
   mainWindow.loadURL(resolveHtmlPath('index.html'));
 
   ipcMain.on('windowControls:maximize', () => {
@@ -116,22 +114,6 @@ function createWindow() {
     mainWindow.close();
   });
 
-  ipcMain.on('show-context-menu', (ev) => {
-    const template = [
-      {
-        label: 'Always On Top',
-        type: 'checkbox',
-        checked: alwaysOnTopToggle,
-        click: () => {
-          alwaysOnTopToggle = !alwaysOnTopToggle;
-          store.set('alwaysOnTopToggle', alwaysOnTopToggle);
-          mainWindow.setAlwaysOnTop(alwaysOnTopToggle);
-        },
-      },
-    ];
-    const menu = Menu.buildFromTemplate(template);
-    menu.popup(BrowserWindow.fromWebContents(ev.sender));
-  });
 }
 
 let files = [];
@@ -178,6 +160,11 @@ ipcMain.on('electron-store-get', async (event, val) => {
 ipcMain.on('electron-store-set', async (event, key, val) => {
   store.set(key, val);
 });
+
+ipcMain.on('contextMenu:alwaysOnTop', (e,data) => {
+  handleAlwaysOnTop(data);
+});
+
 
 function handleFiles(paths) {
   const folders = [];
@@ -226,3 +213,8 @@ app.on('window-all-closed', () => {
     app.quit();
   }
 });
+
+function handleAlwaysOnTop(alwaysOnTopToggle){
+  store.set('alwaysOnTopToggle', alwaysOnTopToggle);
+  mainWindow.setAlwaysOnTop(alwaysOnTopToggle);
+}

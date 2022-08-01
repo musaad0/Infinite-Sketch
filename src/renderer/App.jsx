@@ -7,13 +7,6 @@ import SharedLayout from './pages/SharedLayout';
 import './App.css';
 
 export default function App() {
-  useEffect(() => {
-    window.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-      api.menu();
-    });
-  }, []);
-
   return (
     <div className="select-none">
       <RecoilRoot>
