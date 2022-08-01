@@ -135,7 +135,10 @@ function ThroughDirectory(Directory) {
 
 ipcMain.on('getFolders', async (event) => {
   const foldersPaths = store.get('foldersPaths');
-  if (foldersPaths === undefined) return;
+  if (foldersPaths === undefined){
+    event.returnValue = foldersPaths;
+    return;
+  } 
   const folders = handleFiles(foldersPaths);
   event.returnValue = folders;
 });
