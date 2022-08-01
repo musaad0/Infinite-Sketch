@@ -113,7 +113,6 @@ function createWindow() {
   ipcMain.on('windowControls:close', () => {
     mainWindow.close();
   });
-
 }
 
 let files = [];
@@ -135,10 +134,10 @@ function ThroughDirectory(Directory) {
 
 ipcMain.on('getFolders', async (event) => {
   const foldersPaths = store.get('foldersPaths');
-  if (foldersPaths === undefined){
+  if (foldersPaths === undefined) {
     event.returnValue = foldersPaths;
     return;
-  } 
+  }
   const folders = handleFiles(foldersPaths);
   event.returnValue = folders;
 });
@@ -164,10 +163,9 @@ ipcMain.on('electron-store-set', async (event, key, val) => {
   store.set(key, val);
 });
 
-ipcMain.on('contextMenu:alwaysOnTop', (e,data) => {
+ipcMain.on('contextMenu:alwaysOnTop', (e, data) => {
   handleAlwaysOnTop(data);
 });
-
 
 function handleFiles(paths) {
   const folders = [];
@@ -217,7 +215,7 @@ app.on('window-all-closed', () => {
   }
 });
 
-function handleAlwaysOnTop(alwaysOnTopToggle){
+function handleAlwaysOnTop(alwaysOnTopToggle) {
   store.set('alwaysOnTopToggle', alwaysOnTopToggle);
   mainWindow.setAlwaysOnTop(alwaysOnTopToggle);
 }

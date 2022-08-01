@@ -8,21 +8,24 @@ const useContextMenu = () => {
   const handleContextMenu = useCallback(
     (e) => {
       e.preventDefault();
-       const contextMenuWidth = 288;
+      const contextMenuWidth = 288;
       const contextSubMenuWidth = 288;
-      let leftPos = ''
+      let leftPos = '';
       if (e.pageX < window.innerWidth - contextMenuWidth) {
         leftPos = `${e.pageX}px`;
       } else {
         leftPos = `${e.pageX - contextMenuWidth}px`;
       }
-      if (e.pageX < window.innerWidth - contextMenuWidth - contextSubMenuWidth) {
-        setWindowCheck(false)
+      if (
+        e.pageX <
+        window.innerWidth - contextMenuWidth - contextSubMenuWidth
+      ) {
+        setWindowCheck(false);
       } else {
-        setWindowCheck(true)
+        setWindowCheck(true);
       }
-      
-      setAnchorPoint({ x: leftPos, y:e.pageY + 'px' });
+
+      setAnchorPoint({ x: leftPos, y: e.pageY + 'px' });
       setShow(!show);
     },
     [setShow, setAnchorPoint]
