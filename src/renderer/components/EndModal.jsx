@@ -14,17 +14,7 @@ export default function EndModal({ showModal, handleShowModal }) {
 
   const handleSave = () => {
     setInitialIndex(index);
-    const foldersPaths = foldersList.map((folder) => {
-      let path = '';
-      const folderName = folder.name;
-      const fullPath = folder.files[0].split('\\');
-      for (const fName of fullPath) {
-        path += fName;
-        if (fName === folderName) break;
-        path += '\\';
-      }
-      return path;
-    });
+    const foldersPaths = foldersList.map((folder) => folder.path);
     api.store.set('foldersPaths', foldersPaths);
     api.store.set('interval', stateInterval);
     api.store.set('index', index);

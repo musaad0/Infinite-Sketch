@@ -10,6 +10,7 @@ import {
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 import fs from 'fs';
+import log from 'electron-log';
 import Store from 'electron-store';
 import resolveHtmlPath from './util';
 
@@ -23,6 +24,7 @@ if (process.env.NODE_ENV === 'production') {
   sourceMapSupport.install();
 }
 
+const isDarwin = process.platform === 'darwin';
 const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
@@ -39,19 +41,30 @@ menu.append(
       {
         role: 'Disable refresh',
         accelerator: process.platform === 'darwin' ? 'Cmd+R' : 'Ctrl+R',
-        click: () => {
-          return;
-        },
+        click: () => {},
       },
     ],
   })
 );
 
+const schema = {
+  interval: {
+    type: 'number',
+    maximum: 10000000,
+    minimum: 1,
+    default: 30,
+  },
+  index: {
+    type: 'number',
+    minimum: 1,
+  },
+};
+
 Menu.setApplicationMenu(menu);
 
 function createWindow() {
   // get last saved window state
-  let state = store.get('state');
+  const state = store.get('state');
   let x = 'center';
   let y = 'center';
   let width = 500;
@@ -79,12 +92,13 @@ function createWindow() {
     minHeight: 300,
     icon: getAssetPath('icon.png'),
     autoHideMenuBar: true,
+    fullscreenable: isDarwin,
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
       enableRemoteModule: false,
       nativeWindowOpen: true,
-      webSecurity: isDebug ? false : true,
+      webSecurity: !isDebug,
       preload: app.isPackaged
         ? path.join(__dirname, 'preload.js')
         : path.join(__dirname, '../../.erb/dll/preload.js'),
@@ -93,17 +107,21 @@ function createWindow() {
     show: false,
   });
 
-  mainWindow.on('ready-to-show', mainWindow.show);
+  mainWindow.on('ready-to-show', () => {
+    if (!mainWindow) {
+      throw new Error('"mainWindow" is not defined');
+    }
+    if (process.env.START_MINIMIZED) {
+      mainWindow.minimize();
+    } else {
+      mainWindow.show();
+    }
+  });
   mainWindow.setMenuBarVisibility(false);
   mainWindow.setAlwaysOnTop(true);
   mainWindow.loadURL(resolveHtmlPath('index.html'));
-
   ipcMain.on('windowControls:maximize', () => {
-    if (mainWindow.isMaximized()) {
-      mainWindow.restore();
-    } else {
-      mainWindow.maximize();
-    }
+    mainWindow.setFullScreen(!mainWindow.isFullScreen());
   });
 
   ipcMain.on('windowControls:minimize', () => {
@@ -122,12 +140,10 @@ function ThroughDirectory(Directory) {
   fs.readdirSync(Directory).forEach((File) => {
     const Absolute = path.join(Directory, File);
     if (fs.statSync(Absolute).isDirectory()) return ThroughDirectory(Absolute);
-    else {
-      // only add images
-      if (imagesTypes.includes(path.extname(File).substring(1))) {
-        return files.push(Absolute);
-      }
-      return;
+
+    // only add images
+    if (imagesTypes.includes(path.extname(File).substring(1))) {
+      return files.push(Absolute);
     }
   });
 }
@@ -170,14 +186,21 @@ ipcMain.on('contextMenu:alwaysOnTop', (e, data) => {
 function handleFiles(paths) {
   const folders = [];
   for (const folder of paths) {
-    const pathSplit = folder.split('\\');
-    const folderName = pathSplit[pathSplit.length - 1];
+    const folderName = path.basename(folder);
     ThroughDirectory(path.resolve(folder));
-    folders.push({ name: folderName, files: files });
+    folders.push({ path: folder, name: folderName, files});
     files = [];
   }
   return folders;
 }
+
+app.on('window-all-closed', () => {
+  // Respect the OSX convention of having the application in memory even
+  // after all windows have been closed
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
 
 app.whenReady().then(() => {
   createWindow();
@@ -208,12 +231,6 @@ function saveBoundsSoon() {
     store.set('state', state);
   }, 1000);
 }
-
-app.on('window-all-closed', () => {
-  if (process.platform !== 'darwin') {
-    app.quit();
-  }
-});
 
 function handleAlwaysOnTop(alwaysOnTopToggle) {
   store.set('alwaysOnTopToggle', alwaysOnTopToggle);

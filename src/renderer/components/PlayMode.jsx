@@ -25,10 +25,14 @@ export default function PlayMode({
     // Later --> COMBINE ALL SAVED VARIABLES INTO ONE OBJECT
 
     const savedFolders = api.recieveFrom.get();
-
     if (typeof savedFolders !== 'undefined') {
       for (const file of savedFolders) {
-        addFolder({ name: file.name, files: file.files, id: uuidv4() });
+        addFolder({
+          name: file.name,
+          files: file.files,
+          id: uuidv4(),
+          path: file.path,
+        });
       }
     }
 

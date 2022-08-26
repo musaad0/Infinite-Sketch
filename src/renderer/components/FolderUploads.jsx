@@ -6,7 +6,12 @@ export default function FolderUpload({ addFolder }) {
     if (!folderPaths) return;
     for (let i = 0; i < folderPaths.length; i++) {
       const folder = folderPaths[i];
-      addFolder({ name: folder.name, files: folder.files, id: uuidv4() });
+      addFolder({
+        name: folder.name,
+        files: folder.files,
+        id: uuidv4(),
+        path: folder.path,
+      });
     }
   };
 
