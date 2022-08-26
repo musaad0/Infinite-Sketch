@@ -8,7 +8,6 @@ export default function resolveHtmlPath(htmlFileName) {
     const url = new URL(`http://localhost:${port}`);
     url.pathname = htmlFileName;
     return url.href;
-  } else {
-    return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
   }
+  return `file://${path.resolve(__dirname, '../renderer/', htmlFileName)}`;
 }

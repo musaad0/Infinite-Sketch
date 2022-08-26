@@ -1,5 +1,3 @@
-import React from 'react';
-
 export default function FooterControlsButton({ children, handleClick }) {
   return (
     <button

@@ -3,8 +3,8 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { indexState } from 'renderer/recoil/files/atoms';
 import { files } from 'renderer/recoil/files/selectors';
-import Controls from '../components/Controls';
-import FooterControls from '../components/FooterControls';
+import Controls from './Controls';
+import FooterControls from './FooterControls';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const STATUS = {

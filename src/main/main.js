@@ -188,7 +188,7 @@ function handleFiles(paths) {
   for (const folder of paths) {
     const folderName = path.basename(folder);
     ThroughDirectory(path.resolve(folder));
-    folders.push({ path: folder, name: folderName, files});
+    folders.push({ path: folder, name: folderName, files });
     files = [];
   }
   return folders;

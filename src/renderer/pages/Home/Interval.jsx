@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
-import { interval } from '../recoil/interval/atoms';
+import { interval } from '../../recoil/interval/atoms';
 
 const values = ['45S', '2M', '5M'];
 

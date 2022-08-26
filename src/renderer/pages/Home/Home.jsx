@@ -2,9 +2,9 @@ import { useState, useEffect, useContext } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { folders } from 'renderer/recoil/files/atoms';
 import { foldersTotal } from 'renderer/recoil/files/selectors';
-import PlayMode from 'renderer/components/PlayMode';
-import FolderUpload from 'renderer/components/FolderUploads';
-import FoldersTable from 'renderer/components/FoldersTable';
+import PlayMode from 'renderer/pages/Home/PlayMode';
+import FolderUpload from 'renderer/pages/Home/FolderUploads';
+import FoldersTable from 'renderer/pages/Home/FoldersTable';
 
 export default function Home() {
   const [stateFoldersList, setStateFoldersList] = useRecoilState(folders);
