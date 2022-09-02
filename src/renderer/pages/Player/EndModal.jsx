@@ -15,10 +15,13 @@ export default function EndModal({ showModal, handleShowModal }) {
   const handleSave = () => {
     setInitialIndex(index);
     const foldersPaths = foldersList.map((folder) => folder.path);
-    api.store.set('foldersPaths', foldersPaths);
-    api.store.set('interval', stateInterval);
-    api.store.set('index', index);
-    api.store.set('shuffle', shuffle);
+    const session = { 
+      foldersPaths,
+      interval: stateInterval,
+      index,
+      shuffle
+    }
+    api.store.set('session',session);
   };
 
   const handleSavedIndex = () => {

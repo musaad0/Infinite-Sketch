@@ -22,8 +22,6 @@ export default function PlayMode({
   const [progress, setProgress] = useState(0);
 
   const loadSession = () => {
-    // Later --> COMBINE ALL SAVED VARIABLES INTO ONE OBJECT
-
     const savedFolders = api.recieveFrom.get();
     if (typeof savedFolders !== 'undefined') {
       for (const file of savedFolders) {
@@ -35,32 +33,22 @@ export default function PlayMode({
         });
       }
     }
-
-    const savedIndex = api.store.get('index');
-
-    if (typeof savedIndex !== 'undefined') {
-      setIndex(savedIndex);
-      setInitialIndex(savedIndex);
-    }
-
-    const savedInterval = api.store.get('interval');
-
-    if (typeof savedInterval !== 'undefined') {
-      setStateInterval(savedInterval);
-    }
-
-    const savedShuffle = api.store.get('shuffle');
-
-    if (typeof savedShuffle !== 'undefined') {
-      setShuffle(savedShuffle);
+    const session = api.store.get('session');
+    if (typeof session !== 'undefined') {
+      setIndex(session.index);
+      setInitialIndex(session.index);
+      setStateInterval(session.interval);
+      setShuffle(session.shuffle);
     }
   };
+
   const handleReset = () => {
     setStateFoldersList([]);
     setStateInterval('');
     setIndex(0);
     setInitialIndex(0);
   };
+
   const handleShuffle = () => {
     setShuffle((obj) => ({ isShuffle: !shuffle.isShuffle, seed: getRandom() }));
   };
