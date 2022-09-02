@@ -16,7 +16,57 @@ import resolveHtmlPath from './util';
 
 app.disableHardwareAcceleration();
 
-const store = new Store();
+const schema = {
+  session : {
+    type: 'object',
+    properties : {
+      foldersPaths: {
+        type: 'array',
+      },
+      interval: {
+        type: 'string',
+      },
+      index: {
+        type: 'number',
+        minimum: 0,
+      },
+      shuffle: {
+        type: 'object',
+        properties: {
+          isShuffle:{
+            type:'boolean'
+          },
+          seed:{
+            type:'number'
+          },
+        }
+      },
+    }
+  },
+  alwaysOnTopToggle: {
+    type:'boolean',
+    default: true
+  },
+  state: {
+    type: 'object',
+    properties: {
+      x: {
+        type: 'number',
+      },
+      y: {
+        type: 'number',
+      },
+      width: {
+        type: 'number',
+      },
+      height: {
+        type: 'number',
+      },
+    }
+  }
+};
+
+const store = new Store({schema});
 let mainWindow;
 
 if (process.env.NODE_ENV === 'production') {
@@ -46,19 +96,6 @@ menu.append(
     ],
   })
 );
-
-const schema = {
-  interval: {
-    type: 'number',
-    maximum: 10000000,
-    minimum: 1,
-    default: 30,
-  },
-  index: {
-    type: 'number',
-    minimum: 1,
-  },
-};
 
 Menu.setApplicationMenu(menu);
 
@@ -149,7 +186,7 @@ function ThroughDirectory(Directory) {
 }
 
 ipcMain.on('getFolders', async (event) => {
-  const foldersPaths = store.get('foldersPaths');
+  const foldersPaths = store.get('session.foldersPaths');
   if (foldersPaths === undefined) {
     event.returnValue = foldersPaths;
     return;
