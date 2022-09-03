@@ -1,4 +1,3 @@
-import { useState, useContext, useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import { interval } from '../../recoil/interval/atoms';
 
@@ -7,8 +6,8 @@ const values = ['45S', '2M', '5M'];
 export default function Interval() {
   const [intervalState, setIntervalState] = useRecoilState(interval);
 
-  const setInputInterval = (e) => {
-    setIntervalState(e.target.value);
+  const setInputInterval = (value: string) => {
+    setIntervalState(value);
   };
 
   return (
@@ -20,7 +19,7 @@ export default function Interval() {
             type="button"
             className="btn select-none rounded-none first:rounded-l"
             value={value}
-            onClick={setInputInterval}
+            onClick={(e) => setInputInterval(e.currentTarget.value)}
             key={index}
           >
             {value}
@@ -31,7 +30,7 @@ export default function Interval() {
           id="setTimer"
           type="text"
           placeholder="45s/2m"
-          onChange={setInputInterval}
+          onChange={(e) => setInputInterval(e.currentTarget.value)}
           value={intervalState}
         />
       </div>

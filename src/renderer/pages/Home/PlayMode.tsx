@@ -8,21 +8,32 @@ import {
   indexState,
   initialIndexState,
 } from 'renderer/recoil/files/atoms';
+import { Folder } from '../../types';
 import Interval from './Interval';
+
+interface Props {
+  filesTotal: number;
+  addFolder: (folder: Folder) => void;
+  setStateFoldersList: any;
+}
+
+const getRandom = () => {
+  return Math.floor(Math.random() * 10000 + 1);
+};
 
 export default function PlayMode({
   filesTotal,
   addFolder,
   setStateFoldersList,
-}) {
-  const [stateInterval, setStateInterval] = useRecoilState(interval);
+}: Props) {
+  const setStateInterval = useSetRecoilState(interval);
   const setIndex = useSetRecoilState(indexState);
   const [initialIndex, setInitialIndex] = useRecoilState(initialIndexState);
   const [shuffle, setShuffle] = useRecoilState(shuffleState);
   const [progress, setProgress] = useState(0);
 
   const loadSession = () => {
-    const savedFolders = api.recieveFrom.get();
+    const savedFolders = window.api.getFolders();
     if (typeof savedFolders !== 'undefined') {
       for (const file of savedFolders) {
         addFolder({
@@ -33,7 +44,7 @@ export default function PlayMode({
         });
       }
     }
-    const session = api.store.get('session');
+    const session = window.api.store.get('session');
     if (typeof session !== 'undefined') {
       setIndex(session.index);
       setInitialIndex(session.index);
@@ -50,7 +61,7 @@ export default function PlayMode({
   };
 
   const handleShuffle = () => {
-    setShuffle((obj) => ({ isShuffle: !shuffle.isShuffle, seed: getRandom() }));
+    setShuffle(() => ({ isShuffle: !shuffle.isShuffle, seed: getRandom() }));
   };
 
   useEffect(() => {
@@ -60,7 +71,7 @@ export default function PlayMode({
         return Math.floor(((initialIndex + 1) / filesTotal) * 100);
       });
     }
-  }, [initialIndex]);
+  }, [initialIndex, filesTotal]);
 
   return (
     <div className="flex select-none flex-col gap-4">
@@ -69,7 +80,7 @@ export default function PlayMode({
         <Link to="/player" tabIndex={-1} draggable={false} className="w-full">
           <button
             type="button"
-            disabled={filesTotal > 0 ? false : true}
+            disabled={!(filesTotal > 0)}
             draggable={false}
             className="btn disabled:cursor-default disabled:bg-primary/30 disabled:text-secondary/70"
           >
@@ -83,6 +94,7 @@ export default function PlayMode({
               : 'bg-primary/30 fill-secondary/70 hover:bg-primary/50'
           }`}
           onClick={handleShuffle}
+          type="button"
         >
           <svg
             className="mx-auto h-3.5 w-3.5"
@@ -107,6 +119,7 @@ export default function PlayMode({
         <button
           className="btn disabled:cursor-default disabled:bg-primary/30 disabled:text-secondary/70"
           onClick={handleReset}
+          type="button"
         >
           Reset
         </button>
@@ -115,15 +128,11 @@ export default function PlayMode({
         <div className="mb-1 h-1.5 w-full rounded-full bg-neutral-700">
           <div
             className="h-1.5 rounded-full bg-primary"
-            style={{ width: progress + '%' }}
-          ></div>
+            style={{ width: `${progress}%` }}
+          />
         </div>
         <span>{progress} %</span>
       </div>
     </div>
   );
-}
-
-function getRandom() {
-  return Math.floor(Math.random() * 10000 + 1);
 }

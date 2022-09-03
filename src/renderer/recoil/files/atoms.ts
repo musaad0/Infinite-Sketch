@@ -1,6 +1,7 @@
 import { atom } from 'recoil';
+import { Folder } from '../../types';
 
-export const folders = atom({
+export const folders = atom<Folder[]>({
   key: 'folders',
   default: [],
 });

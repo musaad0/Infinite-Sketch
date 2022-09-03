@@ -3,9 +3,9 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useRecoilValue, useRecoilState } from 'recoil';
 import { indexState } from 'renderer/recoil/files/atoms';
 import { files } from 'renderer/recoil/files/selectors';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Controls from './Controls';
 import FooterControls from './FooterControls';
-import { LazyLoadImage } from 'react-lazy-load-image-component';
 
 const STATUS = {
   STARTED: 'Started',
@@ -32,7 +32,7 @@ export default function Player() {
     return true;
   };
 
-  const handleStatus = (newStatus) => {
+  const handleStatus = (newStatus: string) => {
     setStatus(newStatus);
   };
   const handleShowFooter = () => {
@@ -49,7 +49,7 @@ export default function Player() {
 
   useEffect(() => {
     //  Prevent Scrolling on space Click
-    function handleKeyDown(e) {
+    function handleKeyDown(e: KeyboardEvent) {
       if (e.key === ' ') {
         e.preventDefault();
       }
@@ -66,7 +66,7 @@ export default function Player() {
         <CSSTransition
           key={index}
           in={index % 2 === 0}
-          appear={true}
+          appear
           timeout={800}
           classNames="fade"
         >
@@ -97,7 +97,6 @@ export default function Player() {
           previousImage={previousImage}
           status={status}
           handleStatus={handleStatus}
-          handleReset={handleStatus}
           showFooter={showFooter}
           handleImageFlipH={handleImageFlipH}
           handleImageFlipV={handleImageFlipV}
