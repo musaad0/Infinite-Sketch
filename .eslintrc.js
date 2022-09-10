@@ -9,6 +9,7 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'no-plusplus': 'off',
     'react/no-unknown-property': 'off',
+    'no-lonely-if': 'off',
   },
   parserOptions: {
     ecmaVersion: 2020,
