@@ -1,7 +1,19 @@
 import { useEffect, useState } from 'react';
 import useContextMenu from '../hooks/useContextMenu';
 
-function MenuButton({ name, shortcut, handleClick, showMark }) {
+interface MenuButtonProps {
+  name: string;
+  shortcut: string;
+  handleClick: () => void;
+  showMark: boolean;
+}
+
+function MenuButton({
+  name,
+  shortcut,
+  handleClick,
+  showMark,
+}: MenuButtonProps) {
   return (
     <button
       aria-current="true"
@@ -33,7 +45,7 @@ export default function Menu() {
     setAlwaysOnTop(!alwaysOnTop);
   };
   useEffect(() => {
-    function handleKeyUp(e) {
+    function handleKeyUp(e: KeyboardEvent) {
       if (e.ctrlKey && e.shiftKey && e.key === 'A') {
         handleAlwaysOnTop();
       }
@@ -45,12 +57,11 @@ export default function Menu() {
   });
 
   useEffect(() => {
-    const alwaysOnTopToggle = api.store.get('alwaysOnTopToggle');
-    if (typeof alwaysOnTop !== 'undefined') setAlwaysOnTop(alwaysOnTopToggle);
-  }, []);
-
-  useEffect(() => {
-    api.send('contextMenu:alwaysOnTop', alwaysOnTop);
+    const alwaysOnTopToggle = window.api.store.get('alwaysOnTopToggle');
+    if (typeof alwaysOnTopToggle !== 'undefined') {
+      setAlwaysOnTop(alwaysOnTopToggle);
+      window.api.send('contextMenu:alwaysOnTop', alwaysOnTopToggle);
+    }
   }, [alwaysOnTop]);
 
   if (show) {
