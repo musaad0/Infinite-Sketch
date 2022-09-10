@@ -24,7 +24,7 @@ export default function AppBar() {
         <div className="no-drag flex fill-neutral-500">
           <AppBarButton
             onClick={() => {
-              api.minimize();
+              window.api.minimize();
             }}
           >
             <svg className="block h-3 w-3" viewBox="0 0 448 512">
@@ -35,7 +35,7 @@ export default function AppBar() {
 
           <AppBarButton
             onClick={() => {
-              api.maximize();
+              window.api.maximize();
             }}
           >
             <svg className="h-3 w-3" viewBox="0 0 448 512">
@@ -46,7 +46,7 @@ export default function AppBar() {
 
           <AppBarButton
             onClick={() => {
-              api.close();
+              window.api.close();
             }}
           >
             <svg className="h-3 w-3" viewBox="0 0 320 512">
