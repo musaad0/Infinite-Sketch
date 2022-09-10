@@ -4,13 +4,13 @@ import { Folder } from './types';
 declare global {
   interface Window {
     api: {
-      send: (channel: Channels) => void;
+      send: (channel: Channels, data: any) => void;
       receive: (channel: Channels, func: any) => void;
       close: () => void;
       minimize: () => void;
       maximize: () => void;
       menu: () => void;
-      getFolders: () => Folder[];
+      getFolders(): Promise<void | Folder[]>;
       sendMessage(channel: Channels, args: unknown[]): void;
       on(
         channel: string,

@@ -32,8 +32,8 @@ export default function PlayMode({
   const [shuffle, setShuffle] = useRecoilState(shuffleState);
   const [progress, setProgress] = useState(0);
 
-  const loadSession = () => {
-    const savedFolders = window.api.getFolders();
+  const loadSession = async () => {
+    const savedFolders = await window.api.getFolders();
     if (typeof savedFolders !== 'undefined') {
       for (const file of savedFolders) {
         addFolder({

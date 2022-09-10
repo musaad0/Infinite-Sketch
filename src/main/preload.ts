@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import { Folder } from '../renderer/types';
 
-export type Channels = 'getFolders' | 'openDialog'; // LATER
+export type Channels = 'getFolders' | 'openDialog' | 'contextMenu:alwaysOnTop'; // LATER
 
 // Expose protected methods that allow the renderer process to use
 // the ipcRenderer without exposing the entire object
@@ -16,7 +16,6 @@ contextBridge.exposeInMainWorld('api', {
   maximize: () => ipcRenderer.send('windowControls:maximize'),
   minimize: () => ipcRenderer.send('windowControls:minimize'),
   getFolders: async (): Promise<void | Folder[]> =>
-    // ipcRenderer.invoke('readdir', dirpath),
     ipcRenderer.sendSync('getFolders'),
 
   store: {
