@@ -160,7 +160,11 @@ function createWindow() {
   mainWindow.setAlwaysOnTop(true);
   mainWindow.loadURL(resolveHtmlPath('index.html'));
   ipcMain.on('windowControls:maximize', () => {
-    mainWindow.setFullScreen(!mainWindow.isFullScreen());
+    if (isDarwin) mainWindow.setFullScreen(!mainWindow.isFullScreen());
+    else {
+      if (mainWindow.isMaximized()) mainWindow.unmaximize();
+      else mainWindow.maximize();
+    }
   });
 
   ipcMain.on('windowControls:minimize', () => {
