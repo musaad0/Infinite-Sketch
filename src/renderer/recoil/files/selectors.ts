@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-use-before-define */
+/* eslint-disable no-param-reassign */
 import { selector } from 'recoil';
 import { folders, shuffleState } from './atoms';
 
@@ -22,7 +24,12 @@ export const files = selector({
   },
 });
 
-function shuffleList(array, seed) {
+const random = (seed: number) => {
+  const x = Math.sin(seed++) * 10000;
+  return x - Math.floor(x);
+};
+
+function shuffleList(array: string[], seed: number): string[] {
   if (!seed) {
     return array;
   }
@@ -43,9 +50,4 @@ function shuffleList(array, seed) {
   }
 
   return array;
-}
-
-function random(seed) {
-  const x = Math.sin(seed++) * 10000;
-  return x - Math.floor(x);
 }

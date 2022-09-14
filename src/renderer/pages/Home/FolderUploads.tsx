@@ -1,8 +1,13 @@
 import { v4 as uuidv4 } from 'uuid';
+import { Folder } from '../../types';
 
-export default function FolderUpload({ addFolder }) {
+interface Props {
+  addFolder: (folder: Folder) => void;
+}
+
+export default function FolderUpload({ addFolder }: Props) {
   const handleUpload = async () => {
-    const folderPaths = await api.openDialog();
+    const folderPaths = await window.api.openDialog();
     if (!folderPaths) return;
     for (let i = 0; i < folderPaths.length; i++) {
       const folder = folderPaths[i];
@@ -31,3 +36,5 @@ export default function FolderUpload({ addFolder }) {
     </button>
   );
 }
+
+// export default FolderUpload;

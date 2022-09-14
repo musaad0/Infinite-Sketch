@@ -1,12 +1,12 @@
 import { useEffect, useCallback, useState } from 'react';
 
 const useContextMenu = () => {
-  const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
+  const [anchorPoint, setAnchorPoint] = useState({ x: '0', y: '0' });
   const [show, setShow] = useState(false);
   const [windowCheck, setWindowCheck] = useState(false);
 
   const handleContextMenu = useCallback(
-    (e) => {
+    (e: MouseEvent) => {
       e.preventDefault();
       const contextMenuWidth = 288;
       const contextSubMenuWidth = 288;
@@ -25,10 +25,10 @@ const useContextMenu = () => {
         setWindowCheck(true);
       }
 
-      setAnchorPoint({ x: leftPos, y: e.pageY + 'px' });
+      setAnchorPoint({ x: leftPos, y: `${e.pageY}px` });
       setShow(!show);
     },
-    [setShow, setAnchorPoint]
+    [show]
   );
 
   const handleClick = useCallback(() => (show ? setShow(false) : null), [show]);
@@ -41,7 +41,7 @@ const useContextMenu = () => {
       document.removeEventListener('contextmenu', handleContextMenu);
     };
   });
-  return { anchorPoint, show };
+  return { anchorPoint, show, windowCheck };
 };
 
 export default useContextMenu;

@@ -1,11 +1,22 @@
+/* eslint-disable jsx-a11y/click-events-have-key-events */
+/* eslint-disable jsx-a11y/no-static-element-interactions */
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { folders, shuffleState } from 'renderer/recoil/files/atoms';
+import {
+  folders,
+  shuffleState,
+  indexState,
+  initialIndexState,
+} from 'renderer/recoil/files/atoms';
 import { interval } from 'renderer/recoil/interval/atoms';
-import { indexState, initialIndexState } from 'renderer/recoil/files/atoms';
 
-export default function EndModal({ showModal, handleShowModal }) {
+interface Props {
+  showModal: boolean;
+  handleShowModal: () => void;
+}
+
+export default function EndModal({ showModal, handleShowModal }: Props) {
   const foldersList = useRecoilValue(folders);
   const stateInterval = useRecoilValue(interval);
   const shuffle = useRecoilValue(shuffleState);
@@ -15,13 +26,13 @@ export default function EndModal({ showModal, handleShowModal }) {
   const handleSave = () => {
     setInitialIndex(index);
     const foldersPaths = foldersList.map((folder) => folder.path);
-    const session = { 
+    const session = {
       foldersPaths,
       interval: stateInterval,
       index,
-      shuffle
-    }
-    api.store.set('session',session);
+      shuffle,
+    };
+    window.api.store.set('session', session);
   };
 
   const handleSavedIndex = () => {
@@ -38,7 +49,7 @@ export default function EndModal({ showModal, handleShowModal }) {
         <div className="text-2xl text-neutral-300">Save & Quit ?</div>
         <div className="mt-4 flex justify-center gap-4 fill-secondary text-secondary">
           <Link
-            to={'/'}
+            to="/"
             tabIndex={-1}
             draggable={false}
             className="block w-full rounded-lg bg-primary px-6 py-2 transition-colors hover:bg-primary-dark"
@@ -49,11 +60,12 @@ export default function EndModal({ showModal, handleShowModal }) {
           <button
             className="block w-full rounded-lg bg-neutral-600 px-6 py-2 text-neutral-300/95 transition-colors hover:bg-neutral-700"
             onClick={handleShowModal}
+            type="button"
           >
             Cancel
           </button>
           <Link
-            to={'/'}
+            to="/"
             tabIndex={-1}
             draggable={false}
             onClick={handleSavedIndex}

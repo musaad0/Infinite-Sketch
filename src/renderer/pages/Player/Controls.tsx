@@ -1,16 +1,25 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState } from 'react';
 import useInterval from 'renderer/hooks/useInterval';
 import { useRecoilValue } from 'recoil';
 import { intervalValue } from 'renderer/recoil/interval/selectors';
-import PlayerContext from 'renderer/context/PlayerContext';
-import FooterControls from './FooterControls';
 
 const STATUS = {
   STARTED: 'Started',
   STOPPED: 'Stopped',
 };
 
-export default function Controls({ nextImage, status, setStatus, index }) {
+interface Props {
+  nextImage: () => boolean;
+  status: string;
+  setStatus: (status: string) => void;
+  index: number;
+}
+export default function Controls({
+  nextImage,
+  status,
+  setStatus,
+  index,
+}: Props) {
   const stateInterval = useRecoilValue(intervalValue);
   const [secondsRemaining, setSecondsRemaining] = useState(stateInterval);
 
@@ -19,10 +28,6 @@ export default function Controls({ nextImage, status, setStatus, index }) {
   };
   const handleStop = () => {
     setStatus(STATUS.STOPPED);
-  };
-  const handleReset = () => {
-    setStatus(STATUS.STOPPED);
-    setSecondsRemaining(stateInterval);
   };
   useInterval(
     () => {
@@ -42,7 +47,7 @@ export default function Controls({ nextImage, status, setStatus, index }) {
   );
   useEffect(() => {
     setSecondsRemaining(stateInterval);
-  }, [index]);
+  }, [index, stateInterval]);
 
   return (
     <>

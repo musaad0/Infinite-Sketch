@@ -2,7 +2,7 @@
 import { URL } from 'url';
 import path from 'path';
 
-export default function resolveHtmlPath(htmlFileName) {
+export default function resolveHtmlPath(htmlFileName: string) {
   const port = process.env.PORT || 1212;
   if (process.env.NODE_ENV === 'development') {
     const url = new URL(`http://localhost:${port}`);

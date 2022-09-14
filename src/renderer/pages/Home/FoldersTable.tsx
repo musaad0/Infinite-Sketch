@@ -1,8 +1,16 @@
+import { Folder } from 'renderer/types';
+
+interface Props {
+  stateFoldersList: Folder[];
+  filesTotal: number;
+  handleRemove: (id: string) => void;
+}
+
 export default function FoldersTable({
   stateFoldersList,
   filesTotal,
   handleRemove,
-}) {
+}: Props) {
   return (
     <div className="relative overflow-x-auto rounded">
       <table className="w-full text-left text-lg text-neutral-400">

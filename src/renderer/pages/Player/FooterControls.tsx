@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-return */
 import { useState, useEffect } from 'react';
 import FooterControlsButton from './FooterControlsButton';
 import EndModal from './EndModal';
@@ -9,16 +10,25 @@ const STATUS = {
   STOPPED: 'Stopped',
 };
 
+interface Props {
+  handleStatus: (status: string) => void;
+  status: string;
+  nextImage: () => boolean;
+  previousImage: () => boolean;
+  showFooter: boolean;
+  handleImageFlipH: () => void;
+  handleImageFlipV: () => void;
+}
+
 export default function FooterControls({
   handleStatus,
   status,
-  handleReset,
   nextImage,
   previousImage,
   showFooter,
   handleImageFlipH,
   handleImageFlipV,
-}) {
+}: Props) {
   const [showModal, setShowModal] = useState(false);
 
   const handleNext = () => {
@@ -39,7 +49,7 @@ export default function FooterControls({
   };
 
   useEffect(() => {
-    function handleKeyUp(e) {
+    function handleKeyUp(e: KeyboardEvent) {
       if (e.key === 'ArrowRight') {
         handleNext();
       }

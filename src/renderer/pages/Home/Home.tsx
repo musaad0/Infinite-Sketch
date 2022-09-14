@@ -1,21 +1,23 @@
-import { useState, useEffect, useContext } from 'react';
 import { useRecoilState, useRecoilValue } from 'recoil';
 import { folders } from 'renderer/recoil/files/atoms';
+import { Folder } from 'renderer/types';
 import { foldersTotal } from 'renderer/recoil/files/selectors';
 import PlayMode from 'renderer/pages/Home/PlayMode';
 import FolderUpload from 'renderer/pages/Home/FolderUploads';
 import FoldersTable from 'renderer/pages/Home/FoldersTable';
 
 export default function Home() {
-  const [stateFoldersList, setStateFoldersList] = useRecoilState(folders);
+  const [stateFoldersList, setStateFoldersList] =
+    useRecoilState<Folder[]>(folders);
+
   const filesTotal = useRecoilValue(foldersTotal);
 
-  const addFolder = (folder) => {
+  const addFolder = (folder: Folder) => {
     // push folder to list
     setStateFoldersList((arr) => [...arr, folder]);
   };
 
-  const removeFolder = (id) => {
+  const removeFolder = (id: string) => {
     const newList = stateFoldersList.filter((item) => item.id !== id);
     setStateFoldersList(newList);
   };

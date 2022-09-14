@@ -1,25 +1,38 @@
-import {
-  app,
-  BrowserWindow,
-  ipcMain,
-  Menu,
-  MenuItem,
-  dialog,
-  shell,
-} from 'electron';
+import { app, BrowserWindow, ipcMain, Menu, MenuItem, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 import fs from 'fs';
 import log from 'electron-log';
-import Store from 'electron-store';
+import Store, { Schema as ESchema } from 'electron-store';
 import resolveHtmlPath from './util';
 
 app.disableHardwareAcceleration();
 
-const schema = {
-  session : {
+interface State {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+interface Schema {
+  session: {
+    foldersPaths: string[];
+    interval: number;
+    index: number;
+    shuffle: {
+      isShuffle: boolean;
+      seed: number;
+    };
+  };
+  alwaysOnTopToggle: boolean;
+  state: State;
+}
+
+const schema: ESchema<Schema> = {
+  session: {
     type: 'object',
-    properties : {
+    properties: {
       foldersPaths: {
         type: 'array',
       },
@@ -33,19 +46,20 @@ const schema = {
       shuffle: {
         type: 'object',
         properties: {
-          isShuffle:{
-            type:'boolean'
+          isShuffle: {
+            type: 'boolean',
           },
-          seed:{
-            type:'number'
+          seed: {
+            type: 'number',
           },
-        }
+        },
       },
-    }
+    },
+    default: {},
   },
   alwaysOnTopToggle: {
-    type:'boolean',
-    default: true
+    type: 'boolean',
+    default: true,
   },
   state: {
     type: 'object',
@@ -62,14 +76,15 @@ const schema = {
       height: {
         type: 'number',
       },
-    }
-  }
+    },
+  },
 };
 
-const store = new Store({schema});
-let mainWindow;
+const store = new Store<Schema>({ schema });
+let mainWindow: BrowserWindow;
 
 if (process.env.NODE_ENV === 'production') {
+  // eslint-disable-next-line global-require
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
 }
@@ -79,6 +94,7 @@ const isDebug =
   process.env.NODE_ENV === 'development' || process.env.DEBUG_PROD === 'true';
 
 if (isDebug) {
+  // eslint-disable-next-line global-require
   require('electron-debug')();
 }
 
@@ -89,7 +105,7 @@ menu.append(
     label: 'Electron',
     submenu: [
       {
-        role: 'Disable refresh',
+        role: 'reload',
         accelerator: process.platform === 'darwin' ? 'Cmd+R' : 'Ctrl+R',
         click: () => {},
       },
@@ -101,44 +117,30 @@ Menu.setApplicationMenu(menu);
 
 function createWindow() {
   // get last saved window state
-  const state = store.get('state');
-  let x = 'center';
-  let y = 'center';
-  let width = 500;
-  let height = 700;
-  if (state) {
-    x = state.x;
-    y = state.y;
-    width = state.width;
-    height = state.height;
-  }
+  const state: State = store.get('state');
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
     : path.join(__dirname, '../../assets');
 
-  const getAssetPath = (...paths) => {
+  const getAssetPath = (...paths: string[]) => {
     return path.join(RESOURCES_PATH, ...paths);
   };
 
   mainWindow = new BrowserWindow({
-    width,
-    height,
-    x,
-    y,
+    width: state?.width ?? 500,
+    height: state?.height ?? 700,
+    x: state?.x ?? 'center',
+    y: state?.y ?? 'center',
     minWidth: 400,
     minHeight: 300,
     icon: getAssetPath('icon.png'),
     autoHideMenuBar: true,
     fullscreenable: isDarwin,
     webPreferences: {
-      nodeIntegration: false,
-      contextIsolation: true,
-      enableRemoteModule: false,
-      nativeWindowOpen: true,
       webSecurity: !isDebug,
       preload: app.isPackaged
-        ? path.join(__dirname, 'preload.js')
-        : path.join(__dirname, '../../.erb/dll/preload.js'),
+        ? path.join(__dirname, 'preload.ts')
+        : path.join(__dirname, '../../.erb/dll/preload.ts'),
     },
     frame: false,
     show: false,
@@ -158,7 +160,11 @@ function createWindow() {
   mainWindow.setAlwaysOnTop(true);
   mainWindow.loadURL(resolveHtmlPath('index.html'));
   ipcMain.on('windowControls:maximize', () => {
-    mainWindow.setFullScreen(!mainWindow.isFullScreen());
+    if (isDarwin) mainWindow.setFullScreen(!mainWindow.isFullScreen());
+    else {
+      if (mainWindow.isMaximized()) mainWindow.unmaximize();
+      else mainWindow.maximize();
+    }
   });
 
   ipcMain.on('windowControls:minimize', () => {
@@ -170,10 +176,11 @@ function createWindow() {
   });
 }
 
-let files = [];
+let files: string[] = [];
 const imagesTypes = ['jpg', 'jpeg', 'png', 'gif', 'avif', 'apng', 'webp'];
 
-function ThroughDirectory(Directory) {
+function ThroughDirectory(Directory: string) {
+  // eslint-disable-next-line consistent-return
   fs.readdirSync(Directory).forEach((File) => {
     const Absolute = path.join(Directory, File);
     if (fs.statSync(Absolute).isDirectory()) return ThroughDirectory(Absolute);
@@ -185,8 +192,25 @@ function ThroughDirectory(Directory) {
   });
 }
 
+function handleFiles(paths: string[]) {
+  const folders = [];
+  let id = 0;
+  for (const folder of paths) {
+    const folderName = path.basename(folder);
+    ThroughDirectory(path.resolve(folder));
+    folders.push({ path: folder, name: folderName, files, id: id++ });
+    files = [];
+  }
+  return folders;
+}
+
+function handleAlwaysOnTop(alwaysOnTopToggle: boolean) {
+  store.set('alwaysOnTopToggle', alwaysOnTopToggle);
+  mainWindow.setAlwaysOnTop(alwaysOnTopToggle);
+}
+
 ipcMain.on('getFolders', async (event) => {
-  const foldersPaths = store.get('session.foldersPaths');
+  const foldersPaths: string[] | undefined = store.get('session.foldersPaths');
   if (foldersPaths === undefined) {
     event.returnValue = foldersPaths;
     return;
@@ -204,6 +228,7 @@ ipcMain.handle('show-open-dialog', async () => {
     .then((result) => {
       if (result.canceled) return;
       const folders = handleFiles(result.filePaths);
+      // eslint-disable-next-line consistent-return
       return folders;
     })
     .catch((err) => log.error(err));
@@ -220,17 +245,6 @@ ipcMain.on('contextMenu:alwaysOnTop', (e, data) => {
   handleAlwaysOnTop(data);
 });
 
-function handleFiles(paths) {
-  const folders = [];
-  for (const folder of paths) {
-    const folderName = path.basename(folder);
-    ThroughDirectory(path.resolve(folder));
-    folders.push({ path: folder, name: folderName, files });
-    files = [];
-  }
-  return folders;
-}
-
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
@@ -239,24 +253,8 @@ app.on('window-all-closed', () => {
   }
 });
 
-app.whenReady().then(() => {
-  createWindow();
-  autoUpdater.checkForUpdatesAndNotify();
-  app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length === 0) {
-      createWindow();
-    }
-  });
+let saveBoundsCookie: NodeJS.Timeout | undefined;
 
-  mainWindow.webContents.setWindowOpenHandler(() => {
-    return { action: 'deny' };
-  });
-
-  mainWindow.on('resize', saveBoundsSoon);
-  mainWindow.on('move', saveBoundsSoon);
-});
-
-let saveBoundsCookie;
 function saveBoundsSoon() {
   if (saveBoundsCookie) clearTimeout(saveBoundsCookie);
 
@@ -269,7 +267,23 @@ function saveBoundsSoon() {
   }, 1000);
 }
 
-function handleAlwaysOnTop(alwaysOnTopToggle) {
-  store.set('alwaysOnTopToggle', alwaysOnTopToggle);
-  mainWindow.setAlwaysOnTop(alwaysOnTopToggle);
-}
+app
+  .whenReady()
+  // eslint-disable-next-line promise/always-return
+  .then(() => {
+    createWindow();
+    autoUpdater.checkForUpdatesAndNotify();
+    app.on('activate', () => {
+      if (BrowserWindow.getAllWindows().length === 0) {
+        createWindow();
+      }
+    });
+
+    mainWindow.webContents.setWindowOpenHandler(() => {
+      return { action: 'deny' };
+    });
+
+    mainWindow.on('resize', saveBoundsSoon);
+    mainWindow.on('move', saveBoundsSoon);
+  })
+  .catch((err) => log.error(err));

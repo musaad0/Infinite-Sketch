@@ -1,4 +1,11 @@
-export default function FooterControlsButton({ children, handleClick }) {
+import React from 'react';
+
+interface Props {
+  children: React.ReactNode;
+  handleClick: () => void;
+}
+
+export default function FooterControlsButton({ children, handleClick }: Props) {
   return (
     <button
       type="button"
