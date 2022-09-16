@@ -57,17 +57,24 @@ export default function Menu() {
   });
 
   useEffect(() => {
-    const alwaysOnTopToggle = window.api.store.get('alwaysOnTopToggle');
-    if (typeof alwaysOnTopToggle !== 'undefined') {
-      setAlwaysOnTop(alwaysOnTopToggle);
-      window.api.send('contextMenu:alwaysOnTop', alwaysOnTopToggle);
+    const savedAlwaysOnTop: boolean | undefined =
+      window.api.store.get('alwaysOnTopToggle');
+    if (typeof savedAlwaysOnTop !== 'undefined') {
+      if (alwaysOnTop === savedAlwaysOnTop) return;
+      window.api.send('contextMenu:alwaysOnTop', alwaysOnTop);
     }
   }, [alwaysOnTop]);
+
+  useEffect(() => {
+    window.api.receive('contextMenu:alwaysOnTop', (data: boolean) => {
+      setAlwaysOnTop(data);
+    });
+  }, []);
 
   if (show) {
     return (
       <div
-        className={`sub-left absolute flex justify-center rounded border border-neutral-900 bg-[#202020] fill-secondary/50 text-sm text-secondary/50 ${
+        className={`sub-left absolute flex w-fit max-w-sm justify-center rounded border border-neutral-900 bg-[#202020] fill-secondary/50 text-sm text-secondary/50 ${
           windowCheck ? '-left-full right-0' : ''
         }`}
         style={{ top: anchorPoint.y, left: anchorPoint.x }}
