@@ -1,4 +1,9 @@
-function AppBarButton({ onClick, children }) {
+interface Props {
+  onClick: () => void;
+  children: React.ReactNode;
+}
+
+function AppBarButton({ onClick, children }: Props) {
   return (
     <button
       type="button"
@@ -14,7 +19,7 @@ export default function AppBar() {
   return (
     <div>
       {/* invisible block to push elements */}
-      <div className="drag invisible top-0 z-50 h-6 w-full"></div>
+      <div className="drag invisible top-0 z-50 h-6 w-full" />
 
       <div className="drag fixed top-0 z-50 flex w-full items-center justify-between bg-neutral-900">
         <div className="brand select-none pl-2 text-neutral-400/95">
