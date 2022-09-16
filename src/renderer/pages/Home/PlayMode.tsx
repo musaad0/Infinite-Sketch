@@ -2,12 +2,12 @@ import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { Link } from 'react-router-dom';
 import { useRecoilState, useSetRecoilState } from 'recoil';
-import { interval } from 'renderer/recoil/interval/atoms';
+import { interval } from 'renderer/globals/interval/atoms';
 import {
   shuffleState,
   indexState,
   initialIndexState,
-} from 'renderer/recoil/files/atoms';
+} from 'renderer/globals/files/atoms';
 import { Folder } from '../../types';
 import Interval from './Interval';
 

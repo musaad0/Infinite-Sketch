@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import useInterval from 'renderer/hooks/useInterval';
 import { useRecoilValue } from 'recoil';
-import { intervalValue } from 'renderer/recoil/interval/selectors';
+import { intervalValue } from 'renderer/globals/interval/selectors';
 
 const STATUS = {
   STARTED: 'Started',

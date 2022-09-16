@@ -1,7 +1,7 @@
 import { useRecoilState, useRecoilValue } from 'recoil';
-import { folders } from 'renderer/recoil/files/atoms';
+import { folders } from 'renderer/globals/files/atoms';
 import { Folder } from 'renderer/types';
-import { foldersTotal } from 'renderer/recoil/files/selectors';
+import { foldersTotal } from 'renderer/globals/files/selectors';
 import PlayMode from 'renderer/pages/Home/PlayMode';
 import FolderUpload from 'renderer/pages/Home/FolderUploads';
 import FoldersTable from 'renderer/pages/Home/FoldersTable';

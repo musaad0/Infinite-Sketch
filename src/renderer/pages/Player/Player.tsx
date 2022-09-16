@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { useRecoilValue, useRecoilState } from 'recoil';
-import { indexState } from 'renderer/recoil/files/atoms';
-import { files } from 'renderer/recoil/files/selectors';
+import { indexState } from 'renderer/globals/files/atoms';
+import { files } from 'renderer/globals/files/selectors';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
 import Controls from './Controls';
 import FooterControls from './FooterControls';

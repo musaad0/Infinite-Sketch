@@ -8,8 +8,8 @@ import {
   shuffleState,
   indexState,
   initialIndexState,
-} from 'renderer/recoil/files/atoms';
-import { interval } from 'renderer/recoil/interval/atoms';
+} from 'renderer/globals/files/atoms';
+import { interval } from 'renderer/globals/interval/atoms';
 
 interface Props {
   showModal: boolean;
