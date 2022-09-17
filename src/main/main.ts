@@ -139,8 +139,8 @@ function createWindow() {
     webPreferences: {
       webSecurity: !isDebug,
       preload: app.isPackaged
-        ? path.join(__dirname, 'preload.ts')
-        : path.join(__dirname, '../../.erb/dll/preload.ts'),
+        ? path.join(__dirname, 'preload.js')
+        : path.join(__dirname, '../../.erb/dll/preload.js'),
     },
     frame: false,
     show: false,

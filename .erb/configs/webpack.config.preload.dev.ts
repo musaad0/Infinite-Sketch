@@ -23,7 +23,7 @@ const configuration: webpack.Configuration = {
 
   output: {
     path: webpackPaths.dllPath,
-    filename: 'preload.ts',
+    filename: 'preload.js',
   },
 
   plugins: [

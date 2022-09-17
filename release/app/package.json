@@ -8,7 +8,7 @@
     "email": "musaadalqubayl@gmail.com",
     "url": "https://github.com/musaad0/Infinite-Sketch"
   },
-  "main": "./dist/main/main.ts",
+  "main": "./dist/main/main.js",
   "scripts": {
     "electron-rebuild": "node -r ts-node/register ../../.erb/scripts/electron-rebuild.js",
     "postinstall": "npm run electron-rebuild && npm run link-modules",
