@@ -4,3 +4,7 @@ export interface Folder {
   files: string[];
   id: string;
 }
+export interface Shuffle {
+  isShuffle: boolean;
+  seed: number;
+}

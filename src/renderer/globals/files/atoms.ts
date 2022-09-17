@@ -1,12 +1,12 @@
 import { atom } from 'recoil';
-import { Folder } from '../../types';
+import { Folder, Shuffle } from '../../types';
 
 export const folders = atom<Folder[]>({
   key: 'folders',
   default: [],
 });
 
-export const shuffleState = atom({
+export const shuffleState = atom<Shuffle>({
   key: 'shuffleState',
   default: { isShuffle: false, seed: 1 },
 });
