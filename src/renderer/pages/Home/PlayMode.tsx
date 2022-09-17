@@ -64,6 +64,10 @@ export default function PlayMode({
   };
 
   const handleShuffle = () => {
+    if (!shuffle.isShuffle) {
+      setIndex(0);
+      setInitialIndex(0);
+    }
     setShuffle(() => ({ isShuffle: !shuffle.isShuffle, seed: getRandom() }));
   };
 
