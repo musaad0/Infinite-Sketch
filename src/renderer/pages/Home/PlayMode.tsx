@@ -8,7 +8,7 @@ import {
   indexState,
   initialIndexState,
 } from 'renderer/globals/files/atoms';
-import { Folder } from '../../types';
+import { Folder, Shuffle } from '../../types';
 import Interval from './Interval';
 
 interface Props {
@@ -29,7 +29,8 @@ export default function PlayMode({
   const setStateInterval = useSetRecoilState(interval);
   const setIndex = useSetRecoilState(indexState);
   const [initialIndex, setInitialIndex] = useRecoilState(initialIndexState);
-  const [shuffle, setShuffle] = useRecoilState(shuffleState);
+  const [shuffle, setShuffle] = useRecoilState<Shuffle>(shuffleState);
+  const [loadSessionDisabled, setLoadSessionDisabled] = useState(false);
   const [progress, setProgress] = useState(0);
 
   const loadSession = async () => {
@@ -46,11 +47,12 @@ export default function PlayMode({
     }
     const session = window.api.store.get('session');
     if (typeof session !== 'undefined') {
-      setIndex(session.index);
-      setInitialIndex(session.index);
-      setStateInterval(session.interval);
-      setShuffle(session.shuffle);
+      setIndex(session.index || 0);
+      setInitialIndex(session.index || 0);
+      setStateInterval(session.interval || '30s');
+      setShuffle(session.shuffle || { isShuffle: false, seed: getRandom() });
     }
+    setLoadSessionDisabled(true);
   };
 
   const handleReset = () => {
@@ -58,6 +60,7 @@ export default function PlayMode({
     setStateInterval('');
     setIndex(0);
     setInitialIndex(0);
+    setLoadSessionDisabled(false);
   };
 
   const handleShuffle = () => {
@@ -110,7 +113,7 @@ export default function PlayMode({
       <div className="flex gap-2">
         <button
           type="button"
-          disabled={filesTotal > 0}
+          disabled={filesTotal > 0 || loadSessionDisabled}
           className="btn disabled:cursor-default disabled:bg-primary/30 disabled:text-secondary/70"
           onClick={loadSession}
         >
