@@ -11,7 +11,7 @@
 </p>
 
 <div align="center">
-<a href="https://github.com/musaad0/Infinite-Sketch/releases/latest"> <img alt="GitHub release" src="https://img.shields.io/badge/Latest-v1.4.0-blue"></a>
+<a href="https://github.com/musaad0/Infinite-Sketch/releases/latest"> <img alt="GitHub release" src="https://img.shields.io/badge/Latest-v1.5.0-blue"></a>
 <a href="https://github.com/musaad0/Infinite-Sketch/issues"> <img alt="GitHub issues" src="https://img.shields.io/github/issues/musaad0/Infinite-Sketch"></a>
 <a href="https://github.com/musaad0/Infinite-Sketch/blob/main/LICENSE"> <img alt="GitHub license" src="https://img.shields.io/github/license/musaad0/Infinite-Sketch"></a>
 </div>
@@ -29,7 +29,7 @@
 ![app screenshot-2](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_2.jpg "screenshot-2")
 
 ## Windows
-Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`Infinite-Sketch-Setup-1.4.0`
+Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`Infinite-Sketch-Setup-1.5.0`
 
 Infinite Sketch will automatically update when a new release is available.
 
