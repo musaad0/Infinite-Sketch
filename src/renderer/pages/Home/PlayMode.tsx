@@ -75,7 +75,8 @@ export default function PlayMode({
     if (filesTotal === 0 || initialIndex === 0) setProgress(0);
     else {
       setProgress(() => {
-        return Math.floor(((initialIndex + 1) / filesTotal) * 100);
+        const progressVal = Math.floor(((initialIndex + 1) / filesTotal) * 100);
+        return progressVal > 100 ? 100 : progressVal;
       });
     }
   }, [initialIndex, filesTotal]);
