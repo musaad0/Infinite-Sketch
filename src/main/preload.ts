@@ -1,7 +1,7 @@
 import { contextBridge, ipcRenderer, IpcRendererEvent } from 'electron';
 import { Folder } from '../renderer/types';
 
-export type Channels = 'getFolders' | 'openDialog' | 'contextMenu:alwaysOnTop'; // LATER
+export type Channels = 'getFolders' | 'openDialog' | 'showContextMenu'; // LATER
 
 // Expose protected methods that allow the renderer process to use
 // the ipcRenderer without exposing the entire object

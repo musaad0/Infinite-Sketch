@@ -1,4 +1,12 @@
-import { app, BrowserWindow, ipcMain, Menu, MenuItem, dialog } from 'electron';
+/* eslint-disable global-require */
+import {
+  app,
+  BrowserWindow,
+  ipcMain,
+  dialog,
+  Menu,
+  MenuItemConstructorOptions,
+} from 'electron';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 import fs from 'fs';
@@ -81,12 +89,28 @@ const schema: ESchema<Schema> = {
 };
 
 const store = new Store<Schema>({ schema });
-let mainWindow: BrowserWindow;
+
+let alwaysOnTop = true;
+
+class AppUpdater {
+  constructor() {
+    log.transports.file.level = 'info';
+    autoUpdater.logger = log;
+    autoUpdater.checkForUpdatesAndNotify();
+  }
+}
+
+let mainWindow: BrowserWindow | null = null;
 
 if (process.env.NODE_ENV === 'production') {
   // eslint-disable-next-line global-require
   const sourceMapSupport = require('source-map-support');
   sourceMapSupport.install();
+}
+
+function handleAlwaysOnTop(checked: boolean) {
+  alwaysOnTop = checked;
+  store.set('alwaysOnTopToggle', alwaysOnTop);
 }
 
 const isDarwin = process.platform === 'darwin';
@@ -98,26 +122,28 @@ if (isDebug) {
   require('electron-debug')();
 }
 
-// Disable Refresh
-const menu = new Menu();
-menu.append(
-  new MenuItem({
-    label: 'Electron',
-    submenu: [
-      {
-        role: 'reload',
-        accelerator: process.platform === 'darwin' ? 'Cmd+R' : 'Ctrl+R',
-        click: () => {},
-      },
-    ],
-  })
-);
+const installExtensions = async () => {
+  const installer = require('electron-devtools-installer');
+  const forceDownload = !!process.env.UPGRADE_EXTENSIONS;
+  const extensions = ['REACT_DEVELOPER_TOOLS'];
 
-Menu.setApplicationMenu(menu);
+  return installer
+    .default(
+      extensions.map((name) => installer[name]),
+      forceDownload
+    )
+    .catch(console.log);
+};
 
-function createWindow() {
+const createWindow = async () => {
   // get last saved window state
+  if (isDebug) {
+    await installExtensions();
+  }
+
   const state: State = store.get('state');
+  alwaysOnTop = store.get('alwaysOnTopToggle');
+
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
     : path.join(__dirname, '../../assets');
@@ -157,24 +183,49 @@ function createWindow() {
     }
   });
   mainWindow.setMenuBarVisibility(false);
-  mainWindow.setAlwaysOnTop(true);
+  mainWindow.setAlwaysOnTop(alwaysOnTop);
   mainWindow.loadURL(resolveHtmlPath('index.html'));
   ipcMain.on('windowControls:maximize', () => {
-    if (isDarwin) mainWindow.setFullScreen(!mainWindow.isFullScreen());
+    if (isDarwin) mainWindow?.setFullScreen(!mainWindow.isFullScreen());
     else {
-      if (mainWindow.isMaximized()) mainWindow.unmaximize();
-      else mainWindow.maximize();
+      if (mainWindow?.isMaximized()) mainWindow.unmaximize();
+      else mainWindow?.maximize();
     }
   });
 
+  mainWindow.on('closed', () => {
+    mainWindow = null;
+  });
+
+  // const alwaysOnTopBool = store.get('alwaysOnTopToggle');
+
+  ipcMain.on('showContextMenu', (event) => {
+    const template: MenuItemConstructorOptions[] = [
+      {
+        label: 'Always On Top',
+        click: (e) => {
+          handleAlwaysOnTop(e.checked);
+        },
+        type: 'checkbox',
+        checked: alwaysOnTop,
+      },
+    ];
+    const menu = Menu.buildFromTemplate(template);
+
+    menu.popup(BrowserWindow.fromWebContents(event.sender));
+  });
+
   ipcMain.on('windowControls:minimize', () => {
-    mainWindow.minimize();
+    mainWindow?.minimize();
   });
 
   ipcMain.on('windowControls:close', () => {
-    mainWindow.close();
+    mainWindow?.close();
   });
-}
+
+  // eslint-disable-next-line no-new
+  new AppUpdater();
+};
 
 let files: string[] = [];
 const imagesTypes = ['jpg', 'jpeg', 'png', 'gif', 'avif', 'apng', 'webp'];
@@ -202,11 +253,6 @@ function handleFiles(paths: string[]) {
     files = [];
   }
   return folders;
-}
-
-function handleAlwaysOnTop(alwaysOnTopToggle: boolean) {
-  store.set('alwaysOnTopToggle', alwaysOnTopToggle);
-  mainWindow.setAlwaysOnTop(alwaysOnTopToggle);
 }
 
 ipcMain.on('getFolders', async (event) => {
@@ -241,10 +287,6 @@ ipcMain.on('electron-store-set', async (event, key, val) => {
   store.set(key, val);
 });
 
-ipcMain.on('contextMenu:alwaysOnTop', (e, data) => {
-  handleAlwaysOnTop(data);
-});
-
 app.on('window-all-closed', () => {
   // Respect the OSX convention of having the application in memory even
   // after all windows have been closed
@@ -272,7 +314,7 @@ app
   // eslint-disable-next-line promise/always-return
   .then(() => {
     createWindow();
-    autoUpdater.checkForUpdatesAndNotify();
+    // autoUpdater.checkForUpdatesAndNotify();
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) {
         createWindow();
