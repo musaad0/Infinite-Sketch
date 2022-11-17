@@ -182,7 +182,7 @@
   },
   "build": {
     "productName": "Infinite Sketch",
-    "appId": "com.infinitesketch.app",
+    "appId": "app.infinitesketch.infinitesketch",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
     "mac": {
