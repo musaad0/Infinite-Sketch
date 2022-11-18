@@ -109,8 +109,8 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 function handleAlwaysOnTop(checked: boolean) {
-  alwaysOnTop = checked;
-  store.set('alwaysOnTopToggle', alwaysOnTop);
+  mainWindow?.setAlwaysOnTop(checked);
+  store.set('alwaysOnTopToggle', checked);
 }
 
 const isDarwin = process.platform === 'darwin';
@@ -197,23 +197,22 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
-  // const alwaysOnTopBool = store.get('alwaysOnTopToggle');
-
-  ipcMain.on('showContextMenu', (event) => {
-    const template: MenuItemConstructorOptions[] = [
-      {
-        label: 'Always On Top',
-        click: (e) => {
-          handleAlwaysOnTop(e.checked);
-        },
-        type: 'checkbox',
-        checked: alwaysOnTop,
+  const template: MenuItemConstructorOptions[] = [
+    {
+      label: 'Always On Top',
+      click: (e) => {
+        handleAlwaysOnTop(e.checked);
       },
-    ];
-    const menu = Menu.buildFromTemplate(template);
+      type: 'checkbox',
+      checked: alwaysOnTop,
+    },
+  ];
 
-    menu.popup(BrowserWindow.fromWebContents(event.sender));
+  const menu = Menu.buildFromTemplate(template);
+  ipcMain.on('showContextMenu', (event) => {
+    return menu.popup(BrowserWindow.fromWebContents(event.sender));
   });
+  mainWindow.removeMenu();
 
   ipcMain.on('windowControls:minimize', () => {
     mainWindow?.minimize();
