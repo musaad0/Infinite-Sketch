@@ -1,5 +1,5 @@
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { folders } from 'renderer/globals/files/atoms';
+import { useRecoilState, useRecoilValue, useSetRecoilState } from 'recoil';
+import { folders, initialIndexState } from 'renderer/globals/files/atoms';
 import { Folder } from 'renderer/types';
 import { foldersTotal } from 'renderer/globals/files/selectors';
 import PlayMode from 'renderer/pages/Home/PlayMode';
@@ -9,6 +9,7 @@ import FoldersTable from 'renderer/pages/Home/FoldersTable';
 export default function Home() {
   const [stateFoldersList, setStateFoldersList] =
     useRecoilState<Folder[]>(folders);
+  const setInitialIndex = useSetRecoilState(initialIndexState);
 
   const filesTotal = useRecoilValue(foldersTotal);
 
@@ -19,6 +20,7 @@ export default function Home() {
 
   const removeFolder = (id: string) => {
     const newList = stateFoldersList.filter((item) => item.id !== id);
+    setInitialIndex(0);
     setStateFoldersList(newList);
   };
 
