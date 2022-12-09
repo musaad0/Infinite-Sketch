@@ -58,7 +58,7 @@ export default function Player() {
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  });
+  }, []);
 
   return (
     <>
