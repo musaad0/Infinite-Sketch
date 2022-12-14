@@ -1,17 +1,11 @@
 /* eslint-disable global-require */
-import {
-  app,
-  BrowserWindow,
-  ipcMain,
-  dialog,
-  Menu,
-  MenuItemConstructorOptions,
-} from 'electron';
+import { app, BrowserWindow, ipcMain, dialog } from 'electron';
 import { autoUpdater } from 'electron-updater';
 import path from 'path';
 import fs from 'fs';
 import log from 'electron-log';
 import Store, { Schema as ESchema } from 'electron-store';
+import { EContextMenuActions } from '../enums/menuActions';
 import resolveHtmlPath from './util';
 
 app.disableHardwareAcceleration();
@@ -23,7 +17,7 @@ interface State {
   height: number;
 }
 
-interface Schema {
+export interface IStore {
   session: {
     foldersPaths: string[];
     interval: number;
@@ -33,11 +27,13 @@ interface Schema {
       seed: number;
     };
   };
-  alwaysOnTopToggle: boolean;
+  settings: {
+    alwaysOnTop: boolean;
+  };
   state: State;
 }
 
-const schema: ESchema<Schema> = {
+const schema: ESchema<IStore> = {
   session: {
     type: 'object',
     properties: {
@@ -65,9 +61,14 @@ const schema: ESchema<Schema> = {
     },
     default: {},
   },
-  alwaysOnTopToggle: {
-    type: 'boolean',
-    default: true,
+  settings: {
+    type: 'object',
+    properties: {
+      alwaysOnTop: {
+        type: 'boolean',
+        default: true,
+      },
+    },
   },
   state: {
     type: 'object',
@@ -88,9 +89,7 @@ const schema: ESchema<Schema> = {
   },
 };
 
-const store = new Store<Schema>({ schema });
-
-let alwaysOnTop = true;
+const store = new Store<IStore>({ schema });
 
 class AppUpdater {
   constructor() {
@@ -110,7 +109,19 @@ if (process.env.NODE_ENV === 'production') {
 
 function handleAlwaysOnTop(checked: boolean) {
   mainWindow?.setAlwaysOnTop(checked);
-  store.set('alwaysOnTopToggle', checked);
+  store.set('settings.alwaysOnTop', checked);
+}
+
+function handleTransparentToMouse(checked: boolean) {
+  mainWindow?.setIgnoreMouseEvents(checked);
+  if (!checked) {
+    mainWindow?.webContents.send('showTransparentToMouseModal', 'placeholder'); // this will show confirmation modal
+  }
+}
+
+function handleWindowOpacity(value: number) {
+  if (value < 0 || value > 1) return;
+  mainWindow?.setOpacity(value > 10 ? 20 : value);
 }
 
 const isDarwin = process.platform === 'darwin';
@@ -142,7 +153,6 @@ const createWindow = async () => {
   }
 
   const state: State = store.get('state');
-  alwaysOnTop = store.get('alwaysOnTopToggle');
 
   const RESOURCES_PATH = app.isPackaged
     ? path.join(process.resourcesPath, 'assets')
@@ -183,7 +193,6 @@ const createWindow = async () => {
     }
   });
   mainWindow.setMenuBarVisibility(false);
-  mainWindow.setAlwaysOnTop(alwaysOnTop);
   mainWindow.loadURL(resolveHtmlPath('index.html'));
   ipcMain.on('windowControls:maximize', () => {
     if (isDarwin) mainWindow?.setFullScreen(!mainWindow.isFullScreen());
@@ -197,22 +206,26 @@ const createWindow = async () => {
     mainWindow = null;
   });
 
-  const template: MenuItemConstructorOptions[] = [
-    {
-      label: 'Always On Top',
-      click: (e) => {
-        handleAlwaysOnTop(e.checked);
-      },
-      type: 'checkbox',
-      checked: alwaysOnTop,
-    },
-  ];
-
-  const menu = Menu.buildFromTemplate(template);
-  ipcMain.on('showContextMenu', (event) => {
-    return menu.popup(BrowserWindow.fromWebContents(event.sender));
-  });
-  mainWindow.removeMenu();
+  ipcMain.on(
+    'contextMenuActions',
+    (
+      _,
+      data: {
+        action: EContextMenuActions;
+        data: any;
+      }
+    ) => {
+      if (data.action === EContextMenuActions.TRANSPARENT_TO_MOUSE) {
+        handleTransparentToMouse(data.data as boolean);
+      }
+      if (data.action === EContextMenuActions.ALWAYS_ON_TOP) {
+        handleAlwaysOnTop(data.data as boolean);
+      }
+      if (data.action === EContextMenuActions.WINDOW_OPACITY) {
+        handleWindowOpacity(data.data);
+      }
+    }
+  );
 
   ipcMain.on('windowControls:minimize', () => {
     mainWindow?.minimize();
@@ -313,7 +326,6 @@ app
   // eslint-disable-next-line promise/always-return
   .then(() => {
     createWindow();
-    // autoUpdater.checkForUpdatesAndNotify();
     app.on('activate', () => {
       if (BrowserWindow.getAllWindows().length === 0) {
         createWindow();

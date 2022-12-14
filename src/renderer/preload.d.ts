@@ -11,7 +11,6 @@ declare global {
       maximize: () => void;
       menu: () => void;
       getFolders(): Promise<void | Folder[]>;
-      sendMessage(channel: Channels, args: unknown[]): void;
       on(
         channel: string,
         func: (...args: unknown[]) => void
@@ -22,7 +21,7 @@ declare global {
         get(val: string): any;
         set(property: string, val: any): void;
       };
-      // openDialog: async (): Promise<string | void | undefined>;
+      isMac: boolean;
     };
   }
 }
