@@ -1,30 +1,37 @@
-import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { RecoilRoot } from 'recoil';
+import { Routes, Route } from 'react-router-dom';
+import { Transition } from '@headlessui/react';
 import Home from './pages/Home/Home';
 import Player from './pages/Player/Player';
 import SharedLayout from './pages/SharedLayout/SharedLayout';
 import './App.css';
+import ContextMenu from './components/ContextMenu';
 
 export default function App() {
-  useEffect(() => {
-    window.addEventListener('contextmenu', (e) => {
-      e.preventDefault();
-      window.api.send('showContextMenu', ' ');
-    });
-  }, []);
   return (
     <div className="select-none">
-      <RecoilRoot>
-        <Router>
-          <Routes>
-            <Route path="/" element={<SharedLayout />}>
-              <Route index element={<Home />} />
-              <Route path="player" element={<Player />} />
-            </Route>
-          </Routes>
-        </Router>
-      </RecoilRoot>
+      <ContextMenu />
+      <Routes>
+        <Route path="/" element={<SharedLayout />}>
+          <Route
+            index
+            element={
+              <Transition
+                enter="transition-opacity ease-linear duration-300"
+                show
+                appear
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="transition-opacity ease-linear duration-300"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <Home />
+              </Transition>
+            }
+          />
+          <Route path="player" element={<Player />} />
+        </Route>
+      </Routes>
     </div>
   );
 }
