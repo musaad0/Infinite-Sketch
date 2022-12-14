@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import Button from 'renderer/components/Button';
 import { useRecoilState, useSetRecoilState } from 'recoil';
 import { interval } from 'renderer/globals/interval/atoms';
 import {
@@ -32,6 +33,7 @@ export default function PlayMode({
   const [shuffle, setShuffle] = useRecoilState<Shuffle>(shuffleState);
   const [loadSessionDisabled, setLoadSessionDisabled] = useState(false);
   const [progress, setProgress] = useState(0);
+  const navigate = useNavigate();
 
   const loadSession = async () => {
     const savedFolders = await window.api.getFolders();
@@ -85,24 +87,22 @@ export default function PlayMode({
     <div className="flex select-none flex-col gap-4">
       <Interval />
       <div className="flex gap-2">
-        <Link to="/player" tabIndex={-1} draggable={false} className="w-full">
-          <button
-            type="button"
-            disabled={!(filesTotal > 0)}
-            draggable={false}
-            className="btn disabled:cursor-default disabled:bg-primary/30 disabled:text-secondary/70"
-          >
-            Start
-          </button>
-        </Link>
-        <button
-          className={`btn w-14 fill-secondary hover:fill-secondary ${
-            shuffle.isShuffle
-              ? ''
-              : 'bg-primary/30 fill-secondary/70 hover:bg-primary/50'
-          }`}
+        <Button
+          disabled={!(filesTotal > 0)}
+          onClick={() => {
+            navigate('/player');
+          }}
+          className="w-full disabled:cursor-default disabled:bg-primary/30 disabled:text-secondary/70"
+        >
+          Start
+        </Button>
+        <Button
+          variant={shuffle.isShuffle ? 'primary' : 'primary_dark'}
+          className={`w-14 fill-secondary hover:fill-secondary ${
+            shuffle.isShuffle ? '' : ' fill-secondary/70'
+          }
+          `}
           onClick={handleShuffle}
-          type="button"
         >
           <svg
             className="mx-auto h-3.5 w-3.5"
@@ -112,25 +112,20 @@ export default function PlayMode({
             {/* <!--! Font Awesome Pro 6.1.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. --> */}
             <path d="M424.1 287c-15.13-15.12-40.1-4.426-40.1 16.97V352H336L153.6 108.8C147.6 100.8 138.1 96 128 96H32C14.31 96 0 110.3 0 128s14.31 32 32 32h80l182.4 243.2C300.4 411.3 309.9 416 320 416h63.97v47.94c0 21.39 25.86 32.12 40.99 17l79.1-79.98c9.387-9.387 9.387-24.59 0-33.97L424.1 287zM336 160h47.97v48.03c0 21.39 25.87 32.09 40.1 16.97l79.1-79.98c9.387-9.391 9.385-24.59-.0013-33.97l-79.1-79.98c-15.13-15.12-40.99-4.391-40.99 17V96H320c-10.06 0-19.56 4.75-25.59 12.81L254 162.7L293.1 216L336 160zM112 352H32c-17.69 0-32 14.31-32 32s14.31 32 32 32h96c10.06 0 19.56-4.75 25.59-12.81l40.4-53.87L154 296L112 352z" />
           </svg>
-        </button>
+        </Button>
       </div>
 
       <div className="flex gap-2">
-        <button
-          type="button"
+        <Button
           disabled={filesTotal > 0 || loadSessionDisabled}
-          className="btn disabled:cursor-default disabled:bg-primary/30 disabled:text-secondary/70"
+          className="w-full"
           onClick={loadSession}
         >
           Load Session
-        </button>
-        <button
-          className="btn disabled:cursor-default disabled:bg-primary/30 disabled:text-secondary/70"
-          onClick={handleReset}
-          type="button"
-        >
+        </Button>
+        <Button className="w-full" onClick={handleReset}>
           Reset
-        </button>
+        </Button>
       </div>
       <div className="flex flex-col items-center text-lg text-secondary/80">
         <div className="mb-1 h-1.5 w-full rounded-full bg-neutral-700">

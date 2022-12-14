@@ -60,12 +60,16 @@ export default function FooterControls({
         if (STATUS.STARTED === status) handleStatus(STATUS.STOPPED);
         else handleStatus(STATUS.STARTED);
       }
-
-      if (e.key === 'Escape') {
-        setShowModal(!showModal);
+    }
+    function handleKeyDown(e: KeyboardEvent) {
+      if (!showModal) {
+        if (e.key === 'Escape') {
+          setShowModal(true);
+        }
       }
     }
     document.addEventListener('keyup', handleKeyUp);
+    document.addEventListener('keydown', handleKeyDown);
     return () => {
       document.removeEventListener('keyup', handleKeyUp);
     };
@@ -151,7 +155,7 @@ export default function FooterControls({
         </FooterControlsButton>
       </div>
 
-      <EndModal showModal={showModal} handleShowModal={handleShowModal} />
+      <EndModal showModal={showModal} onClose={() => setShowModal(false)} />
     </>
   );
 }

@@ -1,3 +1,4 @@
+import Button from 'renderer/components/Button';
 import { v4 as uuidv4 } from 'uuid';
 import { Folder } from '../../types';
 
@@ -21,9 +22,8 @@ export default function FolderUpload({ addFolder }: Props) {
   };
 
   return (
-    <button
-      type="button"
-      className="btn fill-secondary text-secondary"
+    <Button
+      className="fill-secondary py-2 text-secondary"
       onClick={handleUpload}
     >
       <div className="flex justify-center">
@@ -33,7 +33,7 @@ export default function FolderUpload({ addFolder }: Props) {
         </svg>
         Add a folder
       </div>
-    </button>
+    </Button>
   );
 }
 
