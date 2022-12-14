@@ -91,6 +91,8 @@
     }
   },
   "dependencies": {
+    "@floating-ui/react": "^0.14.0",
+    "@headlessui/react": "^1.7.5",
     "electron-debug": "^3.2.0",
     "electron-log": "^4.4.7",
     "electron-store": "^8.0.2",
@@ -98,6 +100,7 @@
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
     "react-lazy-load-image-component": "^1.5.5",
+    "react-merge-refs": "^2.0.1",
     "react-router-dom": "^6.3.0",
     "react-transition-group": "^4.4.2",
     "recoil": "^0.7.4",
