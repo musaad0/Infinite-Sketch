@@ -243,7 +243,7 @@
     "publish": {
       "provider": "github",
       "owner": "musaad0",
-      "releaseType": "release",
+      "releaseType": "draft",
       "repo": "infinite-sketch"
     }
   },
