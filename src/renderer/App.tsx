@@ -16,12 +16,12 @@ export default function App() {
             index
             element={
               <Transition
-                enter="transition-opacity ease-linear duration-300"
+                enter="transition-opacity ease-linear duration-200"
                 show
                 appear
                 enterFrom="opacity-0"
                 enterTo="opacity-100"
-                leave="transition-opacity ease-linear duration-300"
+                leave="transition-opacity ease-linear duration-200"
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
               >
