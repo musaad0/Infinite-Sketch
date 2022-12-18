@@ -7,6 +7,7 @@ import log from 'electron-log';
 import Store, { Schema as ESchema } from 'electron-store';
 import { EContextMenuActions } from '../enums/menuActions';
 import resolveHtmlPath from './util';
+import MenuBuilder from './menu';
 
 app.disableHardwareAcceleration();
 
@@ -226,6 +227,8 @@ const createWindow = async () => {
       }
     }
   );
+  const menuBuilder = new MenuBuilder(mainWindow);
+  menuBuilder.buildMenu();
 
   ipcMain.on('windowControls:minimize', () => {
     mainWindow?.minimize();
