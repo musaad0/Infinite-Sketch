@@ -107,6 +107,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@electron/notarize": "^1.2.3",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.6",
     "@teamsupercell/typings-for-css-modules-loader": "^2.5.1",
     "@testing-library/jest-dom": "^5.16.4",
@@ -136,7 +137,6 @@
     "electron": "^22.0.0",
     "electron-builder": "^23.0.3",
     "electron-devtools-installer": "^3.2.0",
-    "electron-notarize": "^1.2.1",
     "electron-rebuild": "^3.2.7",
     "electronmon": "^2.0.2",
     "eslint": "^8.15.0",
@@ -188,6 +188,7 @@
     "appId": "app.infinitesketch.infinitesketch",
     "asar": true,
     "asarUnpack": "**\\*.{node,dll}",
+    "afterSign": ".erb/scripts/notarize.js",
     "mac": {
       "target": {
         "target": "default",
