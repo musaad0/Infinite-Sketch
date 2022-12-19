@@ -263,7 +263,11 @@ function handleFiles(paths: string[]) {
   let id = 0;
   for (const folder of paths) {
     const folderName = path.basename(folder);
-    ThroughDirectory(path.resolve(folder));
+    const pathName = path.resolve(folder);
+    // if folder is moved or deleted
+    if (!fs.existsSync(pathName)) continue;
+
+    ThroughDirectory(pathName);
     folders.push({ path: folder, name: folderName, files, id: id++ });
     files = [];
   }
