@@ -11,12 +11,13 @@
 </p>
 
 <div align="center">
-<a href="https://github.com/musaad0/Infinite-Sketch/releases/latest"> <img alt="GitHub release" src="https://img.shields.io/badge/Latest-v1.5.0-blue"></a>
+<a href="https://github.com/musaad0/Infinite-Sketch/releases/latest"> <img alt="GitHub release" src="https://img.shields.io/badge/Latest-v1.6.0-blue"></a>
 <a href="https://github.com/musaad0/Infinite-Sketch/issues"> <img alt="GitHub issues" src="https://img.shields.io/github/issues/musaad0/Infinite-Sketch"></a>
 <a href="https://github.com/musaad0/Infinite-Sketch/blob/main/LICENSE"> <img alt="GitHub license" src="https://img.shields.io/github/license/musaad0/Infinite-Sketch"></a>
 </div>
 
-## Features :rocket:	
+## Features :rocket:
+
 - Use your own folders
 - Save your progess & settings
 - Always on top
@@ -25,17 +26,20 @@
 - Modern UI
 
 ## Screenshots
-![app screenshot-1](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_1.png "screenshot-1")
-![app screenshot-2](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_2.jpg "screenshot-2")
+
+![app screenshot-1](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_1.png 'screenshot-1')
+![app screenshot-2](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_2.jpg 'screenshot-2')
 
 ## Windows
-Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`Infinite-Sketch-Setup-1.5.0`
+
+Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`Infinite-Sketch-Setup-1.6.0`
 
 Infinite Sketch will automatically update when a new release is available.
 
 Note: The Windows executable is currently not signed, which will show a warning when you run the .exe. Press 'more info' -> 'run anyway' to skip the warning.
 
 ## Development
+
 ```
 # Clone repository
 git clone https://github.com/musaad0/Infinite-Sketch.git
