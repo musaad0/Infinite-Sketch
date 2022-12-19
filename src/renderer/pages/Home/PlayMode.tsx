@@ -37,8 +37,10 @@ export default function PlayMode({
 
   const loadSession = async () => {
     const savedFolders = await window.api.getFolders();
+    let numOfFiles = 0;
     if (typeof savedFolders !== 'undefined') {
       for (const file of savedFolders) {
+        numOfFiles += file.files.length;
         addFolder({
           name: file.name,
           files: file.files,
@@ -49,8 +51,14 @@ export default function PlayMode({
     }
     const session = window.api.store.get('session');
     if (typeof session !== 'undefined') {
-      setIndex(session.index || 0);
-      setInitialIndex(session.index || 0);
+      let savedIndex = session.index;
+
+      // make sure index doesn't get out of range
+      if (savedIndex >= numOfFiles) savedIndex = numOfFiles - 1;
+      if (savedIndex < 0) savedIndex = 0;
+
+      setIndex(savedIndex || 0);
+      setInitialIndex(savedIndex || 0);
       setStateInterval(session.interval || '30s');
       setShuffle(session.shuffle || { isShuffle: false, seed: getRandom() });
     }
