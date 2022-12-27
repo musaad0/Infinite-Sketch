@@ -32,22 +32,26 @@
 
 ![app screenshot-1](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_1.png 'screenshot-1')
 ![app screenshot-2](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_2.jpg 'screenshot-2')
-
+![app screenshot-3](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_3.png 'screenshot-3')
 
 ## Windows
 
 Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`Infinite-Sketch-Setup-1.6.0.exe`
 
-
 Note: The Windows executable is currently not signed, which will show a warning when you run the .exe. Press 'more info' -> 'run anyway' to skip the warning.
 
 ## Mac
+
 #### M1 & M2
+
 Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`Infinite-Sketch-1.6.0-arm64.dmg`
+
 #### Intel
+
 Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`Infinite-Sketch-1.6.0.dmg`
 
 ## Linux
+
 Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`Infinite-Sketch-1.6.0-arm64.AppImage`
 
 ## Development
