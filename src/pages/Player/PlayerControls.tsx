@@ -66,12 +66,8 @@ export function PlayerControls({ filesLength }: Props) {
   useHotkeys(["mod+B"], () => toggleActionOnImage("BLACK_AND_WHITE"));
   const keybind = keybindForOs(os);
 
-  // No component for playerButton because of issues with refs
-  const buttonClassName =
-    "inline-flex flex-col items-center justify-center px-5 hover:bg-primary-foreground/10 group text-primary-foreground/70 hover:text-primary-foreground/80 transition-colors focus:text-primary-foreground/80 focus:bg-primary-foreground/10 focus:outline-none";
-
   return (
-    <div className="fixed bottom-0 left-0 z-50 w-full h-7 bg-primary/60 backdrop-blur-sm  opacity-100 hover:opacity-100 transition-opacity">
+    <div className="fixed bottom-0 left-0 z-50 w-full h-7 bg-primary/60 backdrop-blur-sm  opacity-0 hover:opacity-100 transition-opacity">
       <div className="grid h-full max-w-lg grid-cols-7 mx-auto font-medium">
         <PlayerControlButton
           toolTipContent="←"
@@ -121,7 +117,11 @@ export function PlayerControls({ filesLength }: Props) {
         <ImageGridButton
           keybind={keybind([ModifierKeys.Control], ["G"])}
           button={
-            <button className={buttonClassName}>
+            <button
+              className={
+                "inline-flex flex-col items-center justify-center px-5 hover:bg-primary-foreground/10 group text-primary-foreground/70 hover:text-primary-foreground/80 transition-colors focus:text-primary-foreground/80 focus:outline-none"
+              }
+            >
               <Grid className="w-4 h-4" />{" "}
             </button>
           }
@@ -158,7 +158,7 @@ const PlayerControlButton = React.forwardRef<
           type="button"
           ref={ref}
           onClick={onClick}
-          className="inline-flex flex-col items-center justify-center px-5 hover:bg-primary-foreground/10 group text-primary-foreground/70 hover:text-primary-foreground/80 transition-colors focus:text-primary-foreground/80 focus:bg-primary-foreground/10 focus:outline-none"
+          className="inline-flex flex-col items-center justify-center px-5 hover:bg-primary-foreground/10 group text-primary-foreground/70 hover:text-primary-foreground/80 transition-colors focus:text-primary-foreground/80 focus:outline-none"
         >
           {icon}
         </TooltipTrigger>

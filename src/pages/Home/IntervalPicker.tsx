@@ -18,7 +18,7 @@ export function IntervalPicker() {
   return (
     <div>
       <span className="isolate inline-flex rounded-md shadow-sm">
-        {(["45s", "2m", "5m", "1h"] as const).map((item) => (
+        {(["30s", "45s", "2m", "5m"] as const).map((item) => (
           <button
             type="button"
             key={item}
