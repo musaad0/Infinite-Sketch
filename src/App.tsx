@@ -7,7 +7,7 @@ import { Player } from "@/pages/Player/Player";
 
 function App() {
   return (
-    <div className="bg-background">
+    <div>
       <Toaster />
       <Router>
         <Routes>

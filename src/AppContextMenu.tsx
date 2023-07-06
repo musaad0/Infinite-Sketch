@@ -20,7 +20,7 @@ import { shallow, useAppStore } from "@/store";
 import { useHotkeys } from "@/hooks";
 import { ReactNode, useEffect, useState } from "react";
 import { keybindForOs } from "@/utils";
-import { ModifierKeys } from "@/constants";
+import { ModifierKeys, modifierSymbols } from "@/constants";
 
 export function AppContextMenu({ children }: { children: ReactNode }) {
   const {
@@ -77,6 +77,17 @@ export function AppContextMenu({ children }: { children: ReactNode }) {
 
   // prevent default shortcuts
   useHotkeys(["mod+f"], () => {}, { preventDefault: true });
+
+  // prevent default context menu
+  useEffect(() => {
+    const handleDefaultContextMenu = (e: MouseEvent) => {
+      e.preventDefault();
+    };
+    document.addEventListener("contextmenu", handleDefaultContextMenu);
+    return () => {
+      document.removeEventListener("contextmenu", handleDefaultContextMenu);
+    };
+  }, []);
 
   return (
     <ContextMenu>
@@ -155,10 +166,10 @@ function TransparentToMouseDialogWarning({
           <AlertDialogDescription>
             The only way to reset this option will be through the keyboard
             shortcut ({keybind}) or by restarting the app
-            <p className="mt-4">
-              Hint: The window has to be on focus to use the shorcut (click the
-              app on the taskbar to regain focus)
-            </p>
+            <br />
+            <br />
+            Hint: The window has to be on focus to use the shorcut (click the
+            app on the taskbar to regain focus)
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>

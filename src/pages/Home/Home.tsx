@@ -15,7 +15,7 @@ export default function Home() {
   }, []);
   return (
     <AppContextMenu>
-      <div className="h-screen">
+      <div className="min-h-screen">
         <ThemeToggle />
         <div className="max-w-sm mx-auto py-4 px-2">
           <Folders />
