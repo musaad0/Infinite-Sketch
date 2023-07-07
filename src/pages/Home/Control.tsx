@@ -1,10 +1,11 @@
 import { getFilesRecursively } from "@/apis/files";
 import { Button, Progress, toast } from "@/components";
 import { Toggle } from "@/components/ui/toggle";
+import { CLASS_MODES } from "@/constants";
 import { useFoldersStore } from "@/store/foldersStore";
 import { usePlayerStore } from "@/store/playerStore";
 import { getSessionData } from "@/store/systemStore";
-import { Pen, Shuffle } from "lucide-react";
+import { Palmtree, Pen, Shuffle } from "lucide-react";
 import React from "react";
 import { useNavigate } from "react-router";
 
@@ -21,10 +22,27 @@ export default function Control({}: Props) {
   const index = usePlayerStore((state) => state.index);
   const setShuffle = usePlayerStore((state) => state.setShuffle);
   const shuffle = usePlayerStore((state) => state.shuffle);
+  const setIntervals = usePlayerStore((state) => state.setIntervals);
+  const playMode = usePlayerStore((state) => state.playMode);
 
   const progress = Math.floor(((index + 1) / files.length) * 100);
   const progressVal =
     files.length && index ? (progress > 100 ? 100 : progress) : 0;
+
+  const handleStart = () => {
+    if (playMode === "fixed") {
+      setIntervals([
+        {
+          timer: usePlayerStore.getState().timer,
+          imagesToPlay: files.length,
+          break: {},
+        },
+      ]);
+    } else if (playMode === "class") {
+      setIntervals(CLASS_MODES["30m"]);
+    }
+    navigate("/player");
+  };
 
   const loadSession = async () => {
     // if there are already uploaded files don't update the session
@@ -52,13 +70,7 @@ export default function Control({}: Props) {
 
   return (
     <div className="py-10 space-y-8">
-      <Button
-        disabled={!files.length}
-        onClick={() => {
-          navigate("/player");
-        }}
-        className="w-full"
-      >
+      <Button disabled={!files.length} onClick={handleStart} className="w-full">
         <Pen className="w-4 h-4 me-2" />
         Start
       </Button>

@@ -1,15 +1,15 @@
 import "./styles.css";
 import { useFoldersStore } from "@/store/foldersStore";
-import { useEffect, useState } from "react";
-import { ActionOnImage, Timer, usePlayerStore } from "@/store/playerStore";
-import { IFile } from "@/models";
+import { useEffect, useRef, useState } from "react";
+import { ActionOnImage, usePlayerStore } from "@/store/playerStore";
+import { IFile, Timer } from "@/models";
 import { PlayerControls } from "@/pages/Player/PlayerControls";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Pencil } from "lucide-react";
-import { useInterval } from "usehooks-ts";
+import { useBoolean, useUpdateEffect, useInterval } from "@/hooks";
 import { cn, shuffleList } from "@/utils";
 import { AppContextMenu } from "@/AppContextMenu";
-import { useAppStore } from "@/store";
+import { shallow, useAppStore } from "@/store";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
 
 type Props = {};
@@ -125,25 +125,55 @@ function convertInputToSecondsNumber(intervalInput: Timer) {
 
 function Countdown({ filesLength }: { filesLength: number }) {
   // The counter
-  const interval = usePlayerStore((state) => state.timer);
+  const imagesSeen = useRef<number>(0);
+  // const isBreak = useRef<boolean>(false);
+  const isBreak = useBoolean(false);
+  const classModeIndex = useRef<number>(0);
+
+  const intervals = usePlayerStore((state) => state.intervals);
+  const interval = intervals[classModeIndex.current].timer;
+
   const [count, setCount] = useState<number>(
-    convertInputToSecondsNumber(interval)
+    convertInputToSecondsNumber(intervals[0].timer)
   );
-  // ON/OFF
-  const isPlaying = usePlayerStore((state) => state.isPlaying);
-  const setIsPlaying = usePlayerStore((state) => state.setIsPlaying);
-  const nextIndex = usePlayerStore((state) => state.nextIndex);
-  const index = usePlayerStore((state) => state.index);
+
+  const [isPlaying, setIsPlaying] = usePlayerStore(
+    (state) => [state.isPlaying, state.setIsPlaying],
+    shallow
+  );
+  const [index, nextIndex] = usePlayerStore(
+    (state) => [state.index, state.nextIndex],
+    shallow
+  );
+
+  const playMode = usePlayerStore((state) => state.playMode);
 
   const resetCounter = () => {
-    setCount(convertInputToSecondsNumber(interval));
+    let currentInterval = interval;
+    let isBreakVal = false;
+    if (isBreak.value) isBreak.setFalse();
+    // Class mode stuff
+    if (playMode === "class") {
+      const currentClassInterval = intervals[classModeIndex.current];
+      if (imagesSeen.current === currentClassInterval.imagesToPlay) {
+        currentInterval =
+          currentClassInterval.break?.breakAfterSectionEndsTime ?? interval;
+        isBreakVal = !!currentClassInterval.break?.breakAfterSectionEndsTime;
+        classModeIndex.current += 1;
+      } else {
+        currentInterval =
+          currentClassInterval.break?.breakBetweenEachImageTime ?? interval;
+        isBreakVal = !!currentClassInterval.break?.breakBetweenEachImageTime;
+      }
+    }
+    setCount(convertInputToSecondsNumber(currentInterval));
+    return isBreakVal;
   };
 
   useInterval(
     () => {
-      // Your custom logic here
       if (count === 0) {
-        resetCounter();
+        if (resetCounter) resetCounter();
         // if last image
         if (filesLength === index) return;
         nextIndex();
@@ -152,19 +182,37 @@ function Countdown({ filesLength }: { filesLength: number }) {
       setCount(count - 1);
     },
     // Delay in milliseconds or null to stop it
-    isPlaying ? 1000 : null
+    isPlaying && !isBreak ? 1000 : null
+  );
+
+  // break interval
+  useInterval(
+    () => {
+      if (count === 0) {
+      }
+      setCount(count - 1);
+    },
+    // Delay in milliseconds or null to stop it
+    isBreak && !isPlaying ? 1000 : null
   );
 
   useEffect(() => {
-    setIsPlaying(true);
+    setIsPlaying(false);
   }, []);
 
-  useEffect(() => {
+  useUpdateEffect(() => {
     resetCounter();
   }, [index]);
 
   return (
-    <div className="absolute right-0 top-0 text-white p-4 backdrop-blur-sm bg-slate-600/50 rounded-xl m-4 w-14 h-14 flex z-20 justify-center items-center">
+    // <div className="absolute right-0 top-0 text-white p-4 backdrop-blur-sm bg-slate-600/50 rounded-xl m-4 w-14 h-14 flex z-20 justify-center items-center">
+    <div
+      className={cn(
+        "absolute right-0 top-0 text-white p-4 backdrop-blur-sm bg-slate-600/50 rounded-xl m-4 w-14 h-14 flex z-20 justify-center items-center ",
+        isBreak.value &&
+          "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-80 w-80 text-[8rem] px-4"
+      )}
+    >
       <span className="countdown">
         {/* typescript doesn't like --value so ignore */}
         {/* @ts-ignore */}

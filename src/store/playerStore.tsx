@@ -1,10 +1,10 @@
-import { IFolder, Shuffle } from "@/models";
+import { ClassMode, SessionInterval } from "@/constants";
+import { Shuffle, Timer } from "@/models";
 import { z } from "zod";
 import { create } from "zustand";
 
 // TODO: move this to app store
-
-export type Timer = `${number}${"m" | "s"}`;
+// TODO: Split & Refactor
 
 const actionsOnImageSchema = z.enum([
   "FLIP_HORIZONTAL",
@@ -12,36 +12,59 @@ const actionsOnImageSchema = z.enum([
   "BLACK_AND_WHITE",
   "GRID",
 ]);
+
 export type ActionOnImage = z.infer<typeof actionsOnImageSchema>;
 
-interface FileStore {
+export type PlayMode = "fixed" | "quantity" | "class";
+
+interface PlayerStore {
   timer: Timer;
   index: number;
   isPlaying: boolean;
+  playMode: PlayMode;
+  intervals: SessionInterval[];
+  imagesSeen: number;
   actionsOnImage: z.infer<typeof actionsOnImageSchema>[];
+  classModeLength: ClassMode;
   imageGridWidthHeight: number;
   shuffle: Shuffle;
   setTimer: (val: Timer) => void;
   setIsPlaying: (val: boolean) => void;
+  setPlayMode: (val: PlayMode) => void;
   setShuffle: (val: Shuffle) => void;
   toggleActionOnImage: (val: ActionOnImage) => void;
+  setClassModeLength: (val: ClassMode) => void;
   setImageGridWidthHeight: (val: number) => void;
+  setIntervals: (val: SessionInterval[]) => void;
   nextIndex: () => void;
   setIndex: (index: number) => void;
   previousIndex: () => void;
 }
 
-export const usePlayerStore = create<FileStore>((set) => ({
+export const usePlayerStore = create<PlayerStore>((set) => ({
   timer: "30s",
   index: 0,
   isPlaying: false,
+  breakTime: "30s",
+  intervals: [
+    {
+      timer: "30s",
+      imagesToPlay: 0,
+    },
+  ],
+  classModeLength: "30m",
+  playMode: "fixed",
   imageGridWidthHeight: 50,
+  imagesSeen: 0,
   actionsOnImage: [],
   shuffle: {
     isShuffle: false,
     seed: 0,
   },
   setImageGridWidthHeight: (val) => set({ imageGridWidthHeight: val }),
+  setClassModeLength: (val) => set({ classModeLength: val }),
+  setPlayMode: (val) => set({ playMode: val }),
+  setIntervals: (val) => set({ intervals: val }),
   toggleActionOnImage: (val) =>
     set((state) => {
       if (state.actionsOnImage.includes(val))
