@@ -34,8 +34,8 @@ export const CLASS_MODES: Record<ClassMode, SessionInterval[]> = {
       },
     },
     {
-      timer: "1m",
-      imagesToPlay: 5,
+      timer: "10s",
+      imagesToPlay: 1,
     },
     {
       timer: "5m",

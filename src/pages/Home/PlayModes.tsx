@@ -106,7 +106,7 @@ function ClassMode() {
         <SelectContent className="overflow-visible">
           <SelectGroup>
             {CLASS_MODE_OPTIONS.map((item) => (
-              <TooltipProvider>
+              <TooltipProvider key={item}>
                 <Tooltip delayDuration={0}>
                   <TooltipTrigger asChild>
                     <SelectItem value={item}>

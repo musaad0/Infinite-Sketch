@@ -8,5 +8,6 @@ module.exports = {
   trailingComma: "all",
   tabWidth: 2,
   plugins: [require.resolve("prettier-plugin-tailwindcss")],
-  tailwindConfig: "./tailwind.config.cjs",
+  tailwindConfig: "./tailwind.config.js",
+  tailwindFunctions: ['cn'],
 };

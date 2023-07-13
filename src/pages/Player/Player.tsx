@@ -1,16 +1,17 @@
 import "./styles.css";
 import { useFoldersStore } from "@/store/foldersStore";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ActionOnImage, usePlayerStore } from "@/store/playerStore";
 import { IFile, Timer } from "@/models";
 import { PlayerControls } from "@/pages/Player/PlayerControls";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Pencil } from "lucide-react";
 import { useBoolean, useUpdateEffect, useInterval } from "@/hooks";
-import { cn, shuffleList } from "@/utils";
+import { cn, HHMMSS, shuffleList } from "@/utils";
 import { AppContextMenu } from "@/AppContextMenu";
 import { shallow, useAppStore } from "@/store";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { CountdownCircleTimer } from "./CountdownCircleTimer";
 
 type Props = {};
 
@@ -48,7 +49,7 @@ export function Player({}: Props) {
   return (
     <AppContextMenu>
       <div
-        className="bg-background shadow-none h-screen"
+        className="h-screen bg-background shadow-none"
         style={{ opacity: windowOpacity + "%" }}
       >
         <div>
@@ -71,12 +72,12 @@ const imageTransformationsClassNames: Record<ActionOnImage, string> = {
 function DisplayedImage({ files }: { files: IFile[] }) {
   const index = usePlayerStore((state) => state.index);
   const imageGridWidthHeight = usePlayerStore(
-    (state) => state.imageGridWidthHeight
+    (state) => state.imageGridWidthHeight,
   );
   const actionOnImage = usePlayerStore((state) => state.actionsOnImage);
   return (
     <Avatar className="relative">
-      <div className="overflow-hidden max-w-max relative mx-auto">
+      <div className="relative mx-auto max-w-max overflow-hidden">
         <TransformWrapper
           wheel={{
             smoothStep: 0.002,
@@ -86,10 +87,10 @@ function DisplayedImage({ files }: { files: IFile[] }) {
             <AvatarImage
               src={files[index].path}
               className={cn(
-                "mx-auto object-contain max-w-full h-screen fade-in animate-in duration-700",
+                "mx-auto h-screen max-w-full object-contain animate-in fade-in duration-700",
                 ...actionOnImage.map(
-                  (item) => imageTransformationsClassNames[item]
-                )
+                  (item) => imageTransformationsClassNames[item],
+                ),
               )}
             />
           </TransformComponent>
@@ -99,13 +100,13 @@ function DisplayedImage({ files }: { files: IFile[] }) {
             style={{
               backgroundSize: `${imageGridWidthHeight}px ${imageGridWidthHeight}px`,
             }}
-            className="w-full h-full [background-image:repeating-linear-gradient(#ccc_0_1px,transparent_1px_100%),repeating-linear-gradient(90deg,#ccc_0_1px,transparent_1px_100%)] m-0 z-10 absolute top-0"
+            className="absolute top-0 z-10 m-0 h-full w-full [background-image:repeating-linear-gradient(#ccc_0_1px,transparent_1px_100%),repeating-linear-gradient(90deg,#ccc_0_1px,transparent_1px_100%)]"
           />
         )}
       </div>
       <AvatarFallback
         delayMs={200}
-        className="flex justify-center items-center h-screen"
+        className="flex h-screen items-center justify-center"
       >
         <Pencil className="animate-spin" />
       </AvatarFallback>
@@ -125,7 +126,7 @@ function convertInputToSecondsNumber(intervalInput: Timer) {
 
 function Countdown({ filesLength }: { filesLength: number }) {
   // The counter
-  const imagesSeen = useRef<number>(0);
+  const currentIntervalImagesSeen = useRef<number>(0);
   // const isBreak = useRef<boolean>(false);
   const isBreak = useBoolean(false);
   const classModeIndex = useRef<number>(0);
@@ -133,91 +134,94 @@ function Countdown({ filesLength }: { filesLength: number }) {
   const intervals = usePlayerStore((state) => state.intervals);
   const interval = intervals[classModeIndex.current].timer;
 
-  const [count, setCount] = useState<number>(
-    convertInputToSecondsNumber(intervals[0].timer)
-  );
-
   const [isPlaying, setIsPlaying] = usePlayerStore(
     (state) => [state.isPlaying, state.setIsPlaying],
-    shallow
+    shallow,
   );
   const [index, nextIndex] = usePlayerStore(
     (state) => [state.index, state.nextIndex],
-    shallow
+    shallow,
   );
 
   const playMode = usePlayerStore((state) => state.playMode);
 
-  const resetCounter = () => {
+  const curInt = useMemo(() => {
     let currentInterval = interval;
-    let isBreakVal = false;
-    if (isBreak.value) isBreak.setFalse();
     // Class mode stuff
     if (playMode === "class") {
       const currentClassInterval = intervals[classModeIndex.current];
-      if (imagesSeen.current === currentClassInterval.imagesToPlay) {
+      if (
+        currentIntervalImagesSeen.current === currentClassInterval.imagesToPlay
+      ) {
         currentInterval =
           currentClassInterval.break?.breakAfterSectionEndsTime ?? interval;
-        isBreakVal = !!currentClassInterval.break?.breakAfterSectionEndsTime;
+        isBreak.setValue(
+          !!currentClassInterval.break?.breakAfterSectionEndsTime,
+        );
         classModeIndex.current += 1;
+        currentIntervalImagesSeen.current = 0;
       } else {
         currentInterval =
           currentClassInterval.break?.breakBetweenEachImageTime ?? interval;
-        isBreakVal = !!currentClassInterval.break?.breakBetweenEachImageTime;
+        isBreak.setValue(
+          !!currentClassInterval.break?.breakBetweenEachImageTime,
+        );
       }
     }
-    setCount(convertInputToSecondsNumber(currentInterval));
-    return isBreakVal;
-  };
 
-  useInterval(
-    () => {
-      if (count === 0) {
-        if (resetCounter) resetCounter();
-        // if last image
-        if (filesLength === index) return;
-        nextIndex();
-        return;
-      }
-      setCount(count - 1);
-    },
-    // Delay in milliseconds or null to stop it
-    isPlaying && !isBreak ? 1000 : null
-  );
-
-  // break interval
-  useInterval(
-    () => {
-      if (count === 0) {
-      }
-      setCount(count - 1);
-    },
-    // Delay in milliseconds or null to stop it
-    isBreak && !isPlaying ? 1000 : null
-  );
-
-  useEffect(() => {
-    setIsPlaying(false);
-  }, []);
-
-  useUpdateEffect(() => {
-    resetCounter();
+    return convertInputToSecondsNumber(currentInterval);
   }, [index]);
 
+  useEffect(() => {
+    setIsPlaying(true);
+  }, []);
+
   return (
-    // <div className="absolute right-0 top-0 text-white p-4 backdrop-blur-sm bg-slate-600/50 rounded-xl m-4 w-14 h-14 flex z-20 justify-center items-center">
-    <div
-      className={cn(
-        "absolute right-0 top-0 text-white p-4 backdrop-blur-sm bg-slate-600/50 rounded-xl m-4 w-14 h-14 flex z-20 justify-center items-center ",
-        isBreak.value &&
-          "top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-80 w-80 text-[8rem] px-4"
-      )}
-    >
-      <span className="countdown">
-        {/* typescript doesn't like --value so ignore */}
-        {/* @ts-ignore */}
-        <span style={{ "--value": `${count}` }}></span>
-      </span>
-    </div>
+    <>
+      {/* We have Seperate divs because one div that moves around has laggy animations when a large image loads */}
+      <div className="absolute right-0 top-0 z-20 m-4 rounded-full bg-slate-600/50 backdrop-blur">
+        <CountdownCircleTimer
+          isPlaying={isPlaying && !isBreak.value}
+          duration={curInt}
+          size={80}
+          strokeWidth={4}
+          key={index}
+          colors={["#ffffff", "#F7B801", "#A30000", "#A30000"]}
+          colorsTime={[curInt, 7, 5, 2, 0]}
+          onComplete={() => {
+            // if last image
+            if (filesLength - 1 === index) return;
+            nextIndex();
+
+            currentIntervalImagesSeen.current += 1;
+
+            return { shouldRepeat: true, delay: 0 };
+          }}
+        >
+          {({ remainingTime }) => <span>{HHMMSS(remainingTime)}</span>}
+        </CountdownCircleTimer>
+      </div>
+      <div
+        className={cn(
+          "absolute left-1/2 top-1/2  z-20 m-4 hidden -translate-x-1/2 -translate-y-1/2 rounded-full bg-slate-600/50 p-4 text-[8rem] text-white backdrop-blur transition-opacity animate-in fade-in duration-700 ",
+          isBreak.value && "block",
+        )}
+      >
+        <CountdownCircleTimer
+          isPlaying={isBreak.value}
+          strokeWidth={4}
+          key={index}
+          size={300}
+          duration={curInt}
+          colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
+          colorsTime={[7, 5, 2, 0]}
+          onComplete={() => {
+            isBreak.setFalse();
+          }}
+        >
+          {({ remainingTime }) => <span>{remainingTime}</span>}
+        </CountdownCircleTimer>
+      </div>
+    </>
   );
 }
