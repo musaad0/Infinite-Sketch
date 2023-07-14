@@ -1,10 +1,7 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
-  content: [
-    './src/**/*.tsx',
-    './index.html'
-	],
+  content: ["./src/**/*.tsx", "./index.html"],
   theme: {
     container: {
       center: true,
@@ -70,5 +67,8 @@ module.exports = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-}
+  plugins: [
+    require("tailwindcss-animate"),
+    require("prettier-plugin-tailwindcss"),
+  ],
+};

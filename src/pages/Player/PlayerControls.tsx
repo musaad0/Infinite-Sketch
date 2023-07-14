@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  Input,
   Label,
   Popover,
   PopoverContent,
@@ -22,7 +21,6 @@ import {
 import { usePlayerStore } from "@/store/playerStore";
 import {
   FlipHorizontal2,
-  FlipVertical2,
   Grid,
   Home,
   Pause,
@@ -34,12 +32,12 @@ import {
   SunMoon,
 } from "lucide-react";
 import { useHotkeys, useNavigate } from "@/hooks";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useState } from "react";
 import { useFoldersStore } from "@/store/foldersStore";
 import { storeSessionData } from "@/store/systemStore";
 import { useAppStore } from "@/store";
 import { keybindForOs } from "@/utils";
-import { ModifierKeys, keySymbols } from "@/constants";
+import { ModifierKeys } from "@/constants";
 
 type Props = {
   filesLength: number;
@@ -50,14 +48,23 @@ export function PlayerControls({ filesLength }: Props) {
   const previousIndex = usePlayerStore((state) => state.previousIndex);
   const setIsPlaying = usePlayerStore((state) => state.setIsPlaying);
   const toggleActionOnImage = usePlayerStore(
-    (state) => state.toggleActionOnImage
+    (state) => state.toggleActionOnImage,
   );
   const isPlaying = usePlayerStore((state) => state.isPlaying);
   const index = usePlayerStore((state) => state.index);
   const os = useAppStore((state) => state.os);
 
-  useHotkeys(["ArrowRight"], () => nextIndex());
-  useHotkeys(["ArrowLeft"], () => previousIndex());
+  const handlePrev = () => {
+    if (index === 0) return;
+    previousIndex();
+  };
+  const handleNext = () => {
+    if (index + 1 === filesLength) return;
+    nextIndex();
+  };
+
+  useHotkeys(["ArrowRight"], handleNext);
+  useHotkeys(["ArrowLeft"], handlePrev);
   useHotkeys(["p"], () => setIsPlaying(!isPlaying));
   useHotkeys(["mod+G"], () => toggleActionOnImage("GRID"), {
     preventDefault: true,
@@ -67,15 +74,12 @@ export function PlayerControls({ filesLength }: Props) {
   const keybind = keybindForOs(os);
 
   return (
-    <div className="fixed bottom-0 left-0 z-50 w-full h-7 bg-primary/60 backdrop-blur-sm  opacity-0 hover:opacity-100 transition-opacity">
-      <div className="grid h-full max-w-lg grid-cols-7 mx-auto font-medium">
+    <div className="fixed bottom-0 left-0 z-50 h-7 w-full bg-primary/60 opacity-0  backdrop-blur-sm transition-opacity hover:opacity-100">
+      <div className="mx-auto grid h-full max-w-lg grid-cols-7 font-medium">
         <PlayerControlButton
           toolTipContent="←"
-          onClick={() => {
-            if (index === 0) return;
-            previousIndex();
-          }}
-          icon={<StepBack className="w-4 h-4" />}
+          onClick={handlePrev}
+          icon={<StepBack className="h-4 w-4" />}
         />
         <PlayerControlButton
           onClick={() => {
@@ -84,19 +88,16 @@ export function PlayerControls({ filesLength }: Props) {
           toolTipContent="P"
           icon={
             isPlaying ? (
-              <Pause className="w-4 h-4" />
+              <Pause className="h-4 w-4" />
             ) : (
-              <Play className="w-4 h-4" />
+              <Play className="h-4 w-4" />
             )
           }
         />
         <PlayerControlButton
           toolTipContent="→"
-          onClick={() => {
-            if (index + 1 === filesLength) return;
-            nextIndex();
-          }}
-          icon={<StepForward className="w-4 h-4" />}
+          onClick={handleNext}
+          icon={<StepForward className="h-4 w-4" />}
         />
         {/* Maybe not usefull so hide it and wait for feedback */}
         {/* <PlayerControlButton
@@ -107,22 +108,22 @@ export function PlayerControls({ filesLength }: Props) {
         <PlayerControlButton
           onClick={() => toggleActionOnImage("FLIP_HORIZONTAL")}
           toolTipContent={keybind([ModifierKeys.Control], ["H"])}
-          icon={<FlipHorizontal2 className="w-4 h-4" />}
+          icon={<FlipHorizontal2 className="h-4 w-4" />}
         />
         <PlayerControlButton
           toolTipContent={keybind([ModifierKeys.Control], ["B"])}
           onClick={() => toggleActionOnImage("BLACK_AND_WHITE")}
-          icon={<SunMoon className="w-4 h-4" />}
+          icon={<SunMoon className="h-4 w-4" />}
         />
         <ImageGridButton
           keybind={keybind([ModifierKeys.Control], ["G"])}
           button={
             <button
               className={
-                "inline-flex flex-col items-center justify-center px-5 hover:bg-primary-foreground/10 group text-primary-foreground/70 hover:text-primary-foreground/80 transition-colors focus:text-primary-foreground/80 focus:outline-none"
+                "group inline-flex flex-col items-center justify-center px-5 text-primary-foreground/70 transition-colors hover:bg-primary-foreground/10 hover:text-primary-foreground/80 focus:text-primary-foreground/80 focus:outline-none"
               }
             >
-              <Grid className="w-4 h-4" />{" "}
+              <Grid className="h-4 w-4" />{" "}
             </button>
           }
         />
@@ -130,8 +131,8 @@ export function PlayerControls({ filesLength }: Props) {
           button={
             <PlayerControlButton
               onClick={() => {}}
-              toolTipContent={keybind([], ["Escape"])}
-              icon={<Square className="w-4 h-4" />}
+              toolTipContent={keybind([], ["Q"])}
+              icon={<Square className="h-4 w-4" />}
             />
           }
         />
@@ -158,11 +159,11 @@ const PlayerControlButton = React.forwardRef<
           type="button"
           ref={ref}
           onClick={onClick}
-          className="inline-flex flex-col items-center justify-center px-5 hover:bg-primary-foreground/10 group text-primary-foreground/70 hover:text-primary-foreground/80 transition-colors focus:text-primary-foreground/80 focus:outline-none"
+          className="group inline-flex flex-col items-center justify-center px-5 text-primary-foreground/70 transition-colors hover:bg-primary-foreground/10 hover:text-primary-foreground/80 focus:text-primary-foreground/80 focus:outline-none"
         >
           {icon}
         </TooltipTrigger>
-        <TooltipContent className="pointer-events-none h-5 items-center gap-1 rounded border bg-muted px-1.5 font-mono font-medium opacity-100 flex">
+        <TooltipContent className="pointer-events-none flex h-5 items-center gap-1 rounded border bg-muted px-1.5 font-mono font-medium opacity-100">
           {toolTipContent}
         </TooltipContent>
       </Tooltip>
@@ -178,21 +179,21 @@ function ImageGridButton({
   keybind: string;
 }) {
   const imageGridWidthHeight = usePlayerStore(
-    (state) => state.imageGridWidthHeight
+    (state) => state.imageGridWidthHeight,
   );
   const toggleActionOnImage = usePlayerStore(
-    (state) => state.toggleActionOnImage
+    (state) => state.toggleActionOnImage,
   );
   const actionOnImage = usePlayerStore((state) => state.actionsOnImage);
   const setImageGridWidthHeight = usePlayerStore(
-    (state) => state.setImageGridWidthHeight
+    (state) => state.setImageGridWidthHeight,
   );
 
   return (
     <Popover>
       <PopoverTrigger asChild>{button}</PopoverTrigger>
       <PopoverContent>
-        <div className="flex items-center gap-2 mb-4 py-2">
+        <div className="mb-4 flex items-center gap-2 py-2">
           <Switch
             checked={!!actionOnImage.includes("GRID")}
             onCheckedChange={(e) => {
@@ -201,7 +202,7 @@ function ImageGridButton({
             id="image-grid"
           />
           <Label htmlFor="image-grid">Toggle Grid</Label>
-          <div className="pointer-events-none h-5 items-center rounded border bg-muted px-1.5 font-mono font-medium opacity-100 sm:flex text-xs ms-auto">
+          <div className="pointer-events-none ms-auto h-5 items-center rounded border bg-muted px-1.5 font-mono text-xs font-medium opacity-100 sm:flex">
             {keybind}
           </div>
         </div>
@@ -225,7 +226,7 @@ function EndSessionDialog({ button }: { button: ReactNode }) {
   const shuffle = usePlayerStore((state) => state.shuffle);
   const navigate = useNavigate();
 
-  useHotkeys(["esc"], () => {
+  useHotkeys(["Q"], () => {
     setOpen(true);
   });
 
@@ -258,7 +259,7 @@ function EndSessionDialog({ button }: { button: ReactNode }) {
         <div></div>
         <DialogFooter>
           <Button onClick={handleSave}>
-            <Save className="w-4 h-4 me-2" />
+            <Save className="me-2 h-4 w-4" />
             Save
           </Button>
           <Button
@@ -266,7 +267,7 @@ function EndSessionDialog({ button }: { button: ReactNode }) {
             variant={"ghost"}
             onClick={handleNavigateHome}
           >
-            <Home className="w-4 h-4 me-2" />
+            <Home className="me-2 h-4 w-4" />
             Home
           </Button>
         </DialogFooter>

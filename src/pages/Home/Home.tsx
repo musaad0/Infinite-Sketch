@@ -1,10 +1,9 @@
 import Folders from "@/pages/Home/Folders";
-import { IntervalPicker } from "@/pages/Home/IntervalPicker";
 import Control from "@/pages/Home/Control";
-import { Moon, Sun } from "lucide-react";
 import { AppContextMenu } from "@/AppContextMenu";
 import { ThemeToggle } from "@/pages/Home/ThemeToggle";
 import { useEffect } from "react";
+import { PlayModes } from "@/pages/Home/PlayModes";
 
 export default function Home() {
   useEffect(() => {
@@ -19,7 +18,7 @@ export default function Home() {
         <ThemeToggle />
         <div className="max-w-sm mx-auto py-4 px-2">
           <Folders />
-          <IntervalPicker />
+          <PlayModes />
           <Control />
         </div>
       </div>

@@ -5,10 +5,10 @@ import "./apis/shortcuts";
 import "./styles.css";
 import { appWindow } from "@tauri-apps/api/window";
 
-appWindow.setDecorations(true);
+// appWindow.setDecorations(true);
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>
+  </React.StrictMode>,
 );
