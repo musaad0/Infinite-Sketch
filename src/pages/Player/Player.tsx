@@ -1,12 +1,12 @@
 import "./styles.css";
 import { useFoldersStore } from "@/store/foldersStore";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { ActionOnImage, usePlayerStore } from "@/store/playerStore";
 import { IFile, Timer } from "@/models";
 import { PlayerControls } from "@/pages/Player/PlayerControls";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Pencil } from "lucide-react";
-import { useBoolean, useUpdateEffect, useInterval } from "@/hooks";
+import { useBoolean } from "@/hooks";
 import { cn, HHMMSS, shuffleList } from "@/utils";
 import { AppContextMenu } from "@/AppContextMenu";
 import { shallow, useAppStore } from "@/store";
@@ -132,14 +132,15 @@ function Countdown({ filesLength }: { filesLength: number }) {
   const classModeIndex = useRef<number>(0);
 
   const intervals = usePlayerStore((state) => state.intervals);
+  const imagesToDraw = usePlayerStore((state) => state.imagesToDraw);
   const interval = intervals[classModeIndex.current].timer;
 
   const [isPlaying, setIsPlaying] = usePlayerStore(
     (state) => [state.isPlaying, state.setIsPlaying],
     shallow,
   );
-  const [index, nextIndex] = usePlayerStore(
-    (state) => [state.index, state.nextIndex],
+  const [index, nextIndex, setIndex] = usePlayerStore(
+    (state) => [state.index, state.nextIndex, state.setIndex],
     shallow,
   );
 
@@ -186,13 +187,25 @@ function Countdown({ filesLength }: { filesLength: number }) {
           size={80}
           strokeWidth={4}
           key={index}
-          colors={["#ffffff", "#F7B801", "#A30000", "#A30000"]}
-          colorsTime={[curInt, 7, 5, 2, 0]}
+          // this won't be set --> this is just for typescript --> enter component to see color
+          colors="#"
           onComplete={() => {
             // if last image
-            if (filesLength - 1 === index) return;
-            nextIndex();
+            if (filesLength - 1 === index) {
+              setIndex(0);
+              setIsPlaying(false);
+              return;
+            }
+            if (
+              playMode === "quantity" &&
+              currentIntervalImagesSeen.current === imagesToDraw
+            ) {
+              setIndex(0);
+              setIsPlaying(false);
+              return;
+            }
 
+            nextIndex();
             currentIntervalImagesSeen.current += 1;
 
             return { shouldRepeat: true, delay: 0 };
@@ -213,8 +226,7 @@ function Countdown({ filesLength }: { filesLength: number }) {
           key={index}
           size={300}
           duration={curInt}
-          colors={["#004777", "#F7B801", "#A30000", "#A30000"]}
-          colorsTime={[7, 5, 2, 0]}
+          colors="#"
           onComplete={() => {
             isBreak.setFalse();
           }}

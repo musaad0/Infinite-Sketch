@@ -52,7 +52,7 @@ export default function Folders({}: Props) {
         }}
       >
         Upload File
-        <UploadCloudIcon className="w-4 h-4 ms-2" />
+        <UploadCloudIcon className="ms-2 h-4 w-4" />
       </Button>
       <FoldersTable />
     </>
@@ -66,16 +66,19 @@ function FoldersTable() {
 
   return (
     <div className="px-4 sm:px-6 lg:px-8">
-      <div className="mt-6 border-t border-gray-100">
+      <div className="mt-6">
         {/* Mimick a table because animating table causes issues with useAutoAnimate */}
-        <dl ref={parent} className="divide-y divide-gray-100">
+        <dl
+          ref={parent}
+          className="divide-y divide-gray-200 dark:divide-muted-foreground"
+        >
           {folders.map((item) => (
             <div
               key={item.id}
-              className="flex items-center justify-between py-2 gap-4 text-sm"
+              className="flex items-center justify-between gap-4 py-2 text-sm"
             >
-              <div className="flex justify-between w-72 items-center">
-                <dt className="font-medium text-primary truncate overflow-hidden w-40">
+              <div className="flex w-72 items-center justify-between">
+                <dt className="w-40 overflow-hidden truncate font-medium text-primary">
                   {item.name}
                 </dt>
                 <dd className="">{item.files.length}</dd>
@@ -87,13 +90,13 @@ function FoldersTable() {
                 }}
                 className="text-red-400 hover:text-red-500"
               >
-                <Trash2Icon className="w-4 h-4" />
+                <Trash2Icon className="h-4 w-4" />
               </Button>
             </div>
           ))}
-          <div className="flex items-center justify-between py-2 gap-4 text-sm">
-            <div className="flex justify-between w-72 items-center">
-              <dt className="font-medium text-primary truncate overflow-hidden w-40">
+          <div className="flex items-center justify-between gap-4 py-2 text-sm">
+            <div className="flex w-72 items-center justify-between">
+              <dt className="w-40 overflow-hidden truncate font-medium text-primary">
                 Total
               </dt>
               <dd className="">
@@ -101,7 +104,7 @@ function FoldersTable() {
               </dd>
             </div>
             <div className={"h-10 px-4 py-2"}>
-              <div className="w-4 h-4" />
+              <div className="h-4 w-4" />
             </div>
           </div>
         </dl>

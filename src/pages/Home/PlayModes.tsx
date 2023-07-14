@@ -1,10 +1,14 @@
 import {
+  Button,
+  Input,
+  Label,
   Select,
   SelectContent,
   SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Switch,
   Tabs,
   TabsContent,
   TabsList,
@@ -14,9 +18,9 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components";
-import { CLASS_MODE_OPTIONS } from "@/constants";
+import { CLASS_MODES, CLASS_MODE_OPTIONS } from "@/constants";
 import { Timer } from "@/models";
-import { PlayMode, usePlayerStore } from "@/store";
+import { PlayMode, usePlayerStore, shallow } from "@/store";
 import { convertSecondsToReadableTime } from "@/utils";
 import { useEffect, useState } from "react";
 
@@ -40,7 +44,7 @@ export function PlayModes() {
       >
         <TabsList
           defaultValue={playMode}
-          className="grid w-full grid-cols-3 my-5"
+          className="my-5 grid w-full grid-cols-3"
         >
           <TabsTrigger value={tabs.fixed}>Fixed</TabsTrigger>
           <TabsTrigger value={tabs.class}>Class</TabsTrigger>
@@ -52,7 +56,50 @@ export function PlayModes() {
         <TabsContent value={tabs.class}>
           <ClassMode />
         </TabsContent>
+        <TabsContent className="space-y-4" value={tabs.quantity}>
+          <IntervalPicker />
+          <QuantityMode />
+        </TabsContent>
       </Tabs>
+    </div>
+  );
+}
+
+function QuantityMode() {
+  const [imagesToDraw, setImagesToDraw] = usePlayerStore(
+    (state) => [state.imagesToDraw, state.setImagesToDraw],
+    shallow,
+  );
+
+  return (
+    <div className="space-y-4">
+      <div className="space-y-1">
+        <div className="flex gap-1">
+          {([10, 20, 30, 40] as const).map((item) => (
+            <Button
+              type="button"
+              key={item}
+              variant="outline"
+              onClick={() => {
+                setImagesToDraw(item);
+              }}
+            >
+              {item}
+            </Button>
+          ))}
+          <Input
+            aria-label="images to draw"
+            value={imagesToDraw}
+            onChange={(e) => {
+              const val = e.currentTarget.value;
+              if (val) setImagesToDraw(parseInt(val));
+            }}
+            defaultValue={10}
+            type="number"
+            id="images_to_draw"
+          />
+        </div>
+      </div>
     </div>
   );
 }
@@ -70,23 +117,22 @@ function IntervalPicker() {
 
   return (
     <div>
-      <span className="isolate inline-flex rounded-md shadow-sm">
+      <span className="flex gap-1">
         {(["30s", "45s", "2m", "5m"] as const).map((item) => (
-          <button
+          <Button
             type="button"
             key={item}
+            variant="outline"
             onClick={() => {
               setInputValue(item);
             }}
-            className="relative -ml-px inline-flex items-center first:rounded-l-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10"
           >
             {item}
-          </button>
+          </Button>
         ))}
-        <input
+        <Input
           value={inputValue}
           onChange={(e) => setInputValue(e.currentTarget.value)}
-          className="relative -ml-px inline-flex items-center bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus:z-10 focus:outline-none rounded-r-md"
         />
       </span>
     </div>
@@ -95,11 +141,14 @@ function IntervalPicker() {
 
 function ClassMode() {
   const setClassModeLength = usePlayerStore(
-    (state) => state.setClassModeLength
+    (state) => state.setClassModeLength,
   );
   return (
     <div>
-      <Select onValueChange={setClassModeLength}>
+      <Select
+        defaultValue={CLASS_MODE_OPTIONS[0]}
+        onValueChange={setClassModeLength}
+      >
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select an option" />
         </SelectTrigger>
@@ -111,15 +160,32 @@ function ClassMode() {
                   <TooltipTrigger asChild>
                     <SelectItem value={item}>
                       {convertSecondsToReadableTime(
-                        parseInt(item.split("m")[0]) * 60
+                        parseInt(item.split("m")[0]) * 60,
                       )}
                     </SelectItem>
                   </TooltipTrigger>
-                  <TooltipContent side="top">
-                    <p>10 images, 30 seconds</p>
-                    <p>10 images, 30 seconds</p>
-                    <p>10 images, 30 seconds</p>
-                    <p>10 images, 30 seconds</p>
+                  <TooltipContent className="w-64" side="top">
+                    {CLASS_MODES[item].map((item) => (
+                      <div>
+                        <p>
+                          {item.imagesToPlay}{" "}
+                          {item.imagesToPlay > 1 ? "images" : "image"},{" "}
+                          {item.timer.includes("s")
+                            ? `${item.timer.split("s")[0]} seconds`
+                            : `${item.timer.split("m")[0]} minutes`}
+                          {item.break?.breakBetweenEachImageTime ? (
+                            <>, break {item.break.breakBetweenEachImageTime}</>
+                          ) : (
+                            ""
+                          )}
+                        </p>
+                        {item.break?.breakAfterSectionEndsTime ? (
+                          <p>{item.break.breakAfterSectionEndsTime} break</p>
+                        ) : (
+                          ""
+                        )}
+                      </div>
+                    ))}
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>

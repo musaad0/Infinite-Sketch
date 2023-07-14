@@ -39,7 +39,7 @@ export default function Control({}: Props) {
         },
       ]);
     } else if (playMode === "class") {
-      setIntervals(CLASS_MODES["30m"]);
+      setIntervals(CLASS_MODES[usePlayerStore.getState().classModeLength]);
     }
     navigate("/player");
   };

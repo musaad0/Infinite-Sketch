@@ -1,3 +1,4 @@
+import { cn } from "@/utils";
 import { Props, useCountdown } from "react-countdown-circle-timer";
 
 export const timeStyle: React.CSSProperties = {
@@ -46,7 +47,7 @@ export function CountdownCircleTimer(props: Props) {
         <path
           d={path}
           fill="none"
-          stroke={stroke}
+          className="stroke-muted-foreground"
           strokeLinecap={strokeLinecap ?? "round"}
           strokeWidth={strokeWidth}
           strokeDasharray={pathLength}

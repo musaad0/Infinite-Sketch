@@ -22,6 +22,7 @@ interface PlayerStore {
   index: number;
   isPlaying: boolean;
   playMode: PlayMode;
+  imagesToDraw: number;
   intervals: SessionInterval[];
   imagesSeen: number;
   actionsOnImage: z.infer<typeof actionsOnImageSchema>[];
@@ -39,6 +40,7 @@ interface PlayerStore {
   nextIndex: () => void;
   setIndex: (index: number) => void;
   previousIndex: () => void;
+  setImagesToDraw: (val: number) => void;
 }
 
 export const usePlayerStore = create<PlayerStore>((set) => ({
@@ -46,6 +48,7 @@ export const usePlayerStore = create<PlayerStore>((set) => ({
   index: 0,
   isPlaying: false,
   breakTime: "30s",
+  imagesToDraw: 10,
   intervals: [
     {
       timer: "30s",
@@ -62,6 +65,7 @@ export const usePlayerStore = create<PlayerStore>((set) => ({
     seed: 0,
   },
   setImageGridWidthHeight: (val) => set({ imageGridWidthHeight: val }),
+  setImagesToDraw: (val) => set({ imagesToDraw: val }),
   setClassModeLength: (val) => set({ classModeLength: val }),
   setPlayMode: (val) => set({ playMode: val }),
   setIntervals: (val) => set({ intervals: val }),
