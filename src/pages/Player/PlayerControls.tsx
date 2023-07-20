@@ -26,6 +26,7 @@ import {
   Pause,
   Play,
   Save,
+  SearchX,
   Square,
   StepBack,
   StepForward,
@@ -71,11 +72,12 @@ export function PlayerControls({ filesLength }: Props) {
   });
   useHotkeys(["mod+H"], () => toggleActionOnImage("FLIP_HORIZONTAL"));
   useHotkeys(["mod+B"], () => toggleActionOnImage("BLACK_AND_WHITE"));
+  useHotkeys(["mod+Z"], () => toggleActionOnImage("DISABLE_ZOOM"));
   const keybind = keybindForOs(os);
 
   return (
     <div className="fixed bottom-0 left-0 z-50 h-7 w-full bg-primary/60 opacity-0  backdrop-blur-sm transition-opacity hover:opacity-100">
-      <div className="mx-auto grid h-full max-w-lg grid-cols-7 font-medium">
+      <div className="mx-auto grid h-full max-w-lg grid-cols-8 font-medium">
         <PlayerControlButton
           toolTipContent="←"
           onClick={handlePrev}
@@ -126,6 +128,16 @@ export function PlayerControls({ filesLength }: Props) {
               <Grid className="h-4 w-4" />{" "}
             </button>
           }
+        />
+        <PlayerControlButton
+          onClick={() => toggleActionOnImage("DISABLE_ZOOM")}
+          toolTipContent={
+            <div>
+              Disable Zoom: &nbsp;
+              {keybind([ModifierKeys.Control], ["Z"])}
+            </div>
+          }
+          icon={<SearchX className="h-4 w-4" />}
         />
         <EndSessionDialog
           button={

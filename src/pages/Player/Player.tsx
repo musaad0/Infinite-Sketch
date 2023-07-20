@@ -67,10 +67,12 @@ const imageTransformationsClassNames: Record<ActionOnImage, string> = {
   FLIP_HORIZONTAL: "-scale-x-100",
   FLIP_VERTICAL: "-scale-y-100",
   GRID: "opacity-[96]",
+  DISABLE_ZOOM: "",
 };
 
 function DisplayedImage({ files }: { files: IFile[] }) {
   const index = usePlayerStore((state) => state.index);
+  // can't drag and drop image with zoom enable so we have to provide an option to disable zoom
   const imageGridWidthHeight = usePlayerStore(
     (state) => state.imageGridWidthHeight,
   );
@@ -78,23 +80,36 @@ function DisplayedImage({ files }: { files: IFile[] }) {
   return (
     <Avatar className="relative">
       <div className="relative mx-auto max-w-max overflow-hidden">
-        <TransformWrapper
-          wheel={{
-            smoothStep: 0.002,
-          }}
-        >
-          <TransformComponent>
-            <AvatarImage
-              src={files[index].path}
-              className={cn(
-                "mx-auto h-screen max-w-full object-contain animate-in fade-in duration-700",
-                ...actionOnImage.map(
-                  (item) => imageTransformationsClassNames[item],
-                ),
-              )}
-            />
-          </TransformComponent>
-        </TransformWrapper>
+        {/* TODO: FIGURE OUT A WAY TO ALLOW DRAGGING AN IMAGE TO OUTSIDE APP WITHOUT REMOVING ZOOM */}
+        {!actionOnImage.includes("DISABLE_ZOOM") ? (
+          <TransformWrapper
+            wheel={{
+              smoothStep: 0.002,
+            }}
+          >
+            <TransformComponent>
+              <AvatarImage
+                src={files[index].path}
+                className={cn(
+                  "mx-auto h-screen max-w-full object-contain animate-in fade-in duration-700",
+                  ...actionOnImage.map(
+                    (item) => imageTransformationsClassNames[item],
+                  ),
+                )}
+              />
+            </TransformComponent>
+          </TransformWrapper>
+        ) : (
+          <AvatarImage
+            src={files[index].path}
+            className={cn(
+              "mx-auto h-screen max-w-full object-contain animate-in fade-in duration-700",
+              ...actionOnImage.map(
+                (item) => imageTransformationsClassNames[item],
+              ),
+            )}
+          />
+        )}
         {actionOnImage.includes("GRID") && (
           <div
             style={{

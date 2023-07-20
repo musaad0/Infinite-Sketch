@@ -12,6 +12,7 @@ const actionsOnImageSchema = z.enum([
   "FLIP_VERTICAL",
   "BLACK_AND_WHITE",
   "GRID",
+  "DISABLE_ZOOM",
 ]);
 
 export type ActionOnImage = z.infer<typeof actionsOnImageSchema>;
