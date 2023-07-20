@@ -2,7 +2,7 @@ import { getFilesRecursively } from "@/apis/files";
 import { Button, Progress, toast } from "@/components";
 import { Toggle } from "@/components/ui/toggle";
 import { CLASS_MODES } from "@/constants";
-import { useFoldersStore } from "@/store/foldersStore";
+import { useFoldersStore, shallow } from "@/store";
 import { usePlayerStore } from "@/store/playerStore";
 import { getSessionData } from "@/store/systemStore";
 import { Palmtree, Pen, Shuffle } from "lucide-react";
@@ -18,10 +18,14 @@ export default function Control({}: Props) {
     .flat();
   const setFolders = useFoldersStore((state) => state.setFolders);
   const addFolder = useFoldersStore((state) => state.addFolder);
-  const setIndex = usePlayerStore((state) => state.setIndex);
-  const index = usePlayerStore((state) => state.index);
-  const setShuffle = usePlayerStore((state) => state.setShuffle);
-  const shuffle = usePlayerStore((state) => state.shuffle);
+  const [index, setIndex] = usePlayerStore(
+    (state) => [state.index, state.setIndex],
+    shallow,
+  );
+  const [shuffle, setShuffle] = usePlayerStore(
+    (state) => [state.shuffle, state.setShuffle],
+    shallow,
+  );
   const setIntervals = usePlayerStore((state) => state.setIntervals);
   const playMode = usePlayerStore((state) => state.playMode);
 
@@ -30,11 +34,14 @@ export default function Control({}: Props) {
     files.length && index ? (progress > 100 ? 100 : progress) : 0;
 
   const handleStart = () => {
-    if (playMode === "fixed") {
+    if (playMode === "fixed" || playMode === "quantity") {
       setIntervals([
         {
           timer: usePlayerStore.getState().timer,
-          imagesToPlay: files.length,
+          imagesToPlay:
+            playMode === "fixed"
+              ? files.length
+              : usePlayerStore.getState().imagesToDraw,
           break: {},
         },
       ]);
@@ -69,9 +76,9 @@ export default function Control({}: Props) {
   };
 
   return (
-    <div className="py-10 space-y-8">
+    <div className="space-y-8 py-10">
       <Button disabled={!files.length} onClick={handleStart} className="w-full">
-        <Pen className="w-4 h-4 me-2" />
+        <Pen className="me-2 h-4 w-4" />
         Start
       </Button>
       <div className="flex gap-4">
@@ -94,7 +101,7 @@ export default function Control({}: Props) {
           }
           pressed={shuffle.isShuffle}
         >
-          <Shuffle className="w-4 h-4" />
+          <Shuffle className="h-4 w-4" />
         </Toggle>
       </div>
       <div className="space-y-4">

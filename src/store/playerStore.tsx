@@ -1,5 +1,6 @@
 import { ClassMode, SessionInterval } from "@/constants";
 import { Shuffle, Timer } from "@/models";
+import { playModesEnum } from "@/models/playModes";
 import { z } from "zod";
 import { create } from "zustand";
 
@@ -15,7 +16,7 @@ const actionsOnImageSchema = z.enum([
 
 export type ActionOnImage = z.infer<typeof actionsOnImageSchema>;
 
-export type PlayMode = "fixed" | "quantity" | "class";
+export type PlayMode = z.infer<typeof playModesEnum>;
 
 interface PlayerStore {
   timer: Timer;
@@ -23,6 +24,9 @@ interface PlayerStore {
   isPlaying: boolean;
   playMode: PlayMode;
   imagesToDraw: number;
+  intervalIndex: number;
+  isBreak: boolean;
+  breakTime: Timer;
   intervals: SessionInterval[];
   imagesSeen: number;
   actionsOnImage: z.infer<typeof actionsOnImageSchema>[];
@@ -41,13 +45,19 @@ interface PlayerStore {
   setIndex: (index: number) => void;
   previousIndex: () => void;
   setImagesToDraw: (val: number) => void;
+  setBreakTime: (val: Timer) => void;
+  setIsBreak: (val: boolean) => void;
+  addImagesSeen: (val: number) => void;
+  setIntervalIndex: (val: number) => void;
 }
 
 export const usePlayerStore = create<PlayerStore>((set) => ({
   timer: "30s",
   index: 0,
   isPlaying: false,
-  breakTime: "30s",
+  intervalIndex: 0,
+  isBreak: false,
+  breakTime: "3s",
   imagesToDraw: 10,
   intervals: [
     {
@@ -65,6 +75,11 @@ export const usePlayerStore = create<PlayerStore>((set) => ({
     seed: 0,
   },
   setImageGridWidthHeight: (val) => set({ imageGridWidthHeight: val }),
+  setIsBreak: (val) => set({ isBreak: val }),
+  setIntervalIndex: (val) => set({ intervalIndex: val }),
+  addImagesSeen: (val) =>
+    set((state) => ({ imagesSeen: state.imagesSeen + val })),
+  setBreakTime: (val) => set({ breakTime: val }),
   setImagesToDraw: (val) => set({ imagesToDraw: val }),
   setClassModeLength: (val) => set({ classModeLength: val }),
   setPlayMode: (val) => set({ playMode: val }),

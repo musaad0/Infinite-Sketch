@@ -223,7 +223,13 @@ function EndSessionDialog({ button }: { button: ReactNode }) {
   const [open, setOpen] = useState(false);
   const folders = useFoldersStore((state) => state.folders);
   const index = usePlayerStore((state) => state.index);
+  const playMode = usePlayerStore((state) => state.playMode);
+  const [isBreak, breakTime] = usePlayerStore((state) => [
+    state.isBreak,
+    state.breakTime,
+  ]);
   const shuffle = usePlayerStore((state) => state.shuffle);
+  const intervalIndex = usePlayerStore((state) => state.intervalIndex);
   const navigate = useNavigate();
 
   useHotkeys(["Q"], () => {
@@ -233,7 +239,11 @@ function EndSessionDialog({ button }: { button: ReactNode }) {
   const handleSave = () => {
     storeSessionData({
       folders: folders.map((item) => item.path),
+      playMode: playMode,
       index,
+      intervalIndex: intervalIndex,
+      breakTime: breakTime,
+      isBreak: isBreak,
       shuffle,
     });
     navigate("/");

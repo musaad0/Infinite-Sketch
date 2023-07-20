@@ -50,8 +50,9 @@ export function PlayModes() {
           <TabsTrigger value={tabs.class}>Class</TabsTrigger>
           <TabsTrigger value={tabs.quantity}> Quantity</TabsTrigger>
         </TabsList>
-        <TabsContent value={tabs.fixed}>
+        <TabsContent className="space-y-4" value={tabs.fixed}>
           <IntervalPicker />
+          <Break />
         </TabsContent>
         <TabsContent value={tabs.class}>
           <ClassMode />
@@ -59,6 +60,7 @@ export function PlayModes() {
         <TabsContent className="space-y-4" value={tabs.quantity}>
           <IntervalPicker />
           <QuantityMode />
+          <Break />
         </TabsContent>
       </Tabs>
     </div>
@@ -94,7 +96,6 @@ function QuantityMode() {
               const val = e.currentTarget.value;
               if (val) setImagesToDraw(parseInt(val));
             }}
-            defaultValue={10}
             type="number"
             id="images_to_draw"
           />
@@ -139,6 +140,57 @@ function IntervalPicker() {
   );
 }
 
+function Break() {
+  const [inputValue, setInputValue] = useState<number>(3);
+  const [unit, setUnit] = useState<string>("s");
+  const [isBreak, setIsBreak] = usePlayerStore(
+    (state) => [state.isBreak, state.setIsBreak],
+    shallow,
+  );
+  const [setBreakTime] = usePlayerStore(
+    (state) => [state.setBreakTime],
+    shallow,
+  );
+
+  useEffect(() => {
+    if (inputValue && unit) {
+      const val = inputValue + unit;
+      setBreakTime(val as Timer);
+    }
+  }, [inputValue, unit]);
+
+  return (
+    <div className="flex h-8 items-center gap-4">
+      <div className="flex items-center space-x-2">
+        <Switch onCheckedChange={setIsBreak} checked={isBreak} id="break" />
+        <Label htmlFor="break">Break</Label>
+      </div>
+      {isBreak && (
+        <div className="flex gap-1">
+          <Input
+            value={inputValue}
+            className="h-8 w-full invalid:border-destructive"
+            onChange={(e) => setInputValue(parseInt(e.currentTarget.value))}
+            type="number"
+          />
+
+          <Select defaultValue={unit} onValueChange={setUnit}>
+            <SelectTrigger className="h-8 w-24">
+              <SelectValue placeholder="Select an option" />
+            </SelectTrigger>
+            <SelectContent className="overflow-visible">
+              <SelectGroup>
+                <SelectItem value="s">Sec</SelectItem>
+                <SelectItem value="m">Min</SelectItem>
+              </SelectGroup>
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ClassMode() {
   const setClassModeLength = usePlayerStore(
     (state) => state.setClassModeLength,
@@ -165,8 +217,8 @@ function ClassMode() {
                     </SelectItem>
                   </TooltipTrigger>
                   <TooltipContent className="w-64" side="top">
-                    {CLASS_MODES[item].map((item) => (
-                      <div>
+                    {CLASS_MODES[item].map((item, index) => (
+                      <div key={index}>
                         <p>
                           {item.imagesToPlay}{" "}
                           {item.imagesToPlay > 1 ? "images" : "image"},{" "}

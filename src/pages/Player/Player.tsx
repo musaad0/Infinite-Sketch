@@ -7,7 +7,7 @@ import { PlayerControls } from "@/pages/Player/PlayerControls";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Pencil } from "lucide-react";
 import { useBoolean } from "@/hooks";
-import { cn, HHMMSS, shuffleList } from "@/utils";
+import { cn, convertInputToSecondsNumber, HHMMSS, shuffleList } from "@/utils";
 import { AppContextMenu } from "@/AppContextMenu";
 import { shallow, useAppStore } from "@/store";
 import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
@@ -114,26 +114,26 @@ function DisplayedImage({ files }: { files: IFile[] }) {
   );
 }
 
-function convertInputToSecondsNumber(intervalInput: Timer) {
-  const lastInputChar = intervalInput[intervalInput.length - 1].toLowerCase();
-  if (typeof lastInputChar === "string" && lastInputChar === "m") {
-    // convert minutes to seconds
-    return parseInt(intervalInput, 10) * 60;
-  }
-  // seconds is default
-  return parseInt(intervalInput, 10);
-}
-
 function Countdown({ filesLength }: { filesLength: number }) {
   // The counter
   const currentIntervalImagesSeen = useRef<number>(0);
-  // const isBreak = useRef<boolean>(false);
   const isBreak = useBoolean(false);
-  const classModeIndex = useRef<number>(0);
+  const [selectedBreak, selectedBreakTime] = usePlayerStore((state) => [
+    state.isBreak,
+    state.breakTime,
+  ]);
+  const setIntervalIndex = usePlayerStore((state) => state.setIntervalIndex);
+  const addImagesSeen = usePlayerStore((state) => state.addImagesSeen);
+  const intervalIndex = useRef<number>(usePlayerStore.getState().intervalIndex);
 
   const intervals = usePlayerStore((state) => state.intervals);
   const imagesToDraw = usePlayerStore((state) => state.imagesToDraw);
-  const interval = intervals[classModeIndex.current].timer;
+  const interval =
+    intervals[
+      intervalIndex.current + 1 >= intervals.length
+        ? intervals.length - 1
+        : intervalIndex.current
+    ].timer;
 
   const [isPlaying, setIsPlaying] = usePlayerStore(
     (state) => [state.isPlaying, state.setIsPlaying],
@@ -147,26 +147,28 @@ function Countdown({ filesLength }: { filesLength: number }) {
   const playMode = usePlayerStore((state) => state.playMode);
 
   const curInt = useMemo(() => {
+    return convertInputToSecondsNumber(interval);
+  }, [index]);
+
+  const breakInterval = useMemo(() => {
     let currentInterval = interval;
-    // Class mode stuff
-    if (playMode === "class") {
-      const currentClassInterval = intervals[classModeIndex.current];
+
+    if (playMode === "fixed" || playMode === "quantity") {
+      currentInterval = selectedBreakTime;
+    } else if (playMode === "class") {
+      const currentClassInterval = intervals[intervalIndex.current];
+      const breakAfterSectionEndsTime =
+        currentClassInterval.break?.breakAfterSectionEndsTime;
       if (
-        currentIntervalImagesSeen.current === currentClassInterval.imagesToPlay
+        currentIntervalImagesSeen.current ===
+          currentClassInterval.imagesToPlay &&
+        breakAfterSectionEndsTime
       ) {
-        currentInterval =
-          currentClassInterval.break?.breakAfterSectionEndsTime ?? interval;
-        isBreak.setValue(
-          !!currentClassInterval.break?.breakAfterSectionEndsTime,
-        );
-        classModeIndex.current += 1;
-        currentIntervalImagesSeen.current = 0;
+        currentInterval = breakAfterSectionEndsTime;
       } else {
         currentInterval =
-          currentClassInterval.break?.breakBetweenEachImageTime ?? interval;
-        isBreak.setValue(
-          !!currentClassInterval.break?.breakBetweenEachImageTime,
-        );
+          currentClassInterval.break?.breakBetweenEachImageTime ??
+          selectedBreakTime;
       }
     }
 
@@ -175,6 +177,9 @@ function Countdown({ filesLength }: { filesLength: number }) {
 
   useEffect(() => {
     setIsPlaying(true);
+    usePlayerStore.subscribe(
+      (state) => (intervalIndex.current = state.intervalIndex),
+    );
   }, []);
 
   return (
@@ -190,11 +195,39 @@ function Countdown({ filesLength }: { filesLength: number }) {
           // this won't be set --> this is just for typescript --> enter component to see color
           colors="#"
           onComplete={() => {
+            currentIntervalImagesSeen.current += 1;
+            // append one to total seen images
+            addImagesSeen(1);
             // if last image
             if (filesLength - 1 === index) {
               setIndex(0);
               setIsPlaying(false);
               return;
+            }
+            // check if there is a break
+            if (
+              (playMode === "fixed" || playMode === "quantity") &&
+              selectedBreak
+            ) {
+              isBreak.setTrue();
+            } else if (playMode === "class") {
+              const currentClassInterval = intervals[intervalIndex.current];
+              const currentClassBreak = currentClassInterval.break;
+              if (
+                currentIntervalImagesSeen.current ===
+                currentClassInterval.imagesToPlay
+              ) {
+                isBreak.setValue(
+                  !!currentClassBreak?.breakAfterSectionEndsTime,
+                );
+                setIntervalIndex(intervalIndex.current + 1);
+
+                currentIntervalImagesSeen.current = 0;
+              } else {
+                isBreak.setValue(
+                  !!currentClassBreak?.breakBetweenEachImageTime,
+                );
+              }
             }
             if (
               playMode === "quantity" &&
@@ -206,7 +239,6 @@ function Countdown({ filesLength }: { filesLength: number }) {
             }
 
             nextIndex();
-            currentIntervalImagesSeen.current += 1;
 
             return { shouldRepeat: true, delay: 0 };
           }}
@@ -225,7 +257,7 @@ function Countdown({ filesLength }: { filesLength: number }) {
           strokeWidth={4}
           key={index}
           size={300}
-          duration={curInt}
+          duration={breakInterval}
           colors="#"
           onComplete={() => {
             isBreak.setFalse();

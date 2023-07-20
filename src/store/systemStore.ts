@@ -1,10 +1,15 @@
 import { ThemeScema, shuffleSchema } from "@/models";
+import { playModesEnum } from "@/models/playModes";
 import { Store } from "tauri-plugin-store-api";
 import { z } from "zod";
 
 const sessionSchema = z.object({
   index: z.number(),
   folders: z.array(z.string()),
+  playMode: playModesEnum,
+  isBreak: z.boolean(),
+  intervalIndex: z.number(),
+  breakTime: z.string(),
   shuffle: shuffleSchema,
 });
 
