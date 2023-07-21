@@ -4,6 +4,7 @@ import { AppContextMenu } from "@/AppContextMenu";
 import { ThemeToggle } from "@/pages/Home/ThemeToggle";
 import { useEffect } from "react";
 import { PlayModes } from "@/pages/Home/PlayModes";
+import Stats from "@/pages/Home/Stats";
 
 export default function Home() {
   useEffect(() => {
@@ -16,10 +17,11 @@ export default function Home() {
     <AppContextMenu>
       <div className="min-h-screen">
         <ThemeToggle />
-        <div className="max-w-sm mx-auto py-4 px-2">
+        <div className="mx-auto max-w-sm px-2 py-4">
           <Folders />
           <PlayModes />
           <Control />
+          <Stats />
         </div>
       </div>
     </AppContextMenu>

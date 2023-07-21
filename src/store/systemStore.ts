@@ -23,7 +23,7 @@ type SessionStore = z.infer<typeof sessionSchema>;
 export type SettingsStore = z.infer<typeof settingsSchema>;
 
 const settingsStore = new Store(".settings.dat");
-const sessionStore = new Store("session");
+export const sessionStore = new Store("session");
 
 export async function storeSessionData(data: SessionStore) {
   const parsedData = sessionSchema.safeParse(data);

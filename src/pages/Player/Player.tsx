@@ -6,7 +6,7 @@ import { IFile, Timer } from "@/models";
 import { PlayerControls } from "@/pages/Player/PlayerControls";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Pencil } from "lucide-react";
-import { useBoolean } from "@/hooks";
+import { useBoolean, useInterval } from "@/hooks";
 import { cn, convertInputToSecondsNumber, HHMMSS, shuffleList } from "@/utils";
 import { AppContextMenu } from "@/AppContextMenu";
 import { shallow, useAppStore } from "@/store";
@@ -56,10 +56,29 @@ export function Player({}: Props) {
           <Countdown filesLength={files.length} />
           {files.length && <DisplayedImage files={files} />}
           <PlayerControls filesLength={files.length} />
+          <CalculatePlayTime />
         </div>
       </div>
     </AppContextMenu>
   );
+}
+
+// save time played every something seconds
+const INTERVAL_TO_SAVE = 15; // in seconds
+
+function CalculatePlayTime() {
+  const isPlaying = usePlayerStore((state) => state.isPlaying);
+  const addTotalTimePlayed = usePlayerStore(
+    (state) => state.addTotalTimePlayed,
+  );
+  const counter = useRef<number>(INTERVAL_TO_SAVE);
+  useInterval(
+    () => {
+      addTotalTimePlayed(INTERVAL_TO_SAVE);
+    },
+    isPlaying ? 1000 * INTERVAL_TO_SAVE : null,
+  );
+  return <></>;
 }
 
 const imageTransformationsClassNames: Record<ActionOnImage, string> = {

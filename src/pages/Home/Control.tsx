@@ -105,7 +105,6 @@ export default function Control({}: Props) {
         </Toggle>
       </div>
       <div className="space-y-4">
-        <Progress value={progressVal} />
         <div className="relative">
           <div className="absolute inset-0 flex items-center">
             <span className="w-full border-t" />
@@ -116,6 +115,7 @@ export default function Control({}: Props) {
             </span>
           </div>
         </div>
+        <Progress value={progressVal} />
       </div>
     </div>
   );

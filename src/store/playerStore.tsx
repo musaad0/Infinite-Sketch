@@ -1,6 +1,7 @@
 import { ClassMode, SessionInterval } from "@/constants";
 import { Shuffle, Timer } from "@/models";
 import { playModesEnum } from "@/models/playModes";
+import { sessionStore } from "@/store/systemStore";
 import { z } from "zod";
 import { create } from "zustand";
 
@@ -25,6 +26,12 @@ interface PlayerStore {
   isPlaying: boolean;
   playMode: PlayMode;
   imagesToDraw: number;
+  /**
+   * Counts the time in seconds that the interval is on.
+   * doesn't count breaks.
+   * should be saved every X seconds.
+   */
+  totalTimePlayed: number;
   intervalIndex: number;
   isBreak: boolean;
   breakTime: Timer;
@@ -47,6 +54,7 @@ interface PlayerStore {
   previousIndex: () => void;
   setImagesToDraw: (val: number) => void;
   setBreakTime: (val: Timer) => void;
+  addTotalTimePlayed: (val: number) => void;
   setIsBreak: (val: boolean) => void;
   addImagesSeen: (val: number) => void;
   setIntervalIndex: (val: number) => void;
@@ -58,6 +66,7 @@ export const usePlayerStore = create<PlayerStore>((set) => ({
   isPlaying: false,
   intervalIndex: 0,
   isBreak: false,
+  totalTimePlayed: 0,
   breakTime: "3s",
   imagesToDraw: 10,
   intervals: [
@@ -77,9 +86,19 @@ export const usePlayerStore = create<PlayerStore>((set) => ({
   },
   setImageGridWidthHeight: (val) => set({ imageGridWidthHeight: val }),
   setIsBreak: (val) => set({ isBreak: val }),
+  addTotalTimePlayed: (val) =>
+    set((state) => {
+      const total = state.totalTimePlayed + val;
+      sessionStore.set("totalTimePlayed", total);
+      return { totalTimePlayed: total };
+    }),
   setIntervalIndex: (val) => set({ intervalIndex: val }),
   addImagesSeen: (val) =>
-    set((state) => ({ imagesSeen: state.imagesSeen + val })),
+    set((state) => {
+      const total = state.imagesSeen + val;
+      sessionStore.set("imagesSeen", total);
+      return { imagesSeen: total };
+    }),
   setBreakTime: (val) => set({ breakTime: val }),
   setImagesToDraw: (val) => set({ imagesToDraw: val }),
   setClassModeLength: (val) => set({ classModeLength: val }),
@@ -137,3 +156,16 @@ export const usePlayerStore = create<PlayerStore>((set) => ({
       };
     }),
 }));
+
+async function loadFromStorage() {
+  const imagesSeen = await sessionStore.get("imagesSeen");
+  const parsedImagesSeen = z.number().safeParse(imagesSeen);
+  if (parsedImagesSeen.success)
+    usePlayerStore.getState().addImagesSeen(parsedImagesSeen.data);
+  const totalTimePlayed = await sessionStore.get("totalTimePlayed");
+  const totalTimePlayedParsed = z.number().safeParse(totalTimePlayed);
+  if (totalTimePlayedParsed.success)
+    usePlayerStore.getState().addTotalTimePlayed(totalTimePlayedParsed.data);
+}
+
+loadFromStorage();
