@@ -5,6 +5,17 @@ import { ThemeToggle } from "@/pages/Home/ThemeToggle";
 import { useEffect } from "react";
 import { PlayModes } from "@/pages/Home/PlayModes";
 import Stats from "@/pages/Home/Stats";
+import { Settings2 } from "lucide-react";
+import {
+  Button,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+  toast,
+} from "@/components";
+import { usePlayerStore } from "@/store";
+import { storeSessionData } from "@/store/systemStore";
 
 export default function Home() {
   useEffect(() => {
@@ -16,7 +27,10 @@ export default function Home() {
   return (
     <AppContextMenu>
       <div className="min-h-screen">
-        <ThemeToggle />
+        <div className="flex items-center">
+          <ThemeToggle />
+          <Settings />
+        </div>
         <div className="mx-auto max-w-sm px-2 py-4">
           <Folders />
           <PlayModes />
@@ -25,5 +39,49 @@ export default function Home() {
         </div>
       </div>
     </AppContextMenu>
+  );
+}
+
+function Settings() {
+  const playMode = usePlayerStore((state) => state.playMode);
+  const [isBreak, breakTime] = usePlayerStore((state) => [
+    state.isBreak,
+    state.breakTime,
+  ]);
+  const shuffle = usePlayerStore((state) => state.shuffle);
+
+  const handleSave = () => {
+    const randomSeed = Math.floor(Math.random() * 10000 + 1);
+    storeSessionData({
+      playMode: playMode,
+      imagesToDraw: usePlayerStore.getState().imagesToDraw,
+      breakTime: breakTime,
+      timer: usePlayerStore.getState().timer,
+      classModeLength: usePlayerStore.getState().classModeLength,
+      isBreak: isBreak,
+      shuffle: {
+        isShuffle: shuffle.isShuffle,
+        seed: randomSeed,
+      },
+    });
+    toast.success("Your current settings became the default");
+  };
+
+  return (
+    <div>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="ghost" size="icon" onClick={handleSave}>
+              <Settings2 />
+              <span className="sr-only">Toggle theme</span>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Save current settings</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
+    </div>
   );
 }

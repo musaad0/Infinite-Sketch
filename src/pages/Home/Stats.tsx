@@ -1,8 +1,7 @@
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { usePlayerStore } from "@/store";
 import { prettifyNumber } from "@/utils";
-import { Clock, DollarSign, ImagePlus } from "lucide-react";
-import React from "react";
+import { Clock, ImagePlus } from "lucide-react";
 
 type Props = {};
 
@@ -48,7 +47,6 @@ export default function Stats({}: Props) {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">
-              {/* {prettifyNumber(timeSpentDrawing)} */}
               {prettifyTime(timeSpentDrawing)}
             </div>
             <p className="text-xs text-muted-foreground">Drawing</p>

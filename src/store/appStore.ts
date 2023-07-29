@@ -17,8 +17,13 @@ interface AppStore {
   theme: Theme;
   transparentToMouse: boolean;
   windowBordersBars: boolean;
-  // Opacity in the player page
+  /**
+   * Opacity in the player page
+   */
   windowOpacity: number;
+  /**
+   * Ignore mouse events
+   */
   setTransparentToMouse: (val: boolean) => Promise<void>;
   setTheme: (val: Theme) => void;
   setWindowOpacity: (val: number) => void;

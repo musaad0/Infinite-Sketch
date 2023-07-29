@@ -35,10 +35,11 @@ import {
 import { useHotkeys, useNavigate } from "@/hooks";
 import React, { ReactNode, useState } from "react";
 import { useFoldersStore } from "@/store/foldersStore";
-import { storeSessionData } from "@/store/systemStore";
+import { storeProgress, storeSessionData } from "@/store/systemStore";
 import { useAppStore } from "@/store";
 import { keybindForOs } from "@/utils";
 import { ModifierKeys } from "@/constants";
+import { useSessionStore } from "@/store/sessionStore";
 
 type Props = {
   filesLength: number;
@@ -175,7 +176,7 @@ const PlayerControlButton = React.forwardRef<
         >
           {icon}
         </TooltipTrigger>
-        <TooltipContent className="pointer-events-none flex h-5 items-center gap-1 rounded border bg-muted px-1.5 font-mono font-medium opacity-100">
+        <TooltipContent className="font-mono pointer-events-none flex h-5 items-center gap-1 rounded border bg-muted px-1.5 font-medium opacity-100">
           {toolTipContent}
         </TooltipContent>
       </Tooltip>
@@ -214,7 +215,7 @@ function ImageGridButton({
             id="image-grid"
           />
           <Label htmlFor="image-grid">Toggle Grid</Label>
-          <div className="pointer-events-none ms-auto h-5 items-center rounded border bg-muted px-1.5 font-mono text-xs font-medium opacity-100 sm:flex">
+          <div className="font-mono pointer-events-none ms-auto h-5 items-center rounded border bg-muted px-1.5 text-xs font-medium opacity-100 sm:flex">
             {keybind}
           </div>
         </div>
@@ -235,12 +236,9 @@ function EndSessionDialog({ button }: { button: ReactNode }) {
   const [open, setOpen] = useState(false);
   const folders = useFoldersStore((state) => state.folders);
   const index = usePlayerStore((state) => state.index);
-  const playMode = usePlayerStore((state) => state.playMode);
-  const [isBreak, breakTime] = usePlayerStore((state) => [
-    state.isBreak,
-    state.breakTime,
-  ]);
   const shuffle = usePlayerStore((state) => state.shuffle);
+  const saveProgress = useSessionStore((state) => state.saveProgress);
+  const sessionId = useSessionStore((state) => state.sessionId);
   const intervalIndex = usePlayerStore((state) => state.intervalIndex);
   const navigate = useNavigate();
 
@@ -249,13 +247,10 @@ function EndSessionDialog({ button }: { button: ReactNode }) {
   });
 
   const handleSave = () => {
-    storeSessionData({
-      folders: folders.map((item) => item.path),
-      playMode: playMode,
+    saveProgress({
       index,
       intervalIndex: intervalIndex,
-      breakTime: breakTime,
-      isBreak: isBreak,
+      sessionId: sessionId,
       shuffle,
     });
     navigate("/");

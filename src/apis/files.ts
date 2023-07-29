@@ -45,3 +45,5 @@ export async function getFilesRecursively(foldersPaths: string[]) {
   }
   return folders;
 }
+
+export { basename };

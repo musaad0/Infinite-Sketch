@@ -66,6 +66,9 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
+    fontFamily: {
+      sans: ["Sora"]
+    }
   },
   plugins: [
     require("tailwindcss-animate"),

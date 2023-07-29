@@ -106,8 +106,13 @@ function QuantityMode() {
 }
 
 function IntervalPicker() {
-  const [inputValue, setInputValue] = useState<string>("30s");
+  const [inputValue, setInputValue] = useState<string>(
+    usePlayerStore.getState().timer,
+  );
   const setTimer = usePlayerStore((state) => state.setTimer);
+  const defaultSessionLoaded = usePlayerStore(
+    (state) => state.defaultSessionLoaded,
+  );
 
   useEffect(() => {
     if (inputValue) {
@@ -115,6 +120,10 @@ function IntervalPicker() {
       if (regex) setTimer(inputValue as Timer);
     }
   }, [inputValue]);
+
+  useEffect(() => {
+    if (defaultSessionLoaded) setInputValue(usePlayerStore.getState().timer);
+  }, [defaultSessionLoaded]);
 
   return (
     <div>
@@ -192,15 +201,13 @@ function Break() {
 }
 
 function ClassMode() {
-  const setClassModeLength = usePlayerStore(
-    (state) => state.setClassModeLength,
+  const [classModeLength, setClassModeLength] = usePlayerStore(
+    (state) => [state.classModeLength, state.setClassModeLength],
+    shallow,
   );
   return (
     <div>
-      <Select
-        defaultValue={CLASS_MODE_OPTIONS[0]}
-        onValueChange={setClassModeLength}
-      >
+      <Select value={classModeLength} onValueChange={setClassModeLength}>
         <SelectTrigger className="w-full">
           <SelectValue placeholder="Select an option" />
         </SelectTrigger>
