@@ -1,8 +1,10 @@
-import { ThemeScema, shuffleSchema } from "@/models";
-import { playModesEnum } from "@/models/playModes";
-import { Progress, ProgressSchema } from "@/store/common";
 import { Store } from "tauri-plugin-store-api";
 import { z } from "zod";
+
+import { Progress, ProgressSchema } from "@/store/common";
+
+import { ThemeScema, shuffleSchema } from "@/models";
+import { playModesEnum } from "@/models/playModes";
 
 // TODO: move & update this schema to a common one and use actual types instead of z.string()
 const sessionSchema = z.object({

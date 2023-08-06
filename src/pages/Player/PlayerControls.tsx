@@ -1,4 +1,19 @@
 import {
+  FlipHorizontal2,
+  Grid,
+  Home,
+  Pause,
+  Play,
+  Save,
+  SearchX,
+  Square,
+  StepBack,
+  StepForward,
+  SunMoon,
+} from "lucide-react";
+import React, { ReactNode, useState } from "react";
+
+import {
   Button,
   Dialog,
   DialogContent,
@@ -18,28 +33,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components";
-import { usePlayerStore } from "@/store/playerStore";
-import {
-  FlipHorizontal2,
-  Grid,
-  Home,
-  Pause,
-  Play,
-  Save,
-  SearchX,
-  Square,
-  StepBack,
-  StepForward,
-  SunMoon,
-} from "lucide-react";
-import { useHotkeys, useNavigate } from "@/hooks";
-import React, { ReactNode, useState } from "react";
-import { useFoldersStore } from "@/store/foldersStore";
-import { storeProgress, storeSessionData } from "@/store/systemStore";
+
 import { useAppStore } from "@/store";
-import { keybindForOs } from "@/utils";
-import { ModifierKeys } from "@/constants";
+import { useFoldersStore } from "@/store/foldersStore";
+import { usePlayerStore } from "@/store/playerStore";
 import { useSessionStore } from "@/store/sessionStore";
+import { storeProgress, storeSessionData } from "@/store/systemStore";
+
+import { ModifierKeys } from "@/constants";
+import { useHotkeys, useNavigate } from "@/hooks";
+import { keybindForOs } from "@/utils";
 
 type Props = {
   filesLength: number;

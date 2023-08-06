@@ -1,8 +1,9 @@
-import { IFile } from "@/models";
+import { type FileEntry, readDir } from "@tauri-apps/api/fs";
 import { basename, extname } from "@tauri-apps/api/path";
-import { readDir, type FileEntry } from "@tauri-apps/api/fs";
 import { convertFileSrc } from "@tauri-apps/api/tauri";
 import { nanoid } from "nanoid";
+
+import { IFile } from "@/models";
 
 let files: IFile[] = [];
 

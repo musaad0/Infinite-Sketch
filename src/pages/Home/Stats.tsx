@@ -1,7 +1,10 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { usePlayerStore } from "@/store";
-import { prettifyNumber } from "@/utils";
 import { Clock, ImagePlus } from "lucide-react";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+
+import { usePlayerStore } from "@/store";
+
+import { prettifyNumber } from "@/utils";
 
 type Props = {};
 

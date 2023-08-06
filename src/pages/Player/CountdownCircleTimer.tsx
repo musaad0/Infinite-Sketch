@@ -1,5 +1,6 @@
-import { cn } from "@/utils";
 import { Props, useCountdown } from "react-countdown-circle-timer";
+
+import { cn } from "@/utils";
 
 export const timeStyle: React.CSSProperties = {
   display: "flex",

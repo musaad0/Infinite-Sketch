@@ -1,11 +1,12 @@
-import Folders from "@/pages/Home/Folders";
-import Control from "@/pages/Home/Control";
-import { AppContextMenu } from "@/AppContextMenu";
-import { ThemeToggle } from "@/pages/Home/ThemeToggle";
+import { Folder, Settings2 } from "lucide-react";
 import { useEffect } from "react";
+
+import Control from "@/pages/Home/Control";
+import Folders from "@/pages/Home/Folders";
 import { PlayModes } from "@/pages/Home/PlayModes";
 import Stats from "@/pages/Home/Stats";
-import { Folder, Settings2 } from "lucide-react";
+import { ThemeToggle } from "@/pages/Home/ThemeToggle";
+
 import {
   Button,
   Tooltip,
@@ -14,9 +15,12 @@ import {
   TooltipTrigger,
   toast,
 } from "@/components";
+
 import { usePlayerStore } from "@/store";
-import { storeSessionData } from "@/store/systemStore";
 import { useSessionStore } from "@/store/sessionStore";
+import { storeSessionData } from "@/store/systemStore";
+
+import { AppContextMenu } from "@/AppContextMenu";
 import { cn } from "@/utils";
 
 export default function Home() {

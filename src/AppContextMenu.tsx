@@ -1,3 +1,5 @@
+import { ReactNode, useEffect, useState } from "react";
+
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,11 +18,12 @@ import {
   ContextMenuTrigger,
   Slider,
 } from "@/components";
+
 import { shallow, useAppStore } from "@/store";
-import { useHotkeys } from "@/hooks";
-import { ReactNode, useEffect, useState } from "react";
-import { keybindForOs } from "@/utils";
+
 import { ModifierKeys, modifierSymbols } from "@/constants";
+import { useHotkeys } from "@/hooks";
+import { keybindForOs } from "@/utils";
 
 export function AppContextMenu({ children }: { children: ReactNode }) {
   const {
@@ -45,7 +48,7 @@ export function AppContextMenu({ children }: { children: ReactNode }) {
       transparentToMouse: state.transparentToMouse,
       setTransparentToMouse: state.setTransparentToMouse,
     }),
-    shallow
+    shallow,
   );
 
   const keybind = keybindForOs(os);
@@ -63,7 +66,7 @@ export function AppContextMenu({ children }: { children: ReactNode }) {
   useHotkeys(["mod+shift+A"], () => setSlwaysOnTop(!alwaysOnTop));
   const alwaysOnTopKeybind = keybind(
     [ModifierKeys.Control, ModifierKeys.Shift],
-    ["A"]
+    ["A"],
   );
 
   useHotkeys(["mod+J"], () => setWindowOpacity(windowOpacity - 5));

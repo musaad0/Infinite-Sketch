@@ -1,17 +1,21 @@
-import "./styles.css";
-import { useFoldersStore } from "@/store/foldersStore";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { ActionOnImage, usePlayerStore } from "@/store/playerStore";
-import { IFile, Timer } from "@/models";
-import { PlayerControls } from "@/pages/Player/PlayerControls";
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Pencil } from "lucide-react";
-import { useBoolean, useInterval } from "@/hooks";
-import { cn, convertInputToSecondsNumber, HHMMSS, shuffleList } from "@/utils";
-import { AppContextMenu } from "@/AppContextMenu";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
+
+import { PlayerControls } from "@/pages/Player/PlayerControls";
+
 import { shallow, useAppStore } from "@/store";
-import { TransformWrapper, TransformComponent } from "react-zoom-pan-pinch";
+import { useFoldersStore } from "@/store/foldersStore";
+import { ActionOnImage, usePlayerStore } from "@/store/playerStore";
+
+import { AppContextMenu } from "@/AppContextMenu";
+import { useBoolean, useInterval } from "@/hooks";
+import { IFile } from "@/models";
+import { HHMMSS, cn, convertInputToSecondsNumber, shuffleList } from "@/utils";
+
 import { CountdownCircleTimer } from "./CountdownCircleTimer";
+import "./styles.css";
 
 type Props = {};
 

@@ -1,9 +1,11 @@
-import { open } from "@tauri-apps/api/dialog";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { open } from "@tauri-apps/api/dialog";
+import { Trash2Icon, UploadCloudIcon } from "lucide-react";
 
 import { Button, toast } from "@/components";
-import { Trash2Icon, UploadCloudIcon } from "lucide-react";
+
 import { useFoldersStore } from "@/store/foldersStore";
+
 import { getFilesRecursively } from "@/apis/files";
 
 type Props = {};

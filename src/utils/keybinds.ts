@@ -1,5 +1,4 @@
 // taken from https://github.com/spacedriveapp/spacedrive
-
 import { ModifierKeys, keySymbols, modifierSymbols } from "@/constants";
 import { OperatingSystem } from "@/models";
 
@@ -10,7 +9,7 @@ function capitalize<T extends string>(string: T): Capitalize<T> {
 export function keybind<T extends string>(
   modifers: ModifierKeys[],
   keys: T[],
-  tauriOs: OperatingSystem
+  tauriOs: OperatingSystem,
 ) {
   if (keys.length === 0) return "";
 
@@ -24,7 +23,7 @@ export function keybind<T extends string>(
 
   if (os === "macOS" && !modifers.includes(ModifierKeys.Meta)) {
     const index = modifers.findIndex(
-      (modifier) => modifier === ModifierKeys.Control
+      (modifier) => modifier === ModifierKeys.Control,
     );
     if (index !== -1) modifers[index] = ModifierKeys.Meta;
   }
@@ -38,7 +37,7 @@ export function keybind<T extends string>(
 }
 
 export function keybindForOs(
-  os: OperatingSystem
+  os: OperatingSystem,
 ): (modifers: ModifierKeys[], keys: string[]) => string {
   return (modifers: ModifierKeys[], keys: string[]) =>
     keybind(modifers, keys, os);

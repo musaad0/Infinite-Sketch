@@ -1,3 +1,5 @@
+import { useEffect, useState } from "react";
+
 import {
   Button,
   Input,
@@ -18,11 +20,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components";
+
+import { PlayMode, shallow, usePlayerStore } from "@/store";
+
 import { CLASS_MODES, CLASS_MODE_OPTIONS } from "@/constants";
 import { Timer } from "@/models";
-import { PlayMode, usePlayerStore, shallow } from "@/store";
 import { convertSecondsToReadableTime } from "@/utils";
-import { useEffect, useState } from "react";
 
 const tabs: Record<PlayMode, PlayMode> = {
   class: "class",

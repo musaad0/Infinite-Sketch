@@ -1,8 +1,10 @@
-import { shuffleSchema } from "@/models";
-import { Progress, StoreKeysEnum } from "@/store/common";
-import { getProgress, sessionStore, storeProgress } from "@/store/systemStore";
 import { z } from "zod";
 import { create } from "zustand";
+
+import { Progress, StoreKeysEnum } from "@/store/common";
+import { getProgress, sessionStore, storeProgress } from "@/store/systemStore";
+
+import { shuffleSchema } from "@/models";
 
 // TODO: migrate Sessions and progress to sqlite
 

@@ -1,8 +1,9 @@
 import { Moon, Sun } from "lucide-react";
+import { useEffect } from "react";
 
 import { Button } from "@/components/ui/button";
+
 import { useAppStore } from "@/store";
-import { useEffect } from "react";
 
 export function ThemeToggle() {
   const theme = useAppStore((state) => state.theme);

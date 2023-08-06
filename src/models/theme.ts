@@ -1,5 +1,6 @@
-import { THEMES } from "@/constants";
 import { z } from "zod";
+
+import { THEMES } from "@/constants";
 
 export const ThemeScema = z.enum(THEMES);
 

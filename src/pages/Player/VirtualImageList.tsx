@@ -1,7 +1,9 @@
-import * as React from "react";
 import { useWindowVirtualizer } from "@tanstack/react-virtual";
-import { IFile } from "@/models";
+import * as React from "react";
+
 import { usePlayerStore } from "@/store/playerStore";
+
+import { IFile } from "@/models";
 import { cn } from "@/utils";
 
 export const RowVirtualizerDynamicWindow = ({ files }: { files: IFile[] }) => {

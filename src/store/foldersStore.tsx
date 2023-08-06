@@ -1,5 +1,6 @@
-import { IFile, IFolder } from "@/models";
 import { create } from "zustand";
+
+import { IFile, IFolder } from "@/models";
 
 // TODO: move this to app store
 

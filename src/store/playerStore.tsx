@@ -1,9 +1,11 @@
+import { z } from "zod";
+import { create } from "zustand";
+
+import { getSessionData, sessionStore } from "@/store/systemStore";
+
 import { ClassMode, SessionInterval } from "@/constants";
 import { Shuffle, Timer } from "@/models";
 import { playModesEnum } from "@/models/playModes";
-import { getSessionData, sessionStore } from "@/store/systemStore";
-import { z } from "zod";
-import { create } from "zustand";
 
 // TODO: move this to app store
 // TODO: Split & Refactor

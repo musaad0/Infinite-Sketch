@@ -1,4 +1,12 @@
-import { getFilesRecursively } from "@/apis/files";
+import { useAutoAnimate } from "@formkit/auto-animate/react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Check, Folder, Pen, Save, Shuffle, Trash2 } from "lucide-react";
+import { nanoid } from "nanoid";
+import { useMemo } from "react";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router";
+import { z } from "zod";
+
 import {
   Button,
   Card,
@@ -26,20 +34,15 @@ import {
   toast,
 } from "@/components";
 import { Toggle } from "@/components/ui/toggle";
-import { CLASS_MODES } from "@/constants";
-import { useBoolean } from "@/hooks";
+
 import { shallow, useFoldersStore } from "@/store";
 import { usePlayerStore } from "@/store/playerStore";
 import { useSessionStore } from "@/store/sessionStore";
+
+import { getFilesRecursively } from "@/apis/files";
+import { CLASS_MODES } from "@/constants";
+import { useBoolean } from "@/hooks";
 import { cn } from "@/utils";
-import { useAutoAnimate } from "@formkit/auto-animate/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, Folder, Pen, Save, Shuffle, Trash2 } from "lucide-react";
-import { nanoid } from "nanoid";
-import { useMemo } from "react";
-import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
-import { z } from "zod";
 
 type Props = {};
 

@@ -1,3 +1,7 @@
+import { create } from "zustand";
+
+import { getSettings, storeSettings } from "@/store/systemStore";
+
 import {
   getOsTheme,
   setAlwaysOnTop,
@@ -5,9 +9,8 @@ import {
   setTransparentToMouse,
 } from "@/apis";
 import { OperatingSystem, Theme } from "@/models";
-import { getSettings, storeSettings } from "@/store/systemStore";
 import { guessOperatingSystem } from "@/utils/useOperatingSystem";
-import { create } from "zustand";
+
 // TODO: put all other stores here
 
 interface AppStore {
