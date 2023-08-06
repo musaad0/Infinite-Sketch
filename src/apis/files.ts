@@ -25,7 +25,7 @@ async function processEntries(entries: FileEntry[]) {
 }
 
 export async function getFilesRecursively(foldersPaths: string[]) {
-  if (!foldersPaths) return;
+  if (!foldersPaths) throw new Error("No paths provided");
   const folders = [];
   for (let i = 0; i < foldersPaths.length; i++) {
     files = [];

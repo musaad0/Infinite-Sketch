@@ -5,7 +5,7 @@ import { ThemeToggle } from "@/pages/Home/ThemeToggle";
 import { useEffect } from "react";
 import { PlayModes } from "@/pages/Home/PlayModes";
 import Stats from "@/pages/Home/Stats";
-import { Settings2 } from "lucide-react";
+import { Folder, Settings2 } from "lucide-react";
 import {
   Button,
   Tooltip,
@@ -16,6 +16,8 @@ import {
 } from "@/components";
 import { usePlayerStore } from "@/store";
 import { storeSessionData } from "@/store/systemStore";
+import { useSessionStore } from "@/store/sessionStore";
+import { cn } from "@/utils";
 
 export default function Home() {
   useEffect(() => {
@@ -30,6 +32,7 @@ export default function Home() {
         <div className="flex items-center">
           <ThemeToggle />
           <Settings />
+          <SessionTag />
         </div>
         <div className="mx-auto max-w-sm px-2 py-4">
           <Folders />
@@ -39,6 +42,22 @@ export default function Home() {
         </div>
       </div>
     </AppContextMenu>
+  );
+}
+
+function SessionTag() {
+  const sesisons = useSessionStore((state) => state.sessions);
+  const sessionId = useSessionStore((state) => state.sessionId);
+  return (
+    <div
+      className={cn(
+        "m-4 ms-auto flex items-center gap-2 rounded-md border p-2 text-sm",
+        !sessionId && "hidden",
+      )}
+    >
+      <Folder className="h-4 w-4" />
+      {sesisons.find((item) => item.id === sessionId)?.name}
+    </div>
   );
 }
 

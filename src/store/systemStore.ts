@@ -15,10 +15,13 @@ const sessionSchema = z.object({
   shuffle: shuffleSchema.optional(),
 });
 
-const settingsSchema = z.object({
-  alwaysOnTop: z.boolean().optional(),
-  theme: ThemeScema.optional(),
-});
+const settingsSchema = z
+  .object({
+    alwaysOnTop: z.boolean().optional(),
+    theme: ThemeScema.optional(),
+  })
+  .optional()
+  .nullable();
 
 type SessionStore = z.infer<typeof sessionSchema>;
 
@@ -58,7 +61,7 @@ export async function getSettings() {
 }
 
 export async function storeProgress(data: Progress[]) {
-  const parsedData = ProgressSchema.safeParse(data);
+  const parsedData = z.array(ProgressSchema).safeParse(data);
 
   if (!parsedData.success) return;
 
@@ -68,7 +71,7 @@ export async function storeProgress(data: Progress[]) {
 }
 
 export async function getProgress() {
-  return await settingsStore
+  return await sessionStore
     .get("progress")
     .then((item) => z.array(ProgressSchema).parse(item));
 }

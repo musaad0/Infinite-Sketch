@@ -238,6 +238,7 @@ function EndSessionDialog({ button }: { button: ReactNode }) {
   const index = usePlayerStore((state) => state.index);
   const shuffle = usePlayerStore((state) => state.shuffle);
   const saveProgress = useSessionStore((state) => state.saveProgress);
+  const editSession = useSessionStore((state) => state.editSession);
   const sessionId = useSessionStore((state) => state.sessionId);
   const intervalIndex = usePlayerStore((state) => state.intervalIndex);
   const navigate = useNavigate();
@@ -247,10 +248,11 @@ function EndSessionDialog({ button }: { button: ReactNode }) {
   });
 
   const handleSave = () => {
+    editSession({ id: sessionId || "DEFAULT", folders: folders });
     saveProgress({
       index,
       intervalIndex: intervalIndex,
-      sessionId: sessionId,
+      sessionId: sessionId || "DEFAULT",
       shuffle,
     });
     navigate("/");

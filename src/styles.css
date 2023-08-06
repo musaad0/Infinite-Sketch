@@ -77,6 +77,24 @@
   }
 }
 
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/Sora-Regular.ttf");
+  font-weight: 400;
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/Sora-SemiBold.ttf");
+  font-weight: 600;
+}
+
+@font-face {
+  font-family: "Sora";
+  src: url("/fonts/Sora-Bold.ttf");
+  font-weight: 700;
+}
+
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   /* display: none; <- Crashes Chrome on hover */

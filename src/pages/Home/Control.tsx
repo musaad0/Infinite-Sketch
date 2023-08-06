@@ -31,10 +31,12 @@ import { useBoolean } from "@/hooks";
 import { shallow, useFoldersStore } from "@/store";
 import { usePlayerStore } from "@/store/playerStore";
 import { useSessionStore } from "@/store/sessionStore";
+import { cn } from "@/utils";
 import { useAutoAnimate } from "@formkit/auto-animate/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Pen, Save, Shuffle, Trash2 } from "lucide-react";
+import { Check, Folder, Pen, Save, Shuffle, Trash2 } from "lucide-react";
 import { nanoid } from "nanoid";
+import { useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import { z } from "zod";
@@ -57,6 +59,7 @@ export default function Control({}: Props) {
   );
   const setIntervals = usePlayerStore((state) => state.setIntervals);
   const playMode = usePlayerStore((state) => state.playMode);
+  const setSessionId = useSessionStore((state) => state.setSessionId);
 
   const progress = Math.floor(((index + 1) / files.length) * 100);
   const progressVal =
@@ -80,27 +83,9 @@ export default function Control({}: Props) {
     navigate("/player");
   };
 
-  // const loadSession = async () => {
-  //   // if there are already uploaded files don't update the session
-  //   const session = await getSessionData();
-  //   const progress = await getProgress();
-  //   if (progress.index) setIndex(progress.index);
-  //   if (session.shuffle) setShuffle(session.shuffle);
-  //   const loadingToast = toast.loading("Adding Files... ");
-  //   if (progress.folders) {
-  //     const folders = await getFilesRecursively(progress.folders);
-
-  //     folders?.forEach((item) => {
-  //       addFolder(item);
-  //     });
-  //   }
-  //   toast.success("Added Files Successfully", {
-  //     id: loadingToast,
-  //   });
-  // };
-
   const reset = async () => {
     setIndex(0);
+    setSessionId("");
     setFolders([]);
     setShuffle({
       isShuffle: false,
@@ -154,20 +139,43 @@ function LoadSessionsDialog() {
   const isOpen = useBoolean(false);
   const [parent] = useAutoAnimate();
   const sessions = useSessionStore((state) => state.sessions);
+  const sessionId = useSessionStore((state) => state.sessionId);
+  const progress = useSessionStore((state) => state.progress);
   const removeSession = useSessionStore((state) => state.removeSession);
   const setSessionId = useSessionStore((state) => state.setSessionId);
   const setFolders = useFoldersStore((state) => state.setFolders);
+  const [setIndex, setIntervalIndex, setShuffle] = usePlayerStore((state) => [
+    state.setIndex,
+    state.setIntervalIndex,
+    state.setShuffle,
+  ]);
 
-  const handleSaveSession = async (id: string, foldersPaths: string[]) => {
-    const loadingToast = toast.loading("Loading Session");
-    const folders = await getFilesRecursively(foldersPaths);
-    if (folders?.length) {
-      setFolders(folders);
+  const handleLoadSessions = async (id: string, foldersPaths: string[]) => {
+    if (!foldersPaths.length) {
       setSessionId(id);
-      toast.success("Session Loaded", {
-        id: loadingToast,
-      });
-    } else {
+      return;
+    }
+    const loadingToast = toast.loading("Loading Session");
+    try {
+      const folders = await getFilesRecursively(foldersPaths);
+      const findProgress = progress.find((item) => item.sessionId === id);
+      console.log(progress);
+      setIndex(findProgress?.index ?? 0);
+      setShuffle(
+        findProgress?.shuffle ?? {
+          isShuffle: false,
+          seed: 0,
+        },
+      );
+      setIntervalIndex(findProgress?.intervalIndex ?? 0);
+      if (folders?.length) {
+        setFolders(folders);
+        setSessionId(id);
+        toast.success("Session Loaded", {
+          id: loadingToast,
+        });
+      }
+    } catch {
       toast.error("Something went wrong", {
         id: loadingToast,
       });
@@ -177,12 +185,7 @@ function LoadSessionsDialog() {
   return (
     <Dialog open={isOpen.value} onOpenChange={isOpen.setValue}>
       <DialogTrigger asChild>
-        <Button
-          // disabled={!!files.length}
-          className="w-full"
-        >
-          Load Session
-        </Button>
+        <Button className="w-full">Load Session</Button>
       </DialogTrigger>
       <DialogContent
         onCloseAutoFocus={(e) => e.preventDefault()}
@@ -200,7 +203,17 @@ function LoadSessionsDialog() {
             {sessions.map((item) => (
               <Card key={item.id}>
                 <CardHeader className="pb-0">
-                  <CardTitle className="text-base">{item.name}</CardTitle>
+                  <div className="flex justify-between">
+                    <CardTitle className="text-base">{item.name}</CardTitle>
+                    <span
+                      className={cn(
+                        "ps-auto inline-block",
+                        item.id !== sessionId && "hidden",
+                      )}
+                    >
+                      <Check className="h-4 w-4" />
+                    </span>
+                  </div>
                   <CardDescription className="flex">
                     folders: &nbsp;
                     {item.folders.map((folder, index) => (
@@ -216,8 +229,9 @@ function LoadSessionsDialog() {
                 <CardContent className="text-sm"></CardContent>
                 <CardFooter className="gap-4">
                   <Button
+                    className={cn(item.id === sessionId && "hidden")}
                     onClick={() => {
-                      handleSaveSession(
+                      handleLoadSessions(
                         item.id,
                         item.folders.map((item) => item.path),
                       );
@@ -227,7 +241,7 @@ function LoadSessionsDialog() {
                   >
                     Select
                   </Button>
-                  {item.id === "DEFAULT" && (
+                  {item.id !== "DEFAULT" && (
                     <Button
                       onClick={() => {
                         removeSession(item.id);
@@ -255,6 +269,13 @@ const saveSessionSchema = z.object({
 function SaveSessionDialog({ filesLength }: { filesLength: number }) {
   const isOpen = useBoolean(false);
   const addSession = useSessionStore((state) => state.addSession);
+  const editSession = useSessionStore((state) => state.editSession);
+  const sessionId = useSessionStore((state) => state.sessionId);
+  const sessions = useSessionStore((state) => state.sessions);
+  const currentSession = useMemo(
+    () => sessions.find((item) => item.id === sessionId),
+    [sessionId, sessions],
+  );
   const form = useForm<{
     sessionName: string;
   }>({
@@ -264,7 +285,6 @@ function SaveSessionDialog({ filesLength }: { filesLength: number }) {
     mode: "onTouched",
     resolver: zodResolver(saveSessionSchema),
   });
-  console.log(form.formState.errors);
 
   return (
     <Dialog open={isOpen.value} onOpenChange={isOpen.setValue}>
@@ -277,9 +297,31 @@ function SaveSessionDialog({ filesLength }: { filesLength: number }) {
         <DialogHeader>
           <DialogTitle>Save current session</DialogTitle>
           <DialogDescription>
-            Save your current session so you can load them whenever you want
+            Your added folders will be saved
           </DialogDescription>
         </DialogHeader>
+        {sessionId && (
+          <>
+            <div className="flex items-center space-x-4">
+              <Button
+                onClick={() => {
+                  editSession({
+                    id: sessionId || "DEFAULT",
+                    folders: useFoldersStore.getState().folders,
+                  });
+                }}
+                variant={"outline"}
+              >
+                Save for current session
+              </Button>
+              <div className="flex space-x-2">
+                <Folder className="w-4" />
+                <span className=" text-sm">{currentSession?.name}</span>
+              </div>
+            </div>
+            <p className="text-sm">or save in a new session...</p>
+          </>
+        )}
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit((formData) => {
@@ -298,7 +340,7 @@ function SaveSessionDialog({ filesLength }: { filesLength: number }) {
               name="sessionName"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Session Name</FormLabel>
+                  <FormLabel>New session Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Hands" {...field} />
                   </FormControl>

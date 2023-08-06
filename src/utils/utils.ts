@@ -1,8 +1,7 @@
-import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
-export function cn(...inputs: ClassValue[]) {
-  return twMerge(clsx(inputs));
+export function cn(...classes: unknown[]): string {
+  return twMerge(classes.filter(Boolean).join(" "));
 }
 
 export const prettifyNumber = (number: number) => {

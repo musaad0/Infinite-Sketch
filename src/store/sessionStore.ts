@@ -1,8 +1,10 @@
 import { shuffleSchema } from "@/models";
 import { Progress, StoreKeysEnum } from "@/store/common";
-import { sessionStore, storeProgress } from "@/store/systemStore";
+import { getProgress, sessionStore, storeProgress } from "@/store/systemStore";
 import { z } from "zod";
 import { create } from "zustand";
+
+// TODO: migrate Sessions and progress to sqlite
 
 const SessionSchema = z.object({
   id: z.string(),
@@ -13,45 +15,49 @@ const SessionSchema = z.object({
     }),
   ),
   name: z.string().nonempty(),
-  index: z.number().optional(),
-  shuffle: shuffleSchema.optional(),
 });
 
 type Session = z.infer<typeof SessionSchema>;
+
+type SessionId = "DEFAULT" | (string & {});
 
 interface Store {
   /**
    * Selected session from saved sessions
    */
-  sessionId: string;
+  sessionId?: SessionId;
   sessions: Session[];
   addSession: (val: Session) => void;
-  editSession: (val: Session) => void;
+  editSession: (
+    val: Partial<Session> & {
+      id: SessionId;
+    },
+  ) => void;
   setSessions: (val: Session[]) => void;
-  setSessionId: (val: string) => void;
-  removeSession: (id: string) => void;
+  setSessionId: (val: SessionId) => void;
+  removeSession: (id: SessionId) => void;
   progress: Progress[];
   saveProgress: (data: Progress) => void;
+  setProgress: (data: Progress[]) => void;
 }
 
 export const useSessionStore = create<Store>()((set) => ({
   sessions: [],
-  sessionId: "DEFAULT",
   progress: [],
   saveProgress: (data) =>
     set((state) => {
-      const foundIndex = state.progress.findIndex((item) => item.sessionId);
+      const foundIndex = state.progress.findIndex(
+        (item) => item.sessionId === data.sessionId,
+      );
       if (foundIndex === -1) {
         const newArr = [...state.progress, data];
         storeProgress(newArr);
         return {
-          progress: [...state.progress, data],
+          progress: newArr,
         };
       } else {
         const progress = [...state.progress];
-        progress[foundIndex] = {
-          ...data,
-        };
+        progress[foundIndex] = data;
         storeProgress(progress);
         return {
           progress: progress,
@@ -75,10 +81,19 @@ export const useSessionStore = create<Store>()((set) => ({
         sessions: sessions,
       };
     }),
+  setProgress: (val) => set({ progress: val }),
   editSession: (val) =>
     set((state) => {
-      const sessions = [...state.sessions, val];
-
+      const sessions = [...state.sessions];
+      for (let i = 0; i < sessions.length; i++) {
+        if (sessions[i].id === val.id) {
+          sessions[i] = {
+            ...sessions[i],
+            ...val,
+          };
+          break;
+        }
+      }
       sessionStore.set(StoreKeysEnum.Enum.sessions, sessions);
       return {
         sessions: sessions,
@@ -103,8 +118,7 @@ async function loadFromStorage() {
 
   const parsedSessions = z.array(SessionSchema).safeParse(sessions);
 
-  if (!parsedSessions.success) return;
-  if (parsedSessions.data.length === 0) {
+  if (!parsedSessions.success || parsedSessions.data.length === 0) {
     useSessionStore.getState().addSession({
       folders: [],
       id: "DEFAULT",
@@ -112,9 +126,24 @@ async function loadFromStorage() {
     });
     return;
   }
+
+  if (!parsedSessions.success) return;
+
   if (parsedSessions.data) {
     useSessionStore.getState().setSessions(parsedSessions.data.slice(0, 30));
   }
 }
 
+async function loadProgress() {
+  try {
+    const progress = await getProgress();
+    if (progress) {
+      useSessionStore.getState().setProgress(progress);
+    }
+  } catch (err) {
+    console.log(err);
+  }
+}
+
 loadFromStorage();
+loadProgress();
