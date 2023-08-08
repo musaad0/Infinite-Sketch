@@ -1291,6 +1291,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "infinite-sketch"
+version = "0.0.0"
+dependencies = [
+ "cocoa",
+ "raw-window-handle 0.3.4",
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tauri-plugin-persisted-scope",
+ "tauri-plugin-store",
+]
+
+[[package]]
 name = "instant"
 version = "0.1.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2866,20 +2880,6 @@ dependencies = [
  "futf",
  "mac",
  "utf-8",
-]
-
-[[package]]
-name = "test-tauri"
-version = "0.0.0"
-dependencies = [
- "cocoa",
- "raw-window-handle 0.3.4",
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tauri-plugin-persisted-scope",
- "tauri-plugin-store",
 ]
 
 [[package]]

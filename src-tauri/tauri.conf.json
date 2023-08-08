@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "test-tauri",
+    "productName": "infinite-sketch",
     "version": "0.0.0"
   },
   "tauri": {
@@ -88,7 +88,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.musaad.dev",
+      "identifier": "com.infinite-sketch.dev",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",
@@ -105,7 +105,7 @@
         "fullscreen": false,
         "resizable": true,
         "decorations": false,
-        "title": "test-tauri",
+        "title": "Infinite Sketch",
         "titleBarStyle": "Transparent",
         "transparent": true,
         "width": 800,
