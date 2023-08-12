@@ -8,6 +8,7 @@
     "preview": "vite preview",
     "tauri": "tauri"
   },
+  "packageManager": "pnpm@8.6.1",
   "dependencies": {
     "@formkit/auto-animate": "^0.7.0",
     "@headlessui/react": "^1.7.15",
@@ -30,7 +31,7 @@
     "@radix-ui/react-tooltip": "^1.0.6",
     "@tanstack/react-virtual": "3.0.0-beta.54",
     "@tauri-apps/api": "^1.4.0",
-    "class-variance-authority": "^0.6.0",
+    "class-variance-authority": "^0.7.0",
     "lucide-react": "^0.252.0",
     "nanoid": "^4.0.2",
     "react": "^18.2.0",
@@ -54,17 +55,15 @@
     "@types/node": "^18.7.10",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
-    "@types/react-lazy-load-image-component": "^1.5.3",
-    "@types/react-transition-group": "^4.4.6",
     "@vitejs/plugin-react": "^3.0.0",
     "autoprefixer": "^10.4.14",
-    "postcss": "^8.4.24",
-    "postcss-nesting": "^11.3.0",
-    "prettier": "^2.8.8",
-    "prettier-plugin-tailwindcss": "^0.3.0",
-    "tailwindcss": "^3.3.2",
+    "postcss": "^8.4.27",
+    "postcss-nesting": "^12.0.1",
+    "prettier": "^3.0.1",
+    "prettier-plugin-tailwindcss": "^0.5.0",
+    "tailwindcss": "^3.3.3",
     "tailwindcss-animate": "^1.0.6",
-    "typescript": "^4.9.5",
-    "vite": "^4.2.1"
+    "typescript": "^5.1.6",
+    "vite": "^4.4.9"
   }
 }

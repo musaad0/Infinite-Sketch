@@ -14,8 +14,10 @@ async function processEntries(entries: FileEntry[]) {
     if (entry.children) {
       await processEntries(entry.children);
     } else if (entry.name) {
-      const ext = await extname(entry.name);
-      if (allowedExts.includes(ext)) {
+      const ext = await extname(entry.name).catch((err) => {
+        return;
+      })
+      if (ext && allowedExts.includes(ext)) {
         files.push({
           name: entry.name,
           path: convertFileSrc(entry.path),
@@ -40,7 +42,7 @@ export async function getFilesRecursively(foldersPaths: string[]) {
         id: nanoid(),
         files: files,
       });
-    } catch {
+    } catch (err) {
       return [];
     }
   }

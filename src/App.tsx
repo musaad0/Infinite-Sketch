@@ -6,8 +6,6 @@ import { Player } from "@/pages/Player/Player";
 
 import { Toaster } from "@/components";
 
-import "./App.css";
-
 function App() {
   return (
     <div>

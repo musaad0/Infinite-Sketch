@@ -67,11 +67,11 @@ module.exports = {
       },
     },
     fontFamily: {
-      sans: ["Sora"]
-    }
+      sans: ["Sora"],
+    },
   },
   plugins: [
     require("tailwindcss-animate"),
-    require("prettier-plugin-tailwindcss"),
+    // require("prettier-plugin-tailwindcss"),
   ],
 };

@@ -100,13 +100,14 @@
     "security": {
       "csp": "default-src 'self'; img-src 'self' asset: https://asset.localhost"
     },
+    "macOSPrivateApi": true,
     "windows": [
       {
         "fullscreen": false,
         "resizable": true,
         "decorations": false,
         "title": "Infinite Sketch",
-        "titleBarStyle": "Transparent",
+        "titleBarStyle": "Visible",
         "transparent": true,
         "width": 800,
         "height": 600,
