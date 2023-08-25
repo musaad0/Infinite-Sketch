@@ -1,7 +1,13 @@
 {
   "name": "infinite-sketch",
   "private": true,
-  "version": "0.0.0",
+  "version": "2.0.0",
+  "license": "MIT",
+  "author": {
+    "name": "Musaad Alqubayl",
+    "email": "musaadalqubayl@gmail.com",
+    "url": "https://github.com/musaad0/Infinite-Sketch"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",

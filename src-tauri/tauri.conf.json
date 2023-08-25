@@ -8,9 +8,18 @@
   },
   "package": {
     "productName": "infinite-sketch",
-    "version": "0.0.0"
+    "version": "2.0.0"
   },
   "tauri": {
+    "updater": {
+      "active": false,
+      "dialog": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDI2QjQ2NDcyRkJCQjg0REQKUldUZGhMdjdjbVMwSm5leWIyUFRMZHF5dHNSa1g3UFljd3pzaVJzQXhZeWF3SUY1MEFVcTN6QnkK",
+      "windows": {
+        "installMode": "passive",
+        "installerArgs": []
+      }
+    },
     "allowlist": {
       "path": {
         "all": true
@@ -88,7 +97,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "com.infinite-sketch.dev",
+      "identifier": "app.infinitesketch.infinitesketch",
       "icon": [
         "icons/32x32.png",
         "icons/128x128.png",

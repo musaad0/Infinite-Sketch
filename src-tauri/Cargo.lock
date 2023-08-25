@@ -1299,7 +1299,7 @@ dependencies = [
 
 [[package]]
 name = "infinite-sketch"
-version = "0.0.0"
+version = "3.0.0"
 dependencies = [
  "cocoa",
  "raw-window-handle 0.3.4",

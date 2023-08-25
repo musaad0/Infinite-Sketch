@@ -1,9 +1,9 @@
 [package]
 name = "infinite-sketch"
-version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
-license = ""
+version = "2.0.0"
+description = ""
+authors = ["Musaad Alqubayl"]
+license = "MIT"
 repository = ""
 edition = "2021"
 
