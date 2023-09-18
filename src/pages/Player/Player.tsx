@@ -5,6 +5,8 @@ import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 
 import { PlayerControls } from "@/pages/Player/PlayerControls";
 
+import { PinchZoomPanImage } from "@/components";
+
 import { shallow, useAppStore } from "@/store";
 import { useFoldersStore } from "@/store/foldersStore";
 import { ActionOnImage, usePlayerStore } from "@/store/playerStore";
@@ -105,23 +107,17 @@ function DisplayedImage({ files }: { files: IFile[] }) {
       <div className="relative mx-auto max-w-max overflow-hidden">
         {/* TODO: FIGURE OUT A WAY TO ALLOW DRAGGING AN IMAGE TO OUTSIDE APP WITHOUT REMOVING ZOOM */}
         {!actionOnImage.includes("DISABLE_ZOOM") ? (
-          <TransformWrapper
-            wheel={{
-              smoothStep: 0.002,
-            }}
-          >
-            <TransformComponent>
-              <AvatarImage
+          <div>
+            <div className="relative mx-auto max-w-max overflow-hidden">
+              <PinchZoomPanImage
+                doubleTapBehavior="reset"
+                maxScale={5}
+                // position="center"
+                initialScale={"auto"}
                 src={files[index].path}
-                className={cn(
-                  "mx-auto h-screen max-w-full object-contain animate-in fade-in duration-700",
-                  ...actionOnImage.map(
-                    (item) => imageTransformationsClassNames[item],
-                  ),
-                )}
               />
-            </TransformComponent>
-          </TransformWrapper>
+            </div>
+          </div>
         ) : (
           <AvatarImage
             src={files[index].path}
