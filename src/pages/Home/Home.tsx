@@ -87,7 +87,9 @@ function Settings() {
         seed: randomSeed,
       },
     });
-    toast.success("Your current settings became the default", {autoClose: 1000});
+    toast.success("Your current settings became the default", {
+      autoClose: 1000,
+    });
   };
 
   return (

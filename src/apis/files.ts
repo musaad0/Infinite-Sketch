@@ -16,7 +16,7 @@ async function processEntries(entries: FileEntry[]) {
     } else if (entry.name) {
       const ext = await extname(entry.name).catch((err) => {
         return;
-      })
+      });
       if (ext && allowedExts.includes(ext)) {
         files.push({
           name: entry.name,
