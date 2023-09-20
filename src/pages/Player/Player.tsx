@@ -1,7 +1,6 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { Pencil } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { TransformComponent, TransformWrapper } from "react-zoom-pan-pinch";
 
 import { PlayerControls } from "@/pages/Player/PlayerControls";
 
@@ -55,7 +54,7 @@ export function Player({}: Props) {
   return (
     <AppContextMenu>
       <div
-        className="h-screen bg-background shadow-none"
+        className="bg-background shadow-none"
         style={{ opacity: windowOpacity + "%" }}
       >
         <div>
@@ -103,19 +102,28 @@ function DisplayedImage({ files }: { files: IFile[] }) {
   );
   const actionOnImage = usePlayerStore((state) => state.actionsOnImage);
   return (
-    <Avatar className="relative">
-      <div className="relative mx-auto max-w-max overflow-hidden">
+    <Avatar>
+      <div>
         {/* TODO: FIGURE OUT A WAY TO ALLOW DRAGGING AN IMAGE TO OUTSIDE APP WITHOUT REMOVING ZOOM */}
         {!actionOnImage.includes("DISABLE_ZOOM") ? (
-          <div>
-            <div className="relative mx-auto max-w-max overflow-hidden">
-              <PinchZoomPanImage
-                doubleTapBehavior="reset"
-                maxScale={5}
-                // position="center"
-                initialScale={"auto"}
-                src={files[index].path}
-              />
+          <div className="h-screen flex flex-col">
+            <div className="flex-auto overflow-hidden flex">
+              <div className="flex-auto overflow-hidden relative">
+                <div className="absolute w-full h-full">
+                  <PinchZoomPanImage
+                    src={files[index].path}
+                    initialScale={"auto"}
+                    // initialScale={1}
+                    imgStyle={{
+                      height: "100vh",
+                      objectFit: "contain",
+                    }}
+                    minScale={1}
+                    maxScale={10}
+                    position="center"
+                  />
+                </div>
+              </div>
             </div>
           </div>
         ) : (

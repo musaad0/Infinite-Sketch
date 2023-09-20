@@ -70,8 +70,5 @@ module.exports = {
       sans: ["Sora"],
     },
   },
-  plugins: [
-    require("tailwindcss-animate"),
-    // require("prettier-plugin-tailwindcss"),
-  ],
+  plugins: [require("tailwindcss-animate")],
 };

@@ -162,7 +162,6 @@ function LoadSessionsDialog() {
     try {
       const folders = await getFilesRecursively(foldersPaths);
       const findProgress = progress.find((item) => item.sessionId === id);
-      console.log(progress);
       setIndex(findProgress?.index ?? 0);
       setShuffle(
         findProgress?.shuffle ?? {
@@ -174,13 +173,19 @@ function LoadSessionsDialog() {
       if (folders?.length) {
         setFolders(folders);
         setSessionId(id);
-        toast.success("Session Loaded", {
-          id: loadingToast,
+        toast.update(loadingToast, {
+          render: "Session Loaded",
+          type: "success",
+          isLoading: false,
+          autoClose: 1000,
         });
       }
     } catch {
-      toast.error("Something went wrong", {
-        id: loadingToast,
+      toast.update(loadingToast, {
+        render: "Something went wrong",
+        type: "error",
+        isLoading: false,
+        autoClose: 1000,
       });
     }
   };
@@ -333,7 +338,7 @@ function SaveSessionDialog({ filesLength }: { filesLength: number }) {
                 folders: useFoldersStore.getState().folders,
                 id: nanoid(),
               });
-              toast.success("Saved Session");
+              toast.success("Saved Session", { autoClose: 1000 });
               form.reset();
               isOpen.setFalse();
             })}
