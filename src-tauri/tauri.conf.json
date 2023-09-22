@@ -12,9 +12,12 @@
   },
   "tauri": {
     "updater": {
-      "active": false,
+      "active": true,
       "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDI2QjQ2NDcyRkJCQjg0REQKUldUZGhMdjdjbVMwSm5leWIyUFRMZHF5dHNSa1g3UFljd3pzaVJzQXhZeWF3SUY1MEFVcTN6QnkK",
+      "endpoints": [
+        "https://gist.github.com/musaad0/2f533e9463958545067f830e8c6ef229/raw/Infinite-sketch-test-release.json"
+      ],
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDRCQTY5NDk1NUQwQ0EwRUMKUldUc29BeGRsWlNtUzV3WUdRV3RkQ1FKL3NNVmU3Z0sxWU9VZ0FQNEJwbkN4YnMxN0lOZVN3elYK",
       "windows": {
         "installMode": "passive",
         "installerArgs": []

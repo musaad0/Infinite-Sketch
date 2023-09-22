@@ -69,6 +69,9 @@ export default function Control({}: Props) {
     files.length && index ? (progress > 100 ? 100 : progress) : 0;
 
   const handleStart = () => {
+    if (files.length < index + 1) {
+      setIndex(files.length - 1);
+    }
     if (playMode === "fixed" || playMode === "quantity") {
       setIntervals([
         {
@@ -173,12 +176,7 @@ function LoadSessionsDialog() {
       if (folders?.length) {
         setFolders(folders);
         setSessionId(id);
-        toast.update(loadingToast, {
-          render: "Session Loaded",
-          type: "success",
-          isLoading: false,
-          autoClose: 1000,
-        });
+        toast.dismiss(loadingToast);
       }
     } catch {
       toast.update(loadingToast, {

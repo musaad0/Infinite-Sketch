@@ -101,6 +101,8 @@ function DisplayedImage({ files }: { files: IFile[] }) {
     (state) => state.imageGridWidthHeight,
   );
   const actionOnImage = usePlayerStore((state) => state.actionsOnImage);
+  const path =
+    files.length < index + 1 ? files[files.length - 1].path : files[index].path;
   return (
     <Avatar>
       <div>
@@ -109,15 +111,22 @@ function DisplayedImage({ files }: { files: IFile[] }) {
           <div className="h-screen flex flex-col">
             <div className="flex-auto overflow-hidden flex">
               <div className="flex-auto overflow-hidden relative">
-                <div className="absolute w-full h-full">
+                <div
+                  className={cn(
+                    "absolute w-full h-full",
+                    actionOnImage.includes("FLIP_HORIZONTAL") &&
+                      imageTransformationsClassNames["FLIP_HORIZONTAL"],
+                  )}
+                >
                   <PinchZoomPanImage
-                    src={files[index].path}
+                    src={path}
                     initialScale={"auto"}
-                    // initialScale={1}
-                    imgStyle={{
-                      height: "100vh",
-                      objectFit: "contain",
-                    }}
+                    className={cn(
+                      "fade-in animate-in h-screen object-contain",
+                      ...actionOnImage.map(
+                        (item) => imageTransformationsClassNames[item],
+                      ),
+                    )}
                     minScale={1}
                     maxScale={10}
                     position="center"
@@ -128,7 +137,7 @@ function DisplayedImage({ files }: { files: IFile[] }) {
           </div>
         ) : (
           <AvatarImage
-            src={files[index].path}
+            src={path}
             className={cn(
               "mx-auto h-screen max-w-full object-contain animate-in fade-in duration-700",
               ...actionOnImage.map(
@@ -147,7 +156,7 @@ function DisplayedImage({ files }: { files: IFile[] }) {
         )}
       </div>
       <AvatarFallback
-        delayMs={200}
+        // delayMs={200}
         className="flex h-screen items-center justify-center"
       >
         <Pencil className="animate-spin" />

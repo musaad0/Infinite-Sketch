@@ -62,6 +62,10 @@ interface PinchZoomPanImageProps {
    */
   src: string;
   /**
+   * Image ClassName
+   */
+  className: string;
+  /**
    * Same as `alt` in regular `<img />` tag
    */
   alt?: string;
@@ -94,6 +98,7 @@ export function PinchZoomPanImage(props: PinchZoomPanImageProps): JSX.Element {
     maxScale = 1,
     minScale = "auto",
     position = "center",
+    className,
     imgStyle: inheritedImgStyle = {},
     containerStyle: inheritedContainerStyle = {},
     src,
@@ -286,7 +291,11 @@ export function PinchZoomPanImage(props: PinchZoomPanImageProps): JSX.Element {
 
     if (!pointerPosition) return;
 
-    const translateX = pointerPosition.x - lastPanPointerPosition.x;
+    // to fix an issue the panning issue (right is left and left is right)
+    // issue only happens when we flip the image this happens when we flip the image
+    const translateX =
+      (pointerPosition.x - lastPanPointerPosition.x) *
+      (className.includes("-scale-x-100") ? -1 : 1);
     const translateY = pointerPosition.y - lastPanPointerPosition.y;
     setLastPanPointerPosition(pointerPosition);
 
@@ -352,7 +361,6 @@ export function PinchZoomPanImage(props: PinchZoomPanImageProps): JSX.Element {
     const incrementalScalePercentage = (nextScale - scale) / scale;
     const translateY = imageRelativePoint.top * incrementalScalePercentage;
     const translateX = imageRelativePoint.left * incrementalScalePercentage;
-
     const nextTop = top - translateY;
     const nextLeft = left - translateX;
 
@@ -582,6 +590,7 @@ export function PinchZoomPanImage(props: PinchZoomPanImageProps): JSX.Element {
         onMouseMove={handleMouseMove}
         onDoubleClick={handleMouseDoubleClick}
         onWheel={handleMouseWheel}
+        className={className}
         onDragStart={tryCancelEvent}
         onLoad={handleImageLoad}
         // onContextMenu={tryCancelEvent}

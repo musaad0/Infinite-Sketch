@@ -32,12 +32,7 @@ async function openFileDialog() {
     folders?.forEach((item) => {
       addFolder(item);
     });
-    toast.update(loadingToast, {
-      render: "Added Files Successfully",
-      type: "success",
-      isLoading: false,
-      autoClose: 1000,
-    });
+    toast.dismiss(loadingToast);
 
     // return folders;
   } else if (selected === null) {
