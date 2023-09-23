@@ -2,6 +2,7 @@
  * CODE TAKEN FROM https://github.com/secretwpn/react-responsive-pinch-zoom-pan
  */
 import { AvatarImage } from "@radix-ui/react-avatar";
+import { Pencil } from "lucide-react";
 import { CSSProperties, RefObject, useEffect, useRef, useState } from "react";
 import { useWindowSize } from "usehooks-ts";
 
@@ -599,6 +600,11 @@ export function PinchZoomPanImage(props: PinchZoomPanImageProps): JSX.Element {
         src={src}
         alt={alt}
       />
+      {!isImageLoaded && (
+        <div className="flex h-screen items-center justify-center">
+          <Pencil className="animate-spin" />
+        </div>
+      )}
     </div>
   );
 }
