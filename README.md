@@ -11,7 +11,7 @@
 </p>
 
 <div align="center">
-<a href="https://github.com/musaad0/Infinite-Sketch/releases/latest"> <img alt="GitHub release" src="https://img.shields.io/badge/Latest-v1.6.0-blue"></a>
+<a href="https://github.com/musaad0/Infinite-Sketch/releases/latest"> <img alt="GitHub release" src="https://img.shields.io/badge/Latest-v2.0.0-blue"></a>
 <a href="https://github.com/musaad0/Infinite-Sketch/issues"> <img alt="GitHub issues" src="https://img.shields.io/github/issues/musaad0/Infinite-Sketch"></a>
 <a href="https://github.com/musaad0/Infinite-Sketch/blob/main/LICENSE"> <img alt="GitHub license" src="https://img.shields.io/github/license/musaad0/Infinite-Sketch"></a>
 </div>
