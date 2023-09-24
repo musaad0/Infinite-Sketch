@@ -45,9 +45,9 @@ Note: The Windows executable is currently not signed, which will show a warning 
 
 Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`infinite-sketch_2.0.0_x64.dmg`
 
-## Linux (Not Tested)
+<!-- ## Linux (Not Tested)
 
-Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`[infinite-sketch_2.0.0_amd64.AppImage, infinite-sketch_2.0.0_amd64.deb]`
+Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`[infinite-sketch_2.0.0_amd64.AppImage, infinite-sketch_2.0.0_amd64.deb]` -->
 
 ## Screenshots
 
