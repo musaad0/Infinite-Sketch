@@ -1,6 +1,6 @@
 <h2 align="center">
     <a href="https://github.com/musaad0/Infinite-Sketch">
-    <img src="https://github.com/musaad0/Infinite-Sketch/blob/main/assets/icon.png" alt="Infinite Sketch" width="130">
+    <img src="https://github.com/musaad0/Infinite-Sketch/blob/main/src-tauri/icons/icon.png" alt="Infinite Sketch" width="130">
     </a>
     <br>
     Infinite Sketch
@@ -35,6 +35,20 @@
 - Modern UI
 - Auto updates
 
+## Windows
+
+Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`[infinite-sketch_2.0.0_x64-setup.exe, infinite-sketch_2.0.0_x64_en-US.msi]`
+
+Note: The Windows executable is currently not signed, which will show a warning when you run the .exe. Press 'more info' -> 'run anyway' to skip the warning.
+
+## Mac
+
+Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`infinite-sketch_2.0.0_x64.dmg`
+
+## Linux (Not Tested)
+
+Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`[infinite-sketch_2.0.0_amd64.AppImage, infinite-sketch_2.0.0_amd64.deb]`
+
 ## Screenshots
 
 ![app screenshot-1](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_1.png "screenshot-1")
@@ -43,26 +57,6 @@
 ![app screenshot-4](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_4.png "screenshot-4")
 ![app screenshot-5](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_5.png "screenshot-5")
 
-## Windows
-
-Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`Infinite-Sketch-Setup-1.6.0.exe`
-
-Note: The Windows executable is currently not signed, which will show a warning when you run the .exe. Press 'more info' -> 'run anyway' to skip the warning.
-
-## Mac
-
-#### M1 & M2
-
-Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`Infinite-Sketch-1.6.0-arm64.dmg`
-
-#### Intel
-
-Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`Infinite-Sketch-1.6.0.dmg`
-
-## Linux
-
-Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`Infinite-Sketch-1.6.0-arm64.AppImage`
-
 ## Development
 
 ```
@@ -70,8 +64,11 @@ Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infin
 git clone https://github.com/musaad0/Infinite-Sketch.git
 
 # Install dependencies
-npm install
+pnpm install
+
+# run local dev
+pnpm tauri dev
 
 # Package application
-npm run package
+pnpm tauri build
 ```
