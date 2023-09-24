@@ -22,6 +22,13 @@
 - Ignore mouse events
 - Use your own folders
 - Save your progess & settings
+- Save & split your sessions however you like
+- Know how much you've spent drawing & how many
+- Display a grid over an image
+- Zoom in
+- Set Breaks
+- Multiple Modes [Fixed, Class, Quantity]
+- Dark/Light Mode
 - Always on top
 - Image flipping
 - Easy to use
@@ -30,9 +37,11 @@
 
 ## Screenshots
 
-![app screenshot-1](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_1.png 'screenshot-1')
-![app screenshot-2](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_2.jpg 'screenshot-2')
-![app screenshot-3](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_3.png 'screenshot-3')
+![app screenshot-1](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_1.png "screenshot-1")
+![app screenshot-2](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_2.png "screenshot-2")
+![app screenshot-3](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_3.png "screenshot-3")
+![app screenshot-4](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_4.png "screenshot-4")
+![app screenshot-5](https://github.com/musaad0/Infinite-Sketch/blob/main/screenshots/Infinite_Sketch_5.png "screenshot-5")
 
 ## Windows
 
