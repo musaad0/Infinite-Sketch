@@ -50,9 +50,23 @@ jobs:
         # If you don't have `beforeBuildCommand` configured you may want to build your frontend here too.
         run: pnpm install
 
-      - name: Build the app
+      - name: Tauri Build and Release (Non MacOS)
         uses: tauri-apps/tauri-action@v0
-
+        if: matrix.platform != 'macos-latest'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: "Infinite Sketch v__VERSION__"
+          releaseBody: "See the assets to download this version and install."
+          releaseDraft: true
+          prerelease: false
+      - name: Add Mac Universal Target
+        if: matrix.platform == 'macos-latest'
+        run: rustup target add aarch64-apple-darwin
+      - name: Tauri Build and Release (MacOS Universal Build)
+        uses: tauri-apps/tauri-action@v0
+        if: matrix.platform == 'macos-latest'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           ENABLE_CODE_SIGNING: ${{ secrets.APPLE_CERTIFICATE }}
@@ -67,9 +81,9 @@ jobs:
           APPLE_API_ISSUER: ${{ secrets.APPLE_API_ISSUER }}
           APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
         with:
-          # tagName: ${{ github.ref_name }} # This only works if your workflow triggers on new tags.
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: "Infinite Sketch v__VERSION__" # tauri-action replaces \_\_VERSION\_\_ with the app version.
-          releaseBody: "See the assets to download and install this version."
+          releaseName: "Infinite Sketch v__VERSION__"
+          args: "--target universal-apple-darwin" # build universal app for mac, tauri is small any ways. 6MB -> 13MB. No difference
+          releaseBody: "See the assets to download this version and install."
           releaseDraft: true
           prerelease: false

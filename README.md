@@ -43,7 +43,7 @@ Note: The Windows executable is currently not signed, which will show a warning 
 
 ## Mac
 
-Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`infinite-sketch_2.0.0_x64.dmg`
+Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`infinite-sketch_2.0.0_universal.dmg`
 
 <!-- ## Linux (Not Tested)
 
