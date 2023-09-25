@@ -65,16 +65,16 @@ export const useAppStore = create<AppStore>()((set) => ({
 // get values from system then set them here
 async function loadFromStorage() {
   const settings = await getSettings();
-  if (!settings) {
+  if (!settings.success) {
     // if we have not set theme before we get the default system theme and set it
     const sysTheme = await getOsTheme();
     storeSettings({ theme: sysTheme });
     useAppStore.getState().setTheme(sysTheme);
     return;
+  } else {
+    useAppStore.getState().setAlwaysOnTop(settings.data?.alwaysOnTop ?? true);
+    useAppStore.getState().setTheme(settings.data?.theme ?? "light");
   }
-  if (typeof settings.alwaysOnTop === "boolean")
-    useAppStore.getState().setAlwaysOnTop(settings.alwaysOnTop);
-  useAppStore.getState().setTheme(settings.theme ?? "light");
 }
 
 loadFromStorage();

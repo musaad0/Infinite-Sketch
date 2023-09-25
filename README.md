@@ -11,7 +11,7 @@
 </p>
 
 <div align="center">
-<a href="https://github.com/musaad0/Infinite-Sketch/releases/latest"> <img alt="GitHub release" src="https://img.shields.io/badge/Latest-v2.0.0-blue"></a>
+<a href="https://github.com/musaad0/Infinite-Sketch/releases/latest"> <img alt="GitHub release" src="https://img.shields.io/badge/Latest-v2.0.1-blue"></a>
 <a href="https://github.com/musaad0/Infinite-Sketch/issues"> <img alt="GitHub issues" src="https://img.shields.io/github/issues/musaad0/Infinite-Sketch"></a>
 <a href="https://github.com/musaad0/Infinite-Sketch/blob/main/LICENSE"> <img alt="GitHub license" src="https://img.shields.io/github/license/musaad0/Infinite-Sketch"></a>
 </div>
@@ -37,17 +37,17 @@
 
 ## Windows
 
-Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`[infinite-sketch_2.0.0_x64-setup.exe, infinite-sketch_2.0.0_x64_en-US.msi]`
+Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`[infinite-sketch_2.0.1_x64-setup.exe, infinite-sketch_2.0.1_x64_en-US.msi]`
 
 Note: The Windows executable is currently not signed, which will show a warning when you run the .exe. Press 'more info' -> 'run anyway' to skip the warning.
 
 ## Mac
 
-Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`infinite-sketch_2.0.0_universal.dmg`
+Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`infinite-sketch_2.0.1_universal.dmg`
 
 <!-- ## Linux (Not Tested)
 
-Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`[infinite-sketch_2.0.0_amd64.AppImage, infinite-sketch_2.0.0_amd64.deb]` -->
+Download the latest [Infinite Sketch installer](https://github.com/musaad0/Infinite-Sketch/releases/latest).`[infinite-sketch_2.0.1_amd64.AppImage, infinite-sketch_2.0.1_amd64.deb]` -->
 
 ## Screenshots
 
