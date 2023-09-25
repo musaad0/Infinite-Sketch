@@ -7,7 +7,7 @@
     "withGlobalTauri": false
   },
   "package": {
-    "productName": "infinite-sketch",
+    "productName": "Infinite Sketch",
     "version": "2.0.0"
   },
   "tauri": {
