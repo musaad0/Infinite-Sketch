@@ -59,7 +59,7 @@ export async function storeSettings(data: Partial<SettingsStore>) {
 export async function getSettings() {
   return await settingsStore
     .get("settings")
-    .then((item) => settingsSchema.parse(item));
+    .then((item) => settingsSchema.safeParse(item));
 }
 
 export async function storeProgress(data: Progress[]) {
