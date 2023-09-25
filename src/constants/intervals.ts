@@ -25,7 +25,7 @@ export const CLASS_MODES: Record<ClassMode, SessionInterval[]> = {
   "30m": [
     {
       imagesToPlay: 10,
-      timer: "4s",
+      timer: "30s",
     },
     {
       imagesToPlay: 5,
